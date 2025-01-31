@@ -1,14 +1,23 @@
 package supercritical.api.unification.ore;
 
+import gregtech.api.unification.ore.OrePrefix;
+import net.minecraft.client.resources.I18n;
+import supercritical.api.unification.material.info.SCMaterialIconType;
+import supercritical.api.unification.material.properties.SCMaterialsFlag;
+import supercritical.api.unification.material.properties.SCPropertyKey;
+
 import java.util.Collections;
 import java.util.function.Function;
 
-import net.minecraft.client.resources.I18n;
+import static gregtech.api.unification.ore.OrePrefix.Flags.ENABLE_UNIFICATION;
+import static supercritical.api.unification.material.properties.SCMaterialsFlag.GENERATE_PELLETS;
 
-import gregtech.api.unification.ore.OrePrefix;
-import supercritical.api.unification.material.info.SCMaterialIconType;
-import supercritical.api.unification.material.properties.SCPropertyKey;
-
+/**
+ * Copyright (C) SymmetricDevs 2025
+ * 由 KeQingSoCute520 于 2025 修改。
+ * 修改内容：添加靶丸。
+ * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
+ */
 public class SCOrePrefix {
 
     // Nuclear stuff, introduced by Zalgo and Bruberu
@@ -36,6 +45,11 @@ public class SCOrePrefix {
             SCMaterialIconType.dustFissionByproduct, 0,
             material -> material.hasProperty(SCPropertyKey.FISSION_FUEL));
 
+    //Additions Nuclear stuff, introduced by KeQingSoCute520
+    public static final OrePrefix fuelPebble = new OrePrefix("fuelPebble", -1, null, SCMaterialIconType.fuelPebble, ENABLE_UNIFICATION,
+            mat -> mat.hasFlag(GENERATE_PELLETS));
+    public static final OrePrefix fuelPebbleDepleted = new OrePrefix("fuelPebbleDepleted", -1, null, SCMaterialIconType.fuelPebbleDepleted, ENABLE_UNIFICATION,
+            mat -> mat.hasFlag(GENERATE_PELLETS));
     public static void init() {
         setRadiationDamageFunction(fuelRod, neutrons -> neutrons / 10e23);
         setRadiationDamageFunction(fuelPellet, neutrons -> neutrons / 160e23);

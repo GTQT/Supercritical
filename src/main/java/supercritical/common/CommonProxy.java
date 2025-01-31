@@ -30,6 +30,8 @@ import gregtech.modules.ModuleManager;
 import supercritical.SCValues;
 import supercritical.api.nuclear.fission.CoolantRegistry;
 import supercritical.api.nuclear.fission.FissionFuelRegistry;
+import supercritical.api.unification.material.SCMaterialFlagAddition;
+import supercritical.api.unification.material.SCMaterialPropertyAddition;
 import supercritical.api.unification.material.properties.CoolantProperty;
 import supercritical.api.unification.material.properties.FissionFuelProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
@@ -39,7 +41,12 @@ import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.item.SCMetaItems;
 import supercritical.loaders.recipe.SCRecipeManager;
 import supercritical.modules.SCModules;
-
+/**
+ * Copyright (C) SymmetricDevs 2025
+ * 由 KeQingSoCute520 于 2025 修改。
+ * 修改内容：添加靶丸。
+ * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
+ */
 @Mod.EventBusSubscriber(modid = SCValues.MODID)
 public class CommonProxy {
 
@@ -90,7 +97,11 @@ public class CommonProxy {
                 SCOrePrefix.fuelPelletDepleted,
                 SCOrePrefix.dustSpentFuel,
                 SCOrePrefix.dustBredFuel,
-                SCOrePrefix.dustFissionByproduct);
+                SCOrePrefix.dustFissionByproduct,
+                //Additions Nuclear stuff, introduced by KeQingSoCute520
+                SCOrePrefix.fuelPebble,
+                SCOrePrefix.fuelPebbleDepleted
+        );
     }
 
     @SubscribeEvent

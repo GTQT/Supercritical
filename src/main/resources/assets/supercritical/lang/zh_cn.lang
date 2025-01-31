@@ -42,6 +42,8 @@ item.material.oreprefix.fuelPelletDepleted=%s 耗尽燃料颗粒
 item.material.oreprefix.dustSpentFuel=%s 耗尽燃料粉尘
 item.material.oreprefix.dustBredFuel=%s 培育燃料粉尘
 item.material.oreprefix.dustFissionByproduct=%s 裂变副产品粉尘
+item.material.oreprefix.fuelPebble=%s 浓缩燃料丸
+item.material.oreprefix.fuelPebbleDepleted=%s 枯竭浓缩燃料丸
 
 supercritical.material.neptunium_235=镎-235
 supercritical.material.neptunium_236=镎-236
@@ -57,6 +59,19 @@ supercritical.material.plutonium_244=钚-244
 
 supercritical.material.uranium=铀
 supercritical.material.uranium_239=铀-239
+
+gregtech.material.uranium_233=铀-233
+gregtech.material.uranium_234=铀-234
+gregtech.material.uranium_236=铀-236
+gregtech.material.thorium_229=钍-229
+gregtech.material.thorium_230=钍-230
+gregtech.material.americium_241=镅-241
+gregtech.material.americium_242=镅-242
+gregtech.material.americium_243=镅-243
+gregtech.material.curium_243=锔-243
+gregtech.material.curium_245=锔-245
+gregtech.material.curium_246=锔-246
+gregtech.material.curium_247=锔-247
 
 supercritical.material.high_pressure_steam=高压蒸汽
 
@@ -89,6 +104,41 @@ supercritical.material.high_grade_mox=高级MOX
 recipemap.heat_exchanger.name=热交换器
 recipemap.gas_centrifuge.name=气体离心机
 recipemap.spent_fuel_pool.name=乏燃料池
+recipemap.rtg_recipes.name=同位素温差发电
+recipemap.decay_chamber_recipes.name=衰变室
+
+supercritical.machine.decay_chamber.lv.name=基础衰变室
+supercritical.machine.decay_chamber.lv.tooltip=辐光盈盈
+supercritical.machine.decay_chamber.mv.name=进阶衰变室
+supercritical.machine.decay_chamber.mv.tooltip=辐光盈盈
+supercritical.machine.decay_chamber.hv.name=进阶衰变室 II
+supercritical.machine.decay_chamber.hv.tooltip=辐光盈盈
+supercritical.machine.decay_chamber.ev.name=进阶衰变室 III
+supercritical.machine.decay_chamber.ev.tooltip=辐光盈盈
+supercritical.machine.decay_chamber.iv.name=精英衰变室
+supercritical.machine.decay_chamber.iv.tooltip=衰变加速器
+supercritical.machine.decay_chamber.luv.name=精英衰变室 II
+supercritical.machine.decay_chamber.luv.tooltip=衰变加速器
+supercritical.machine.decay_chamber.zpm.name=精英衰变室 III
+supercritical.machine.decay_chamber.zpm.tooltip=衰变加速器
+supercritical.machine.decay_chamber.uv.name=终极衰变室
+supercritical.machine.decay_chamber.uv.tooltip=零过程衰变
+supercritical.machine.decay_chamber.uhv.name=史诗衰变室
+supercritical.machine.decay_chamber.uhv.tooltip=零过程衰变
+supercritical.machine.decay_chamber.uev.name=史诗衰变室 II
+supercritical.machine.decay_chamber.uev.tooltip=零过程衰变
+supercritical.machine.decay_chamber.uiv.name=史诗衰变室 III
+supercritical.machine.decay_chamber.uiv.tooltip=零过程衰变
+supercritical.machine.decay_chamber.uxv.name=史诗衰变室 IV
+supercritical.machine.decay_chamber.uxv.tooltip=零过程衰变
+supercritical.machine.decay_chamber.opv.name=传奇衰变室
+supercritical.machine.decay_chamber.opv.tooltip=零过程衰变
+
+supercritical.machine.rtg.hv.name=同位素温差发电机（§6HV§r）
+supercritical.machine.rtg.ev.name=同位素温差发电机（§5EV§r）
+supercritical.machine.rtg.iv.name=同位素温差发电机（§1IV§r）
+supercritical.machine.rtg.luv.name=同位素温差发电机（§dLuV§r）
+supercritical.machine.rtg.zpm.name=同位素温差发电机（§cZPM§r）
 
 fission.coolant.name=冷却剂加热
 fission.fuel.name=裂变反应堆
