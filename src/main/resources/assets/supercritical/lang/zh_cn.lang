@@ -1,0 +1,177 @@
+tile.fission_casing.reactor_vessel.name=反应堆压力容器
+tile.fission_casing.fuel_channel.name=燃料通道
+tile.fission_casing.control_rod_channel.name=控制棒通道
+tile.fission_casing.coolant_channel.name=冷却剂通道
+supercritical.machine.fuel_rod_input.name=燃料棒输入端口
+supercritical.machine.fuel_rod_input.tooltip=需要下方的§f燃料通道§7才能正常工作并形成。
+supercritical.machine.fuel_rod_output.name=燃料棒输出端口
+supercritical.machine.fuel_rod_output.tooltip=需要上方的§f燃料通道§7才能正常工作并形成。
+supercritical.machine.coolant_input.name=冷却剂输入端口
+supercritical.machine.coolant_input.tooltip=需要下方的§f冷却剂通道§7才能正常工作并形成。
+supercritical.machine.coolant_output.name=冷却剂输出端口
+supercritical.machine.coolant_output.tooltip=需要上方的§f冷却剂通道§7才能正常工作并形成。
+supercritical.machine.control_rod.name=控制棒端口
+supercritical.machine.control_rod.tooltip=需要下方的§f控制棒通道§7才能正常工作并形成。
+supercritical.machine.control_rod.tooltip.1=插入时降低中子增殖率！
+supercritical.machine.control_rod_moderated.name=石墨尖端控制棒端口
+supercritical.machine.control_rod_moderated.tooltip=需要下方的§f控制棒通道§7才能正常工作并形成。
+supercritical.machine.control_rod_moderated.tooltip.1=插入时周围30%的燃料棒中子增殖率增加！
+supercritical.machine.nuclear.locking.item=反应堆启动时锁定；锁定后持有的物品类型不能更改。
+supercritical.machine.nuclear.locking.fluid=反应堆启动时锁定；锁定后持有的流体类型不能更改。
+
+gregtech.multiblock.fission_reactor.description=裂变反应器使用放置在一起的燃料棒来产生持续的裂变反应链。这些反应产生的热量（能量）可能会被冷却剂吸收，然后可以在涡轮机内部使用。例如，使用蒸馏水作为冷却剂，每个通道每开尔文和内部反应器深度吸收约 2 EU/t 的热量。 反应器可以呈现各种形状。它的横截面可以在 JEI 中看到，反应器可以从控制器上下延伸 7 个方块。反应器可以分别通过顶层和底层的特殊舱口对导入和导出燃料棒/冷却剂。控制杆舱口也可以放置在顶层，它们使用户对反应器有更多的控制权。更多地插入它们会降低中子倍增率“有效 K”（显示为 k_eff），这是一个功率不断乘以直到达到近似最大功率的因子。如果 k_eff 大于 1，则反应堆的功率最终会增加;如果低于 1，则最终会减少;如果它在 1 附近，它将保持稳定。事实上，反应器会随着时间的推移自动改变这一点，试图达到稳定的平衡。这可以手动覆盖，如果 k_eff 超过 1.05，您可能希望这样做，以避免它失控并熔化。K_eff 还受到反应堆内部中子毒物的影响，随着反应堆的运行，中子毒物的浓度会随着时间的推移而增加（并且在之后的一段时间内仍保持相当高的浓度）。k_eff“作用”的速率取决于平均产生时间，即产生下一代中子所需的时间。这取决于燃料棒（可以在他们的工具提示中看到），并且它主要受衰变裂变产物产生的延迟中子的影响。然后，可以使用指数函数对功率进行建模，该函数的时间常数为平均生成时间除以 （k_eff - 1）。控制杆、燃料舱口和冷却液舱口都需要在其下方有特殊的管道才能正确形成;查看他们的工具提示以查看可以使用哪些块。一旦反应堆的舱口装满，反应堆就可以被锁定以开始运行，这意味着在反应堆运行时，舱口中的物品/液体类型不能改变。燃料棒和冷却剂通道在反应堆内的位置非常重要。燃料棒中衰变的原子产生的中子会导致其他燃料棒发生裂变;因此，反应堆使用多个燃料棒通道时工作效率要高得多。如果中子与燃料棒相互作用的几率被慢化剂（例如冷却剂通道内的蒸馏水）减慢，则中子与燃料棒相互作用的几率会增加。因此，在燃料杆之间放置冷却液通道以增加k_eff可能会有所帮助（而控制杆的作用恰恰相反）。燃料棒也以与功率成正比的速度衰减;一根 600 MJ 的燃料棒将在 1 MW 的 600 秒或 600 MW 的 1 秒后耗尽。注意：如果此多块出现维护问题，冷却液系统偶尔会卡住并停止工作。然而，只有当热冷却剂流体实际上比反应器本身更热时，冷却剂通道才会运行，并且它们也只能输出与最大功率一样多的热量。
+gregtech.multiblock.gas_centrifuge.description=气体离心机可以帮助同位素的净化过程，尤其是铀的同位素。通过反复将六氟化铀放入气体离心机中，可以获得高浓缩的六氟化铀，其纯度足以制造核燃料。每个长度块都会使它并行执行另一个配方。
+gregtech.multiblock.heat_exchanger.description=换热器可用于通过将一种流体的热量辐射到周围环境或将其转移到另一种流体中来带走热量。这可以与裂变反应器的热冷却剂一起使用，以帮助为蒸汽轮机产生蒸汽。
+gregtech.multiblock.spent_fuel_pool.description=乏燃料池从裂变反应堆中取出新鲜的热耗尽燃料棒，并将其冷却以备后用。只有当满满的水块放在上面时，它才会形成;你期待什么？每个长度块使其并行执行 32 个配方。
+
+metaitem.nuclear.tooltip.radioactive=§c放射危险
+metaitem.nuclear.tooltip.duration=总热量: %d MJ
+metaitem.nuclear.tooltip.temperature=熔点: %d K
+metaitem.nuclear.tooltip.cross_section_fast=快中子概率: %d barn
+metaitem.nuclear.tooltip.cross_section_slow=慢中子概率: %d barn
+metaitem.nuclear.tooltip.neutron_time.0=平均中子: %ds (§1安全§r)
+metaitem.nuclear.tooltip.neutron_time.1=平均中子: %ds (§2较安全§r)
+metaitem.nuclear.tooltip.neutron_time.2=平均中子: %ds (§c不安全§r)
+metaitem.nuclear.tooltip.neutron_time.3=平均中子: %ds (§4非常不安全§r)
+
+item.material.oreprefix.fuelRod=%s 燃料棒
+item.material.oreprefix.fuelRodDepleted=%s 耗尽燃料棒
+item.material.oreprefix.fuelRodHotDepleted=%s 热耗尽燃料棒
+item.material.oreprefix.fuelPellet=%s 燃料颗粒
+item.material.oreprefix.fuelPelletDepleted=%s 耗尽燃料颗粒
+item.material.oreprefix.dustSpentFuel=%s 耗尽燃料粉尘
+item.material.oreprefix.dustBredFuel=%s 培育燃料粉尘
+item.material.oreprefix.dustFissionByproduct=%s 裂变副产品粉尘
+
+supercritical.material.neptunium_235=镎-235
+supercritical.material.neptunium_236=镎-236
+supercritical.material.neptunium_237=镎-237
+supercritical.material.neptunium_239=镎-239
+
+supercritical.material.plutonium=钚
+supercritical.material.plutonium_238=钚-238
+supercritical.material.plutonium_240=钚-240
+
+supercritical.material.plutonium_242=钚-242
+supercritical.material.plutonium_244=钚-244
+
+supercritical.material.uranium=铀
+supercritical.material.uranium_239=铀-239
+
+supercritical.material.high_pressure_steam=高压蒸汽
+
+supercritical.material.high_enriched_uranium_hexafluoride=高浓缩铀六氟化物
+supercritical.material.high_enriched_uranium_dioxide=高浓缩铀二氧化物
+supercritical.material.low_enriched_uranium_dioxide=低浓缩铀二氧化物
+supercritical.material.depleted_uranium_dioxide=耗尽铀二氧化物
+supercritical.material.fissile_plutonium_dioxide=裂变钚二氧化物
+supercritical.material.inconel=因康镍
+supercritical.material.corium=核融物
+supercritical.material.zircon=锆石
+supercritical.material.zircaloy=锆合金
+supercritical.material.zirconium_dioxide=锆二氧化物
+supercritical.material.zirconium_tetrachloride=锆四氯化物
+supercritical.material.hafnium_dioxide=铪二氧化物
+supercritical.material.hafnium_tetrachloride=铪四氯化物
+supercritical.material.boron_trioxide=硼氧化物
+supercritical.material.boron_carbide=硼化硼
+supercritical.material.heavy_water=重水
+supercritical.material.high_pressure_heavy_water=高压重水
+
+supercritical.material.spent_uranium_fuel_solution=耗尽铀燃料溶液
+supercritical.material.radon_rich_gas_mixture=氡气混合物
+
+supercritical.material.leu_235=LEU-235
+supercritical.material.heu_235=HEU-235
+supercritical.material.low_grade_mox=低级MOX
+supercritical.material.high_grade_mox=高级MOX
+
+recipemap.heat_exchanger.name=热交换器
+recipemap.gas_centrifuge.name=气体离心机
+recipemap.spent_fuel_pool.name=乏燃料池
+
+fission.coolant.name=冷却剂加热
+fission.fuel.name=裂变反应堆
+
+metaitem.basket.anode.name=阳极篮
+metaitem.cladding.fuel.name=燃料包壳
+
+tile.panelling.white.name=白色护板
+tile.panelling.orange.name=橙色护板
+tile.panelling.magenta.name=品红色护板
+tile.panelling.light_blue.name=浅蓝色护板
+tile.panelling.yellow.name=黄色护板
+tile.panelling.lime.name=青色护板
+tile.panelling.pink.name=粉色护板
+tile.panelling.gray.name=灰色护板
+tile.panelling.light_gray.name=浅灰色护板
+tile.panelling.cyan.name=青蓝色护板
+tile.panelling.purple.name=紫色护板
+tile.panelling.blue.name=蓝色护板
+tile.panelling.brown.name=棕色护板
+tile.panelling.green.name=绿色护板
+tile.panelling.red.name=红色护板
+tile.panelling.black.name=黑色护板
+
+# 核反应堆方块
+tile.nuclear_casing.spent_fuel_casing.name=乏燃料外壳
+tile.nuclear_casing.gas_centrifuge_heater.name=气体离心机加热器
+tile.gas_centrifuge_casing.gas_centrifuge_column.name=气体离心机柱
+
+supercritical.machine.fission_reactor.name=裂变反应堆
+supercritical.machine.fission_reactor.tooltip.1=检查预览以查看允许的形状。
+supercritical.machine.fission_reactor.tooltip.2=§c如果温度/压力过高，可能会熔毁/爆炸！
+supercritical.machine.fission_reactor.tooltip.3=§c请阅读 JEI 信息页面！非常重要！
+
+supercritical.machine.heat_exchanger.name=热交换器
+supercritical.machine.spent_fuel_pool.name=乏燃料池
+supercritical.machine.gas_centrifuge.name=气体离心机
+
+supercritical.machine.fission_reactor.tooltip=爆炸性美味发电机
+supercritical.machine.heat_exchanger.tooltip=分子热土豆玩家
+
+supercritical.coolant.general=§9可作为冷却剂使用§7
+supercritical.coolant.exit_temp=热冷却剂温度: %d K
+supercritical.coolant.heat_capacity=比热容: %d J/kgK
+supercritical.coolant.cooling_factor=热传递: %d W/(m^2K)
+supercritical.coolant.moderation_factor=中子缓和截面: %d barn
+supercritical.coolant.accumulates_hydrogen=§c在 1500K 时积累氢气
+
+supercritical.gui.fission.control_rod_insertion=控制棒插入: %d
+supercritical.gui.fission.coolant_flow=冷却剂流速: %d L/t 每通道
+supercritical.gui.fission.temperature=温度: %.3f K
+supercritical.gui.fission.pressure=压力: %.3f Pa
+supercritical.gui.fission.power=功率: %.3f MW / %.3f MW
+supercritical.gui.fission.k_eff=中子倍增因子: %f
+supercritical.gui.fission.depletion=当前燃料棒耗尽: %f%%
+
+supercritical.gui.fission.lock.locked=反应堆已锁定并激活！
+supercritical.gui.fission.lock.unlocked=反应堆未激活
+supercritical.gui.fission.lock.should_lock=正在激活...
+supercritical.gui.fission.lock.missing_fuel=一个总线缺少燃料！
+supercritical.gui.fission.lock.missing_coolant=一个舱口缺少冷却剂！
+supercritical.gui.fission.lock.fuel_clogged=一个输出燃料总线已满！
+supercritical.gui.fission.lock.no_fuel_channels=没有燃料通道！
+supercritical.gui.fission.lock.invalid_component=呃，这是什么？请检查日志文件
+supercritical.gui.fission.lock.disabled=锁定燃料和冷却剂类型并启动反应堆
+supercritical.gui.fission.lock.enabled=解锁燃料和冷却剂类型并停止反应堆
+
+supercritical.gui.fission.helper.disabled=当我微笑时，我会为你调节控制棒！ - 斯米利，控制棒专家
+supercritical.gui.fission.helper.enabled=当我微笑时，我会为你调节控制棒！ - 斯米利，控制棒专家
+
+supercritical.gui.locked=(已锁定)
+
+supercritical.multiblock.pattern.error.hatch_invalid=§c此舱口尚无效！§r
+
+supercritical.multiblock.fission_reactor.diameter=直径: %s
+supercritical.multiblock.fission_reactor.height=高度: %s
+
+supercritical.multiblock.fission_reactor.turn_on=启动反应堆？（锁定所有舱口）
+supercritical.multiblock.fission_reactor.turn_off=关闭反应堆？
+supercritical.multiblock.fission_reactor.structure_incomplete=无法切换反应堆。结构不完整。
+supercritical.multiblock.fission_reactor.invalid_components=反应堆启动失败。某些输入端口无效。请检查通道是否与相应的端口对齐。
+supercritical.multiblock.fission_reactor.missing_inputs=反应堆启动失败。某些输入端口为空或内容不适当。请检查端口。
+
+gregtech.fluid.molten=熔融 %s
+# 名称重写（不起作用）
+gregtech.material.enriched_uranium_hexafluoride=低浓缩铀六氟化物
