@@ -19,7 +19,7 @@ public class MaterialModifications {
 
     public static void init() {
         // Zirconium
-        Zirconium.setProperty(PropertyKey.DUST, new DustProperty());
+        //Zirconium.setProperty(PropertyKey.DUST, new DustProperty());
 
         // Hafnium
         Hafnium.addFlags(MaterialFlags.GENERATE_LONG_ROD);

@@ -1,22 +1,39 @@
-<p align="center"><img src="./src/main/resources/assets/supercritical/textures/supercritical_logo.png" alt="Logo" style="width: 256px; height: auto;"></p>
-<h1 align="center">Supercritical</h1>
-<p align="center"><i>Adding fission reactor and atomic energy to GregTech CE Unofficial</i></p>
-<h1 align="center">
-    <a href="https://www.curseforge.com/minecraft/mc-mods/supercritical"><img src="https://img.shields.io/badge/Available%20for-MC%201.12.2%20-informational?style=for-the-badge" alt="Supported Versions"></a>
-    <a href="https://github.com/SymmetricDevs/Supercritical/blob/master/LICENSE"><img src="https://img.shields.io/github/license/SymmetricDevs/Supercritical?style=for-the-badge" alt="License"></a>
-    <a href="https://discord.gg/supersymmetry-881234100504109166"><img src="https://img.shields.io/discord/881234100504109166?color=5464ec&label=Discord&style=for-the-badge" alt="Discord"></a>
-    <a href="https://www.curseforge.com/minecraft/mc-mods/supercritical"><img src="https://cf.way2muchnoise.eu/supercritical.svg?badge_style=for_the_badge" alt="CurseForge"></a>
-</h1>
+# Supercritical
+(1.12) Adding fission reactor and atomic energy to GregTech CE Unofficial
 
-## TODO's
- //TODO :trollface:
+源项目：https://github.com/SymmetricDevs/Supercritical
+原作者：SymmetricDevs
+
+感谢Supersymmetry为gtceu社区做出的贡献，感谢SymmetricDevs遵守GPL-3.0 license协议
 
 ## Credited Works
-
 - Original [Nuclear fission PR](https://github.com/GregTechCEu/GregTech/pull/2093) by Zalgo and Bruberu
-
 - MixinLoader & GH Action template from [InventoryBogoSorter](https://github.com/CleanroomMC/InventoryBogoSorter)
-
 - README template from [GregTechCEu](https://github.com/GregTechCEu/GregTech)
-
 - [GregTechCEu Team](https://github.com/GregTechCEu) for [Buildscripts](https://github.com/GregTechCEu/Buildscripts)
+  
+# 目标：
+在源项目的基础上追加对GTQT整合包的其他核燃料线支持
+
+# 实施方法：
+
+1.将GTQTCore内的放射物质迁移到Supercritical
+
+2.为Supercritical添加类NC的靶丸，同位素发电机，贫瘠燃料处理
+
+3.注册更多的燃料棒
+
+4.重写Supercritical的热交换系统以适配GTQT需求
+
+5.GTQTcore将使用Supercritical作为前置
+
+# 关于GPL-3.0 license协议须知
+
+在每个新增或者修改的文件头部都需要添加如下内容：
+/*
+ * Copyright (C) SymmetricDevs 2025
+ * 由 KeQingSoCute520 于 2025 修改。
+ * 修改内容：(这里填修改的内容)。
+ * 
+ * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
+ */

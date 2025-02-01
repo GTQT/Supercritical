@@ -5,9 +5,9 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "logoFile": "assets/supercritical/textures/supercritical_logo.png",
-    "url": "https://github.com/SymmetricDevs/Supercritical",
+    "url": "https://github.com/GTQT/Supercritical",
     "authorList": [
-        "SymmetricDevs"
+        "SymmetricDevs,KeQingSoCute520"
     ],
     "credits": "",
     "dependencies": [

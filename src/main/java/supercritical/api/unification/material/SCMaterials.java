@@ -11,10 +11,18 @@ import supercritical.common.materials.ElementMaterials;
 import supercritical.common.materials.FirstDegreeMaterials;
 import supercritical.common.materials.SecondDegreeMaterials;
 import supercritical.common.materials.UnknownCompositionMaterials;
-
+/**
+ * Copyright (C) SymmetricDevs 2025
+ * 由 KeQingSoCute520 于 2025 修改。
+ * 修改内容：添加靶丸。
+ * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
+ */
 public class SCMaterials {
 
     /* public static Material Neptunium = Materials.Neptunium; */
+    public static Material Thorium229;
+    public static Material Thorium230;
+
     public static Material Neptunium235;
     public static Material Neptunium236;
     public static Material Neptunium237;
@@ -32,6 +40,18 @@ public class SCMaterials {
     /* public static Material Uranium235 = Materials.Uranium235; */
     /* public static Material Uranium238 = Materials.Uranium238; */
     public static Material Uranium239;
+
+    //Additions Nuclear stuff, introduced by KeQingSoCute520
+    public static Material Uranium233;
+    public static Material Uranium234;
+    public static Material Uranium236;
+    public static Material Americium241;
+    public static Material Americium242;
+    public static Material Americium243;
+    public static Material Curium243;
+    public static Material Curium245;
+    public static Material Curium246;
+    public static Material Curium247;
 
     public static Material HighEnrichedUraniumHexafluoride;
     /* public static Material LowEnrichedUraniumHexafluoride = Materials.EnrichedUraniumHexafluoride; */

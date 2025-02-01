@@ -42,6 +42,8 @@ item.material.oreprefix.fuelPelletDepleted=%s Depleted Fuel Pellet
 item.material.oreprefix.dustSpentFuel=%s Spent Fuel Dust
 item.material.oreprefix.dustBredFuel=%s Bred Fuel Dust
 item.material.oreprefix.dustFissionByproduct=%s Fission Byproduct Dust
+item.material.oreprefix.fuelPebble=%s Concentrated Fuel Pellets
+item.material.oreprefix.fuelPebbleDepleted=%s Depleted Concentrated Fuel Pellets
 
 supercritical.material.neptunium_235=Neptunium 235
 supercritical.material.neptunium_236=Neptunium 236
@@ -57,6 +59,19 @@ supercritical.material.plutonium_244=Plutonium 244
 
 supercritical.material.uranium=Uranium
 supercritical.material.uranium_239=Uranium 239
+
+gregtech.material.uranium_233=Uranium-233
+gregtech.material.uranium_234=Uranium-234
+gregtech.material.uranium_236=Uranium-236
+gregtech.material.thorium_229=Thorium_229-229
+gregtech.material.thorium_230=Thorium_229-230
+gregtech.material.americium_241=Americium-241
+gregtech.material.americium_242=Americium-242
+gregtech.material.americium_243=Americium-243
+gregtech.material.curium_243=Curium-243
+gregtech.material.curium_245=Curium-245
+gregtech.material.curium_246=Curium-246
+gregtech.material.curium_247=Curium-247
 
 supercritical.material.high_pressure_steam=High Pressure Steam
 
@@ -89,6 +104,41 @@ supercritical.material.high_grade_mox=High Grade MOX
 recipemap.heat_exchanger.name=Heat Exchanger
 recipemap.gas_centrifuge.name=Gas Centrifuge
 recipemap.spent_fuel_pool.name=Spent Fuel Pool
+recipemap.rtg_recipes.name=Isotope Temperature Difference Power Generation
+recipemap.decay_chamber_recipes.name=衰变室
+supercritical.machine.decay_chamber.lv.name=Basic Decay Chamber
+supercritical.machine.decay_chamber.lv.tooltip=Radiant Glow
+supercritical.machine.decay_chamber.mv.name=Advanced Decay Chamber
+supercritical.machine.decay_chamber.mv.tooltip=Radiant Glow
+supercritical.machine.decay_chamber.hv.name=Advanced Decay Chamber II
+supercritical.machine.decay_chamber.hv.tooltip=Radiant Glow
+supercritical.machine.decay_chamber.ev.name=Advanced Decay Chamber III
+supercritical.machine.decay_chamber.ev.tooltip=Radiant Glow
+supercritical.machine.decay_chamber.iv.name=Elite Decay Chamber
+supercritical.machine.decay_chamber.iv.tooltip=Decay Accelerator
+supercritical.machine.decay_chamber.luv.name=Elite Decay Chamber II
+supercritical.machine.decay_chamber.luv.tooltip=Decay Accelerator
+supercritical.machine.decay_chamber.zpm.name=Elite Decay Chamber III
+supercritical.machine.decay_chamber.zpm.tooltip=Decay Accelerator
+supercritical.machine.decay_chamber.uv.name=Ultimate Decay Chamber
+supercritical.machine.decay_chamber.uv.tooltip=Zero Process Decay
+supercritical.machine.decay_chamber.uhv.name=Epic Decay Chamber
+supercritical.machine.decay_chamber.uhv.tooltip=Zero Process Decay
+supercritical.machine.decay_chamber.uev.name=Epic Decay Chamber II
+supercritical.machine.decay_chamber.uev.tooltip=Zero Process Decay
+supercritical.machine.decay_chamber.uiv.name=Epic Decay Chamber III
+supercritical.machine.decay_chamber.uiv.tooltip=Zero Process Decay
+supercritical.machine.decay_chamber.uxv.name=Epic Decay Chamber IV
+supercritical.machine.decay_chamber.uxv.tooltip=Zero Process Decay
+supercritical.machine.decay_chamber.opv.name=Legendary Decay Chamber
+supercritical.machine.decay_chamber.opv.tooltip=Zero Process Decay
+
+supercritical.machine.rtg.hv.name=Isotope Thermoelectric Generator (§6HV§r)
+supercritical.machine.rtg.ev.name=Isotope Thermoelectric Generator (§5EV§r)
+supercritical.machine.rtg.iv.name=Isotope Thermoelectric Generator (§1IV§r)
+supercritical.machine.rtg.luv.name=Isotope Thermoelectric Generator (§dLuV§r)
+supercritical.machine.rtg.zpm.name=Isotope Thermoelectric Generator (§cZPM§r)
+
 
 fission.coolant.name=Coolant Heating
 fission.fuel.name=Fission Reactor

@@ -14,6 +14,7 @@ public class SCTextures {
     public static SimpleOverlayRenderer CONTROL_ROD;
     public static SimpleOverlayRenderer CONTROL_ROD_MODERATED;
 
+    public static OrientedOverlayRenderer RTG_OVERLAY = new OrientedOverlayRenderer("overlay/rtg");
     public static void preInit() {
         FISSION_REACTOR_OVERLAY = new OrientedOverlayRenderer("multiblock/fission_reactor");
         SPENT_FUEL_POOL_OVERLAY = new OrientedOverlayRenderer("multiblock/spent_fuel_pool");
