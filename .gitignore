@@ -84,3 +84,4 @@ logs/
 
 # spotless
 /spotless/
+*.jar
