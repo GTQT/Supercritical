@@ -6,6 +6,12 @@
 
 感谢Supersymmetry为gtceu社区做出的贡献，感谢SymmetricDevs遵守GPL-3.0 license协议
 
+## Credited Works
+- Original [Nuclear fission PR](https://github.com/GregTechCEu/GregTech/pull/2093) by Zalgo and Bruberu
+- MixinLoader & GH Action template from [InventoryBogoSorter](https://github.com/CleanroomMC/InventoryBogoSorter)
+- README template from [GregTechCEu](https://github.com/GregTechCEu/GregTech)
+- [GregTechCEu Team](https://github.com/GregTechCEu) for [Buildscripts](https://github.com/GregTechCEu/Buildscripts)
+  
 # 目标：
 在源项目的基础上追加对GTQT整合包的其他核燃料线支持
 
