@@ -54,7 +54,7 @@ public class FirstDegreeMaterials {
                 .build();
 
         Zircaloy = new Material.Builder(504, scId("zircaloy"))
-                .ingot()
+                .ingot().ore()
                 .color(0x566570).iconSet(METALLIC)
                 .flags(GENERATE_RING, GENERATE_PLATE)
                 .components(Zirconium, 16, Tin, 2, Chrome, 1)

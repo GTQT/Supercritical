@@ -16,7 +16,7 @@ import supercritical.common.metatileentities.SCMetaTileEntities;
      version = SCInternalTags.VERSION,
      name = SCInternalTags.MODNAME,
      dependencies = "required-after:gregtech@[2.8.10-beta,);" +
-             "required-after:mixinbooter@[9.0,);",
+             "required-after:mixinbooter@[8.9,);",
      acceptedMinecraftVersions = "[1.12.2]")
 public class Supercritical {
 
