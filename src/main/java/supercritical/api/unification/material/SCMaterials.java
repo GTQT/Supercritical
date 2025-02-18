@@ -82,6 +82,8 @@ public class SCMaterials {
     public static Material HEU235;
     public static Material LowGradeMOX;
     public static Material HighGradeMOX;
+    public static Material FBR;
+    public static Material THOR;
 
     public static void register() {
         /*

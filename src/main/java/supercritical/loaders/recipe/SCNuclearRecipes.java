@@ -9,7 +9,12 @@ import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.unification.ore.SCOrePrefix.*;
 
 import supercritical.common.item.SCMetaItems;
-
+/**
+ * Copyright (C) SymmetricDevs 2025
+ * 由 KeQingSoCute520 于 2025 修改。
+ * 修改内容：添加高浓缩铀二氧化物产线。
+ * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
+ */
 public class SCNuclearRecipes {
 
     public static void init() {
@@ -53,7 +58,21 @@ public class SCNuclearRecipes {
                 .circuitMeta(2)
                 .output(dust, HighGradeMOX, 5)
                 .buildAndRegister();
+        ////////////////////////////////////////////////////////////////
+        MIXER_RECIPES.recipeBuilder().duration(400).EUt(VA[EV])
+                .input(dust, Uranium235, 1)
+                .input(dust, Plutonium244, 19)
+                .circuitMeta(1)
+                .output(dust, FBR, 20)
+                .buildAndRegister();
 
+        MIXER_RECIPES.recipeBuilder().duration(400).EUt(VA[EV])
+                .input(dust, Uranium235, 1)
+                .input(dust, Thorium230, 4)
+                .circuitMeta(2)
+                .output(dust, THOR, 5)
+                .buildAndRegister();
+        ////////////////////////////////////////////////////////////////
         // Zircaloy
         BLAST_RECIPES.recipeBuilder().duration(200).EUt(VA[EV]).blastFurnaceTemp(2100)
                 .input(dust, Zircon, 1)
@@ -195,7 +214,25 @@ public class SCNuclearRecipes {
                 .output(dustBredFuel, HighGradeMOX)
                 .chancedOutput(dustFissionByproduct, HighGradeMOX, 1141, 0)
                 .buildAndRegister();
+        /////////////////////////////////////////////////////////////
+        ELECTROLYZER_RECIPES.recipeBuilder().duration(800).EUt(VA[EV])
+                .notConsumable(SCMetaItems.ANODE_BASKET)
+                .notConsumable(Salt.getFluid(1000))
+                .input(fuelPelletDepleted, FBR)
+                .output(dustSpentFuel, FBR)
+                .output(dustBredFuel, FBR)
+                .chancedOutput(dustFissionByproduct, FBR, 1141, 0)
+                .buildAndRegister();
 
+        ELECTROLYZER_RECIPES.recipeBuilder().duration(800).EUt(VA[EV])
+                .notConsumable(SCMetaItems.ANODE_BASKET)
+                .notConsumable(Salt.getFluid(1000))
+                .input(fuelPelletDepleted, THOR)
+                .output(dustSpentFuel, THOR)
+                .output(dustBredFuel, THOR)
+                .chancedOutput(dustFissionByproduct, THOR, 1141, 0)
+                .buildAndRegister();
+        /////////////////////////////////////////////////////////////
         CHEMICAL_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
                 .input(dustSpentFuel, LEU235, 1)
                 .fluidInputs(HydrofluoricAcid.getFluid(4000))
@@ -258,7 +295,21 @@ public class SCNuclearRecipes {
                 .chancedOutput(dust, Plutonium242, 59, 0)
                 .chancedOutput(dust, Neptunium239, 3, 0)
                 .buildAndRegister();
+        /////////////////////////////////////////////////////////////////////
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
+                .input(dustBredFuel, FBR)
+                .chancedOutput(dust, Uranium235, 700, 0) // 假设 FBR 主要产出 Uranium235
+                .chancedOutput(dust, Plutonium244, 200, 0) // 假设 FBR 也会产出一些 Plutonium244
+                .chancedOutput(dust, Zirconium, 100, 0) // 假设 FBR 还会产出一些 Zirconium
+                .buildAndRegister();
 
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
+                .input(dustBredFuel, THOR)
+                .chancedOutput(dust, Thorium, 1000, 0) // 假设 THOR 主要产出 Thorium232
+                .chancedOutput(dust, Uranium233, 500, 0) // 假设 THOR 也会产出一些 Uranium233
+                .chancedOutput(dust, Uranium238, 200, 0) // 假设 THOR 还会产出一些 Uranium238
+                .buildAndRegister();
+        /////////////////////////////////////////////////////////////////////
         CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
                 .input(dustFissionByproduct, LEU235)
                 .chancedOutput(dust, Zirconium, 1645, 0)
@@ -302,7 +353,29 @@ public class SCNuclearRecipes {
                 .chancedOutput(dust, Promethium, 119, 0)
                 .fluidOutputs(Krypton.getFluid(6), Xenon.getFluid(126), Radon.getFluid(114))
                 .buildAndRegister();
+        /////////////////////////////////////////////////////////////////////
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
+                .input(dustFissionByproduct, FBR)
+                .chancedOutput(dust, Zirconium, 1645, 0)
+                .chancedOutput(dust, Molybdenum, 1169, 0)
+                .chancedOutput(dust, Neodymium, 1030, 0)
+                .chancedOutput(dust, Palladium, 738, 0)
+                .chancedOutput(dust, Samarium, 319, 0)
+                .chancedOutput(dust, Tellurium, 188, 0)
+                .fluidOutputs(Krypton.getFluid(16), Xenon.getFluid(111), Radon.getFluid(125))
+                .buildAndRegister();
 
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
+                .input(dustFissionByproduct, THOR)
+                .chancedOutput(dust, Zirconium, 863, 0)
+                .chancedOutput(dust, Molybdenum, 937, 0)
+                .chancedOutput(dust, Neodymium, 1015, 0)
+                .chancedOutput(dust, Bismuth, 300, 0)
+                .chancedOutput(dust, Tellurium, 188, 0)
+                .chancedOutput(dust, Yttrium, 211, 0)
+                .fluidOutputs(Krypton.getFluid(6), Xenon.getFluid(126), Radon.getFluid(118))
+                .buildAndRegister();
+        /////////////////////////////////////////////////////////////////////
         // Radon from uranium bearing ores
 
         CHEMICAL_BATH_RECIPES.recipeBuilder().duration(200).EUt(VA[LV])
@@ -330,6 +403,48 @@ public class SCNuclearRecipes {
                 .input(spring, Inconel, 1)
                 .input(round, StainlessSteel, 2)
                 .output(SCMetaItems.FUEL_CLADDING)
+                .buildAndRegister();
+
+        //////////////////////////////////////////////////////////////////
+        // 阶段一：贫铀二氧化物初步处理
+        //3uo2 6f =2uo2 uf6
+        BLAST_RECIPES.recipeBuilder()
+                .input(dust, DepletedUraniumDioxide, 1)
+                .output(dust, LowEnrichedUraniumDioxide, 1)
+                .blastFurnaceTemp(5400)
+                .duration(400).EUt(VA[EV])
+                .buildAndRegister();
+
+        // 阶段一：低浓缩二氧化物到六氟化铀
+        CHEMICAL_RECIPES.recipeBuilder()
+                .duration(200)
+                .EUt(VA[EV])
+                .input(dust, DepletedUraniumDioxide, 1)
+                .fluidInputs(Hydrogen.getFluid(4000))
+                .fluidInputs(Fluorine.getFluid(6000))
+                .fluidOutputs(Water.getFluid(2000))
+                .fluidOutputs(DepletedUraniumHexafluoride.getFluid(1000))
+                .buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+                .duration(200)
+                .EUt(VA[EV])
+                .input(dust, LowEnrichedUraniumDioxide, 1)
+                .fluidInputs(Hydrogen.getFluid(4000))
+                .fluidInputs(Fluorine.getFluid(6000))
+                .fluidOutputs(Water.getFluid(2000))
+                .fluidOutputs(UraniumHexafluoride.getFluid(1000))
+                .buildAndRegister();
+
+        // 阶段三：高浓缩产物合成
+        //UF6 + 3H2O =UO2 + 6HF +O
+        LARGE_CHEMICAL_RECIPES.recipeBuilder()
+                .fluidInputs(HighEnrichedUraniumHexafluoride.getFluid(7000))
+                .fluidInputs(Steam.getFluid(3000))
+                .output(dust, HighEnrichedUraniumDioxide, 3)
+                .fluidOutputs(HydrofluoricAcid.getFluid(6000))
+                .fluidOutputs(Oxygen.getFluid(1000))
+                .duration(400).EUt(VA[IV])
                 .buildAndRegister();
     }
 }

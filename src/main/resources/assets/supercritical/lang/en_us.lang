@@ -100,6 +100,8 @@ supercritical.material.leu_235=LEU-235
 supercritical.material.heu_235=HEU-235
 supercritical.material.low_grade_mox=Low Grade MOX
 supercritical.material.high_grade_mox=High Grade MOX
+supercritical.material.fbr=Fast Reactor Fuel
+supercritical.material.thor=Molten Salt Reactor Fuel
 
 recipemap.heat_exchanger.name=Heat Exchanger
 recipemap.gas_centrifuge.name=Gas Centrifuge

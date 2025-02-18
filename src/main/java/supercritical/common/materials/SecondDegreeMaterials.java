@@ -1,8 +1,9 @@
 package supercritical.common.materials;
 
-import static gregtech.api.unification.material.Materials.Uraninite;
+import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.material.info.MaterialFlags.DISABLE_DECOMPOSITION;
 import static gregtech.api.unification.material.info.MaterialIconSet.METALLIC;
+import static gregtech.api.unification.material.info.MaterialIconSet.SHINY;
 import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.util.SCUtility.scId;
 
@@ -63,5 +64,33 @@ public class SecondDegreeMaterials {
         HighGradeMOX.setProperty(SCPropertyKey.FISSION_FUEL, new FissionFuelProperty(
                 2000, 800, 35., 25.,
                 5500., 0., 1, HighGradeMOX.getRegistryName()));
+
+        // 钚燃料体系
+        FBR = new Material.Builder(1005, scId("fbr"))
+                .dust(4)  // 提高处理等级
+                .color(0x8A795D).iconSet(SHINY)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Plutonium, 1, Oxygen, 2)
+                .build()
+                .setFormula("PuO2", true);
+
+        FBR.setProperty(SCPropertyKey.FISSION_FUEL, new FissionFuelProperty(
+                2200, 500, 30., 50.,  // 更高的能量密度但更短寿命
+                4800., 15., 0.8,
+                FBR.getRegistryName()));
+
+        // 钍燃料体系
+        THOR = new Material.Builder(1006, scId("thor"))
+                .dust(3)
+                .color(0x5F4B32).iconSet(METALLIC)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Thorium, 1, Oxygen, 2)
+                .build()
+                .setFormula("ThO2", true);
+
+        THOR.setProperty(SCPropertyKey.FISSION_FUEL, new FissionFuelProperty(
+                2800, 1500, 80., 5.,  // 长寿命但低能量产出
+                1800., 2., 5.2,
+                THOR.getRegistryName()));
     }
 }

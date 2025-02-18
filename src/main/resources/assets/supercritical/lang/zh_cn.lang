@@ -100,6 +100,8 @@ supercritical.material.leu_235=LEU-235
 supercritical.material.heu_235=HEU-235
 supercritical.material.low_grade_mox=低级MOX
 supercritical.material.high_grade_mox=高级MOX
+supercritical.material.fbr=快堆燃料
+supercritical.material.thor=熔盐堆燃料
 
 recipemap.heat_exchanger.name=热交换器
 recipemap.gas_centrifuge.name=气体离心机
