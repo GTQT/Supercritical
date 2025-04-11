@@ -2,6 +2,7 @@ package supercritical.common.metatileentities.multi.multiblockpart;
 
 import java.util.List;
 
+import gregtech.api.metatileentity.multiblock.AbilityInstances;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -20,6 +21,7 @@ import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockNotifiablePart;
+import org.jetbrains.annotations.NotNull;
 import supercritical.api.metatileentity.multiblock.IFissionReactorHatch;
 import supercritical.api.metatileentity.multiblock.SCMultiblockAbility;
 
@@ -96,10 +98,9 @@ public class MetaTileEntityFuelRodExportBus extends MetaTileEntityMultiblockNoti
     }
 
     @Override
-    public void registerAbilities(List<IItemHandlerModifiable> abilityList) {
-        abilityList.add(this.exportItems);
+    public void registerAbilities(@NotNull AbilityInstances abilityInstances) {
+        abilityInstances.add(this);
     }
-
     @Override
     public boolean checkValidity(int depth) {
         return true;

@@ -16,7 +16,6 @@ public class SCMaterialPropertyAddition {
         Strontium.setProperty(PropertyKey.FLUID, new FluidProperty(FluidStorageKeys.LIQUID, new FluidBuilder()));
         Promethium.setProperty(PropertyKey.INGOT, new IngotProperty());
         Protactinium.setProperty(PropertyKey.DUST, new DustProperty());
-        Zirconium.setProperty(PropertyKey.DUST, new DustProperty());
         Radium.setProperty(PropertyKey.DUST, new DustProperty());
         Neptunium.setProperty(PropertyKey.DUST, new DustProperty());
     }

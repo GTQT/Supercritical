@@ -1,6 +1,7 @@
 package supercritical.common.materials;
 
 import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.material.Materials.Plutonium;
 import static gregtech.api.unification.material.info.MaterialFlags.DISABLE_DECOMPOSITION;
 import static gregtech.api.unification.material.info.MaterialIconSet.METALLIC;
 import static gregtech.api.unification.material.info.MaterialIconSet.SHINY;
@@ -15,9 +16,13 @@ import supercritical.api.unification.material.properties.SCPropertyKey;
  * Ranges 1000-1499
  */
 public class SecondDegreeMaterials {
+    static int startID = 1000;
 
+    public static int getStartID() {
+        return startID++;
+    }
     public static void register() {
-        LEU235 = new Material.Builder(1001, scId("leu_235"))
+        LEU235 = new Material.Builder(getStartID(), scId("leu_235"))
                 .dust(3)
                 .color(0x232323).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
@@ -29,7 +34,7 @@ public class SecondDegreeMaterials {
                 1500, 750, 55., 1.,
                 2500., 0., 3.5, LEU235.getRegistryName()));
 
-        HEU235 = new Material.Builder(1002, scId("heu_235"))
+        HEU235 = new Material.Builder(getStartID(), scId("heu_235"))
                 .dust(3)
                 .color(0x424845).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
@@ -41,7 +46,7 @@ public class SecondDegreeMaterials {
                 1800, 600, 40., 1.,
                 3000., 0., 2.5, HEU235.getRegistryName()));
 
-        LowGradeMOX = new Material.Builder(1003, scId("low_grade_mox"))
+        LowGradeMOX = new Material.Builder(getStartID(), scId("low_grade_mox"))
                 .dust(3)
                 .color(0x62C032).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
@@ -53,7 +58,7 @@ public class SecondDegreeMaterials {
                 1600, 1000, 50., 10.,
                 4000., 10., 1.5, LowGradeMOX.getRegistryName()));
 
-        HighGradeMOX = new Material.Builder(1004, scId("high_grade_mox"))
+        HighGradeMOX = new Material.Builder(getStartID(), scId("high_grade_mox"))
                 .dust(3)
                 .color(0x7EA432).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
@@ -66,7 +71,7 @@ public class SecondDegreeMaterials {
                 5500., 0., 1, HighGradeMOX.getRegistryName()));
 
         // 钚燃料体系
-        FBR = new Material.Builder(1005, scId("fbr"))
+        FBR = new Material.Builder(getStartID(), scId("fbr"))
                 .dust(4)  // 提高处理等级
                 .color(0x8A795D).iconSet(SHINY)
                 .flags(DISABLE_DECOMPOSITION)
@@ -80,7 +85,7 @@ public class SecondDegreeMaterials {
                 FBR.getRegistryName()));
 
         // 钍燃料体系
-        THOR = new Material.Builder(1006, scId("thor"))
+        THOR = new Material.Builder(getStartID(), scId("thor"))
                 .dust(3)
                 .color(0x5F4B32).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)

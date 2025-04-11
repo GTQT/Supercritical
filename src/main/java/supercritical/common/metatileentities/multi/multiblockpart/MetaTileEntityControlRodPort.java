@@ -2,6 +2,7 @@ package supercritical.common.metatileentities.multi.multiblockpart;
 
 import java.util.List;
 
+import gregtech.api.metatileentity.multiblock.AbilityInstances;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,10 +73,9 @@ public class MetaTileEntityControlRodPort extends MetaTileEntityMultiblockNotifi
     }
 
     @Override
-    public void registerAbilities(List<MetaTileEntityControlRodPort> abilityList) {
-        abilityList.add(this);
+    public void registerAbilities(@NotNull AbilityInstances abilityInstances) {
+        abilityInstances.add(this);
     }
-
     public boolean hasModeratorTip() {
         return hasModeratorTip;
     }

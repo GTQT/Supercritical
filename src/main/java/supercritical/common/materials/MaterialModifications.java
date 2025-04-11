@@ -2,13 +2,13 @@ package supercritical.common.materials;
 
 import static gregtech.api.unification.material.Materials.*;
 import static supercritical.api.unification.material.SCMaterials.HighPressureSteam;
+import static supercritical.api.unification.material.properties.SCMaterialsFlag.GENERATE_PELLETS;
 
 import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.fluids.store.FluidStorageKeys;
 import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.properties.BlastProperty;
-import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.properties.FluidProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import supercritical.api.unification.material.properties.CoolantProperty;
@@ -18,16 +18,8 @@ import supercritical.api.unification.material.properties.SCPropertyKey;
 public class MaterialModifications {
 
     public static void init() {
-        // Zirconium
-        //Zirconium.setProperty(PropertyKey.DUST, new DustProperty());
-
-        // Hafnium
-        Hafnium.addFlags(MaterialFlags.GENERATE_LONG_ROD);
-        Hafnium.setProperty(PropertyKey.BLAST, new BlastProperty(2227));
-        // Hafnium.setProperty(PropertyKey.INGOT, new IngotProperty());
-
-        // Plutonium-239
-        Plutonium239.getProperty(PropertyKey.ORE).setOreByProducts();
+        Uranium.addFlags(GENERATE_PELLETS);
+        Plutonium.addFlags(GENERATE_PELLETS);
 
         // Uranium-238
         Uranium238.setMaterialRGB(0x46FA46);

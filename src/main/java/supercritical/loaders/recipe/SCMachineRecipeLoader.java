@@ -1,8 +1,7 @@
 package supercritical.loaders.recipe;
 
 import static gregtech.api.recipes.RecipeMaps.ASSEMBLER_RECIPES;
-import static gregtech.api.unification.material.Materials.Nichrome;
-import static gregtech.api.unification.material.Materials.Steel;
+import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static supercritical.api.unification.material.SCMaterials.*;
 
@@ -64,6 +63,7 @@ public class SCMachineRecipeLoader {
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().EUt(64).duration(200)
+                .input(frameGt, Titanium)
                 .input(stick, BoronCarbide, 8)
                 .outputs(SCMetaBlocks.NUCLEAR_CASING.getItemVariant(
                         BlockNuclearCasing.NuclearCasingType.SPENT_FUEL_CASING, ConfigHolder.recipes.casingsPerCraft))

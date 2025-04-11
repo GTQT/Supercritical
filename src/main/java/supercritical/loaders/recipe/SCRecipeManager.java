@@ -27,8 +27,6 @@ public class SCRecipeManager {
 
     public static void loadLatest() {
         SCRecipeModifications.load();
-        if (SCConfigHolder.misc.enableHX) {
-            FluidRecipeHandler.runRecipeGeneration();
-        }
+        FluidRecipeHandler.runRecipeGeneration();
     }
 }

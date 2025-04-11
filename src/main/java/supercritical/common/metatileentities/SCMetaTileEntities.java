@@ -45,36 +45,33 @@ public class SCMetaTileEntities {
     public static final SimpleGeneratorMetaTileEntity[] RTG = new SimpleGeneratorMetaTileEntity[5];
     public static SimpleMachineMetaTileEntity[] DECAY_CHAMBER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static void init() {
-        /*
-         * Singleblocks: 14000-14399
-         */
-        FUEL_ROD_INPUT = registerMetaTileEntity(14000, new MetaTileEntityFuelRodImportBus(scId("fuel_rod_input")));
-        FUEL_ROD_OUTPUT = registerMetaTileEntity(14001, new MetaTileEntityFuelRodExportBus(scId("fuel_rod_output")));
-        COOLANT_INPUT = registerMetaTileEntity(14002, new MetaTileEntityCoolantImportHatch(scId("coolant_input")));
-        COOLANT_OUTPUT = registerMetaTileEntity(14003, new MetaTileEntityCoolantExportHatch(scId("coolant_output")));
-        CONTROL_ROD = registerMetaTileEntity(14004, new MetaTileEntityControlRodPort(scId("control_rod"), false));
-        CONTROL_ROD_MODERATED = registerMetaTileEntity(14005,
-                new MetaTileEntityControlRodPort(scId("control_rod_moderated"), true));
+        //多方块部分
+        HEAT_EXCHANGER = registerMetaTileEntity(1, new MetaTileEntityHeatExchanger(scId("heat_exchanger")));
+        FISSION_REACTOR = registerMetaTileEntity(2, new MetaTileEntityFissionReactor(scId("fission_reactor")));
+        SPENT_FUEL_POOL = registerMetaTileEntity(3, new MetaTileEntitySpentFuelPool(scId("spent_fuel_pool")));
+        GAS_CENTRIFUGE = registerMetaTileEntity(4, new MetaTileEntityGasCentrifuge(scId("gas_centrifuge")));
+        //IO
+        FUEL_ROD_INPUT = registerMetaTileEntity(10, new MetaTileEntityFuelRodImportBus(scId("fuel_rod_input")));
+        FUEL_ROD_OUTPUT = registerMetaTileEntity(11, new MetaTileEntityFuelRodExportBus(scId("fuel_rod_output")));
+        COOLANT_INPUT = registerMetaTileEntity(12, new MetaTileEntityCoolantImportHatch(scId("coolant_input")));
+        COOLANT_OUTPUT = registerMetaTileEntity(13, new MetaTileEntityCoolantExportHatch(scId("coolant_output")));
+        CONTROL_ROD = registerMetaTileEntity(14, new MetaTileEntityControlRodPort(scId("control_rod"), false));
+        CONTROL_ROD_MODERATED = registerMetaTileEntity(15, new MetaTileEntityControlRodPort(scId("control_rod_moderated"), true));
+
+        //单方块发电机
+        //RTG发电机
+        RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction, true));
+        RTG[1] = registerMetaTileEntity(21, new SimpleGeneratorMetaTileEntity(scId("rtg.ev"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 4, genericGeneratorTankSizeFunction, true));
+        RTG[2] = registerMetaTileEntity(22, new SimpleGeneratorMetaTileEntity(scId("rtg.iv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 5, genericGeneratorTankSizeFunction, true));
+        RTG[3] = registerMetaTileEntity(23, new SimpleGeneratorMetaTileEntity(scId("rtg.luv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 6, genericGeneratorTankSizeFunction, true));
+        RTG[4] = registerMetaTileEntity(24, new SimpleGeneratorMetaTileEntity(scId("rtg.zpm"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 7, genericGeneratorTankSizeFunction, true));
+        //可以随便再来几个
 
 
-        //RTG发电机 14300
-        RTG[0] = registerMetaTileEntity(14300, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction, true));
-        RTG[1] = registerMetaTileEntity(14301, new SimpleGeneratorMetaTileEntity(scId("rtg.ev"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 4, genericGeneratorTankSizeFunction, true));
-        RTG[2] = registerMetaTileEntity(14302, new SimpleGeneratorMetaTileEntity(scId("rtg.iv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 5, genericGeneratorTankSizeFunction, true));
-        RTG[3] = registerMetaTileEntity(14303, new SimpleGeneratorMetaTileEntity(scId("rtg.luv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 6, genericGeneratorTankSizeFunction, true));
-        RTG[4] = registerMetaTileEntity(14304, new SimpleGeneratorMetaTileEntity(scId("rtg.zpm"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 7, genericGeneratorTankSizeFunction, true));
+        //单方块设备
+        //衰变加速器 30-45
+        registerSimpleMetaTileEntity(DECAY_CHAMBER, 30, "decay_chamber", SCRecipeMaps.DECAY_CHAMBER_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, true, SCUtility::scId, GTUtility.hvCappedTankSizeFunction);
 
-        //衰变加速器
-        registerSimpleMetaTileEntity(DECAY_CHAMBER, 14330, "decay_chamber", SCRecipeMaps.DECAY_CHAMBER_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, true, SCUtility::scId, GTUtility.hvCappedTankSizeFunction);
 
-        /*
-         * Multiblocks: 14400-14499
-         */
-        if (SCConfigHolder.misc.enableHX) {
-            HEAT_EXCHANGER = registerMetaTileEntity(14400, new MetaTileEntityHeatExchanger(scId("heat_exchanger")));
-        }
-        FISSION_REACTOR = registerMetaTileEntity(14401, new MetaTileEntityFissionReactor(scId("fission_reactor")));
-        SPENT_FUEL_POOL = registerMetaTileEntity(14402, new MetaTileEntitySpentFuelPool(scId("spent_fuel_pool")));
-        GAS_CENTRIFUGE = registerMetaTileEntity(14403, new MetaTileEntityGasCentrifuge(scId("gas_centrifuge")));
     }
 }

@@ -56,21 +56,9 @@ public class SCConfigHolder {
         public boolean enableMaterialModifications = true;
 
         @Config.Comment({
-                "Whether to register heat exchanger or not. Useful for SuSy.",
-                "Default: true"
-        })
-        public boolean enableHX = true;
-
-        @Config.Comment({
                 "Remove all recipes from Supercritical",
                 "Default: false"
         })
         public boolean disableAllRecipes = false;
-
-        @Config.Comment({
-                "Remove all materials from Supercritical, except Corium",
-                "Default: false"
-        })
-        public boolean disableAllMaterials = false;
     }
 }

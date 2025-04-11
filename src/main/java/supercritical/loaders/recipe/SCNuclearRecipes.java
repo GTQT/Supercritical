@@ -72,52 +72,6 @@ public class SCNuclearRecipes {
                 .circuitMeta(2)
                 .output(dust, THOR, 5)
                 .buildAndRegister();
-        ////////////////////////////////////////////////////////////////
-        // Zircaloy
-        BLAST_RECIPES.recipeBuilder().duration(200).EUt(VA[EV]).blastFurnaceTemp(2100)
-                .input(dust, Zircon, 1)
-                .output(dust, SiliconDioxide, 3)
-                .chancedOutput(dust, ZirconiumDioxide, 3, 9000, 0)
-                .chancedOutput(dust, HafniumDioxide, 3, 1000, 0)
-                .buildAndRegister();
-
-        BLAST_RECIPES.recipeBuilder().duration(200).EUt(VA[EV]).blastFurnaceTemp(1400)
-                .input(dust, ZirconiumDioxide, 3)
-                .input(dust, Carbon, 1)
-                .fluidInputs(Chlorine.getFluid(4000))
-                .fluidOutputs(CarbonDioxide.getFluid(1000))
-                .output(dust, ZirconiumTetrachloride, 5)
-                .buildAndRegister();
-
-        BLAST_RECIPES.recipeBuilder().duration(200).EUt(VA[EV]).blastFurnaceTemp(1250)
-                .input(dust, HafniumDioxide, 3)
-                .input(dust, Carbon, 1)
-                .fluidInputs(Chlorine.getFluid(4000))
-                .fluidOutputs(CarbonDioxide.getFluid(1000))
-                .output(dust, HafniumTetrachloride, 5)
-                .buildAndRegister();
-
-        BLAST_RECIPES.recipeBuilder().duration(200).EUt(VA[EV]).blastFurnaceTemp(1150)
-                .input(dust, ZirconiumTetrachloride, 5)
-                .input(dust, Magnesium, 2)
-                .output(dust, Zirconium, 1)
-                .output(dust, MagnesiumChloride, 6)
-                .buildAndRegister();
-
-        BLAST_RECIPES.recipeBuilder().duration(200).EUt(VA[EV]).blastFurnaceTemp(1150)
-                .input(dust, HafniumTetrachloride, 5)
-                .input(dust, Magnesium, 2)
-                .output(dust, Hafnium, 1)
-                .output(dust, MagnesiumChloride, 6)
-                .buildAndRegister();
-
-        MIXER_RECIPES.recipeBuilder().duration(200).EUt(VA[EV])
-                .input(dust, Zirconium, 16)
-                .input(dust, Tin, 2)
-                .input(dust, Chrome, 1)
-                .circuitMeta(1)
-                .output(dust, Zircaloy, 19)
-                .buildAndRegister();
 
         // Inconel 718
         MIXER_RECIPES.recipeBuilder().duration(200).EUt(VA[EV])
@@ -134,7 +88,7 @@ public class SCNuclearRecipes {
                 .fluidInputs(DepletedUraniumHexafluoride.getFluid(1000))
                 .fluidInputs(Water.getFluid(2000))
                 .fluidInputs(Hydrogen.getFluid(2000))
-                .output(dust, DepletedUraniumDioxide, 3)
+                .output(dust, DepletedUraniumDioxide, 1)
                 .fluidOutputs(HydrofluoricAcid.getFluid(6000))
                 .buildAndRegister();
 

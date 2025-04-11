@@ -1,9 +1,5 @@
 package supercritical.loaders.recipe;
 
-import static gregtech.common.blocks.BlockMetalCasing.MetalCasingType.*;
-import static gregtech.loaders.recipe.CraftingComponent.CABLE_QUAD;
-import static gregtech.loaders.recipe.CraftingComponent.SENSOR;
-
 import gregtech.api.GTValues;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.MarkerMaterials;
@@ -12,10 +8,13 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.blocks.MetaBlocks;
 import supercritical.api.unification.material.SCMaterials;
-import supercritical.common.SCConfigHolder;
 import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.metatileentities.SCMetaTileEntities;
+
+import static gregtech.common.blocks.BlockMetalCasing.MetalCasingType.*;
+import static gregtech.loaders.recipe.CraftingComponent.CABLE_QUAD;
+import static gregtech.loaders.recipe.CraftingComponent.SENSOR;
 
 public class SCMetaTileEnityLoader {
 
@@ -28,14 +27,14 @@ public class SCMetaTileEnityLoader {
                 'R', new UnificationEntry(OrePrefix.rotor, Materials.Steel),
                 'W', CABLE_QUAD.getIngredient(GTValues.EV));
 
-        if (SCConfigHolder.misc.enableHX) {
-            ModHandler.addShapedRecipe(true, "heat_exchanger", SCMetaTileEntities.HEAT_EXCHANGER.getStackForm(),
-                    "FFF",
-                    "PCP", "FFF",
-                    'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.HV),
-                    'P', new UnificationEntry(OrePrefix.pipeLargeFluid, SCMaterials.Inconel),
-                    'F', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID));
-        }
+
+        ModHandler.addShapedRecipe(true, "heat_exchanger", SCMetaTileEntities.HEAT_EXCHANGER.getStackForm(),
+                "FFF",
+                "PCP", "FFF",
+                'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.HV),
+                'P', new UnificationEntry(OrePrefix.pipeLargeFluid, SCMaterials.Inconel),
+                'F', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID));
+
 
         ModHandler.addShapedRecipe(true, "gas_centrifuge", SCMetaTileEntities.GAS_CENTRIFUGE.getStackForm(), "FFF",
                 "WRW", "CCC",

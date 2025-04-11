@@ -5,6 +5,7 @@ import static supercritical.SCValues.FISSION_LOCK_UPDATE;
 import java.io.IOException;
 import java.util.List;
 
+import gregtech.api.metatileentity.multiblock.AbilityInstances;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -118,8 +119,8 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
     }
 
     @Override
-    public void registerAbilities(List<IFuelRodHandler> abilityList) {
-        abilityList.add(this);
+    public void registerAbilities(@NotNull AbilityInstances abilityInstances) {
+        abilityInstances.add(this);
     }
 
     @Override
