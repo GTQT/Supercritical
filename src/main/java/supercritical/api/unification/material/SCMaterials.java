@@ -1,16 +1,11 @@
 package supercritical.api.unification.material;
 
-import static gregtech.api.unification.material.info.MaterialFlags.*;
-import static gregtech.api.unification.material.info.MaterialIconSet.DULL;
-import static supercritical.api.util.SCUtility.scId;
-
-import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.unification.material.Material;
-import supercritical.common.SCConfigHolder;
 import supercritical.common.materials.ElementMaterials;
 import supercritical.common.materials.FirstDegreeMaterials;
 import supercritical.common.materials.SecondDegreeMaterials;
 import supercritical.common.materials.UnknownCompositionMaterials;
+
 /**
  * Copyright (C) SymmetricDevs 2025
  * 由 KeQingSoCute520 于 2025 修改。
