@@ -60,18 +60,18 @@ supercritical.material.plutonium_244=Plutonium 244
 supercritical.material.uranium=Uranium
 supercritical.material.uranium_239=Uranium 239
 
-gregtech.material.uranium_233=Uranium-233
-gregtech.material.uranium_234=Uranium-234
-gregtech.material.uranium_236=Uranium-236
-gregtech.material.thorium_229=Thorium_229-229
-gregtech.material.thorium_230=Thorium_229-230
-gregtech.material.americium_241=Americium-241
-gregtech.material.americium_242=Americium-242
-gregtech.material.americium_243=Americium-243
-gregtech.material.curium_243=Curium-243
-gregtech.material.curium_245=Curium-245
-gregtech.material.curium_246=Curium-246
-gregtech.material.curium_247=Curium-247
+supercritical.material.uranium_233=Uranium-233
+supercritical.material.uranium_234=Uranium-234
+supercritical.material.uranium_236=Uranium-236
+supercritical.material.thorium_229=Thorium_229-229
+supercritical.material.thorium_230=Thorium_229-230
+supercritical.material.americium_241=Americium-241
+supercritical.material.americium_242=Americium-242
+supercritical.material.americium_243=Americium-243
+supercritical.material.curium_243=Curium-243
+supercritical.material.curium_245=Curium-245
+supercritical.material.curium_246=Curium-246
+supercritical.material.curium_247=Curium-247
 
 supercritical.material.high_pressure_steam=High Pressure Steam
 
@@ -225,4 +225,4 @@ supercritical.multiblock.fission_reactor.missing_inputs=Reactor startup failed. 
 
 gregtech.fluid.molten=Molten %s
 # Name Overrides (doesn't work)
-gregtech.material.enriched_uranium_hexafluoride=Low Enriched Uranium Hexafluoride
+supercritical.material.enriched_uranium_hexafluoride=Low Enriched Uranium Hexafluoride
