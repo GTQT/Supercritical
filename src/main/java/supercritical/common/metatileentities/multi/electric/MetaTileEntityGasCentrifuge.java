@@ -30,6 +30,34 @@ import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.blocks.BlockGasCentrifugeCasing;
 import supercritical.common.blocks.BlockNuclearCasing;
 import supercritical.common.blocks.SCMetaBlocks;
+import gregtech.api.capability.impl.MultiblockRecipeLogic;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
+import gregtech.api.metatileentity.multiblock.IMultiblockPart;
+import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
+import gregtech.api.pattern.BlockPattern;
+import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.pattern.PatternMatchContext;
+import gregtech.client.renderer.ICubeRenderer;
+import gregtech.client.renderer.texture.Textures;
+import gregtech.common.blocks.BlockBoilerCasing;
+import gregtech.common.blocks.MetaBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import supercritical.api.recipes.SCRecipeMaps;
+import supercritical.client.renderer.textures.SCTextures;
+import supercritical.common.blocks.BlockGasCentrifugeCasing;
+import supercritical.common.blocks.BlockNuclearCasing;
+import supercritical.common.blocks.SCMetaBlocks;
+
+import java.util.List;
+
+import static gregtech.api.util.RelativeDirection.*;
 
 public class MetaTileEntityGasCentrifuge extends RecipeMapMultiblockController {
 
@@ -83,7 +111,7 @@ public class MetaTileEntityGasCentrifuge extends RecipeMapMultiblockController {
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        this.recipeMapWorkable.setParallelLimit(structurePattern.formedRepetitionCount[0]);
+        this.recipeMapWorkable.setParallelLimit(structurePattern.formedRepetitionCount[1]);
     }
 
     @Override
@@ -97,5 +125,10 @@ public class MetaTileEntityGasCentrifuge extends RecipeMapMultiblockController {
     @Override
     protected ICubeRenderer getFrontOverlay() {
         return SCTextures.GAS_CENTRIFUGE_OVERLAY;
+    }
+
+    @Override
+    public boolean allowsExtendedFacing() {
+        return false;
     }
 }
