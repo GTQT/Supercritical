@@ -374,8 +374,8 @@ public class SCNuclearRecipes {
                 .duration(200)
                 .EUt(VA[EV])
                 .input(dust, DepletedUraniumDioxide, 1)
-                .fluidInputs(Hydrogen.getFluid(4000))
-                .fluidInputs(Fluorine.getFluid(6000))
+                .fluidInputs(HydrofluoricAcid.getFluid(4000))
+                .fluidInputs(Fluorine.getFluid(2000))
                 .fluidOutputs(Water.getFluid(2000))
                 .fluidOutputs(DepletedUraniumHexafluoride.getFluid(1000))
                 .buildAndRegister();
@@ -384,8 +384,8 @@ public class SCNuclearRecipes {
                 .duration(200)
                 .EUt(VA[EV])
                 .input(dust, LowEnrichedUraniumDioxide, 1)
-                .fluidInputs(Hydrogen.getFluid(4000))
-                .fluidInputs(Fluorine.getFluid(6000))
+                .fluidInputs(HydrofluoricAcid.getFluid(4000))
+                .fluidInputs(Fluorine.getFluid(2000))
                 .fluidOutputs(Water.getFluid(2000))
                 .fluidOutputs(UraniumHexafluoride.getFluid(1000))
                 .buildAndRegister();
