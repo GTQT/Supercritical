@@ -30,6 +30,9 @@ public class SCOrePrefix {
     public static final OrePrefix fuelRodHotDepleted = new OrePrefix("fuelRodHotDepleted", -1, null,
             SCMaterialIconType.fuelRodHotDepleted, 0, material -> material.hasProperty(SCPropertyKey.FISSION_FUEL),
             mat -> Collections.singletonList(I18n.format("metaitem.nuclear.tooltip.radioactive")));
+    public static final OrePrefix fuelPelletRaw = new OrePrefix("fuelPelletRaw", -1, null,
+            SCMaterialIconType.fuelPelletRaw, 0, material -> material.hasProperty(SCPropertyKey.FISSION_FUEL),
+            mat -> Collections.singletonList(I18n.format("metaitem.nuclear.tooltip.radioactive")));
     public static final OrePrefix fuelPellet = new OrePrefix("fuelPellet", -1, null,
             SCMaterialIconType.fuelPellet, 0, material -> material.hasProperty(SCPropertyKey.FISSION_FUEL),
             mat -> Collections.singletonList(I18n.format("metaitem.nuclear.tooltip.radioactive")));
@@ -52,6 +55,7 @@ public class SCOrePrefix {
             mat -> mat.hasFlag(GENERATE_PELLETS));
     public static void init() {
         setRadiationDamageFunction(fuelRod, neutrons -> neutrons / 10e23);
+        setRadiationDamageFunction(fuelPelletRaw, neutrons -> neutrons / 160e23);
         setRadiationDamageFunction(fuelPellet, neutrons -> neutrons / 160e23);
 
         setRadiationDamageFunction(fuelRodDepleted, neutrons -> neutrons / 1.5e23);

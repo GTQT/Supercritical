@@ -92,6 +92,7 @@ public class CommonProxy {
         MetaItems.addOrePrefix(
                 SCOrePrefix.fuelRod,
                 SCOrePrefix.fuelRodDepleted,
+                SCOrePrefix.fuelPelletRaw,
                 SCOrePrefix.fuelRodHotDepleted,
                 SCOrePrefix.fuelPellet,
                 SCOrePrefix.fuelPelletDepleted,

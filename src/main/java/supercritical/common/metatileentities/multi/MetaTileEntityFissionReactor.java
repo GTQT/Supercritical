@@ -249,7 +249,10 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
         }
         return i - 1;
     }
-
+    @Override
+    public boolean usesMui2() {
+        return false;
+    }
     protected ModularUI.Builder createUITemplate(EntityPlayer entityPlayer) {
         ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 240, 208);
 
