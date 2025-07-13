@@ -1,6 +1,7 @@
 package supercritical.api.unification.ore;
 
 import gregtech.api.unification.ore.OrePrefix;
+import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.resources.I18n;
 import supercritical.api.unification.material.info.SCMaterialIconType;
 import supercritical.api.unification.material.properties.SCMaterialsFlag;
@@ -18,6 +19,7 @@ import static supercritical.api.unification.material.properties.SCMaterialsFlag.
  * 修改内容：添加靶丸。
  * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
  */
+@ExtensionMethod(OrePrefixExtension.Handler.class)
 public class SCOrePrefix {
 
     // Nuclear stuff, introduced by Zalgo and Bruberu
@@ -54,12 +56,12 @@ public class SCOrePrefix {
     public static final OrePrefix fuelPebbleDepleted = new OrePrefix("fuelPebbleDepleted", -1, null, SCMaterialIconType.fuelPebbleDepleted, ENABLE_UNIFICATION,
             mat -> mat.hasFlag(GENERATE_PELLETS));
     public static void init() {
-        setRadiationDamageFunction(fuelRod, neutrons -> neutrons / 10e23);
-        setRadiationDamageFunction(fuelPelletRaw, neutrons -> neutrons / 160e23);
-        setRadiationDamageFunction(fuelPellet, neutrons -> neutrons / 160e23);
+        fuelRod.setRadiationDamageFunction(neutrons -> neutrons / 10e23);
+        fuelPelletRaw.setRadiationDamageFunction(neutrons -> neutrons / 160e23);
+        fuelPellet.setRadiationDamageFunction(neutrons -> neutrons / 160e23);
 
-        setRadiationDamageFunction(fuelRodDepleted, neutrons -> neutrons / 1.5e23);
-        setRadiationDamageFunction(fuelRodHotDepleted, neutrons -> neutrons / 1e23);
+        fuelRodDepleted.setRadiationDamageFunction(neutrons -> neutrons / 1.5e23);
+        fuelRodHotDepleted.setRadiationDamageFunction(neutrons -> neutrons / 1e23);
         fuelRodHotDepleted.heatDamageFunction = x -> 2f;
         setRadiationDamageFunction(fuelPelletDepleted, neutrons -> neutrons / 24e23);
     }

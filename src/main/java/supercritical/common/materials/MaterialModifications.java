@@ -2,13 +2,13 @@ package supercritical.common.materials;
 
 import static gregtech.api.unification.material.Materials.*;
 import static supercritical.api.unification.material.SCMaterials.HighPressureSteam;
-import static supercritical.api.unification.material.properties.SCMaterialsFlag.GENERATE_PELLETS;
 
 import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.fluids.store.FluidStorageKeys;
 import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.properties.BlastProperty;
+import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.properties.FluidProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import supercritical.api.unification.material.properties.CoolantProperty;
@@ -18,8 +18,16 @@ import supercritical.api.unification.material.properties.SCPropertyKey;
 public class MaterialModifications {
 
     public static void init() {
-        Uranium.addFlags(GENERATE_PELLETS);
-        Plutonium.addFlags(GENERATE_PELLETS);
+        // Zirconium
+        Zirconium.setProperty(PropertyKey.DUST, new DustProperty());
+
+        // Hafnium
+        Hafnium.addFlags(MaterialFlags.GENERATE_LONG_ROD);
+        Hafnium.setProperty(PropertyKey.BLAST, new BlastProperty(2227));
+        // Hafnium.setProperty(PropertyKey.INGOT, new IngotProperty());
+
+        // Plutonium-239
+        Plutonium239.getProperty(PropertyKey.ORE).setOreByProducts();
 
         // Uranium-238
         Uranium238.setMaterialRGB(0x46FA46);
@@ -33,11 +41,16 @@ public class MaterialModifications {
         StainlessSteel.addFlags(MaterialFlags.GENERATE_ROUND);
 
         // Uraninite
-        // Uraninite. // TODO: How???
-        Uraninite.setProperty(SCPropertyKey.FISSION_FUEL, new FissionFuelProperty(
-                1800, 300, 55., 1.,
-                1000., 0., 2.4, Uraninite.getRegistryName()));
-
+        // Uraninite // TODO: How???
+        Uraninite.setProperty(SCPropertyKey.FISSION_FUEL,
+                FissionFuelProperty.builder(Uraninite.getRegistryName(), 1800, 60000, 2.4)
+                        .slowNeutronCaptureCrossSection(1)
+                        .slowNeutronFissionCrossSection(1)
+                        .requiredNeutrons(1)
+                        .releasedNeutrons(2.5)
+                        .releasedHeatEnergy(0.01)
+                        .decayRate(0.001)
+                        .build());
         // Uranium Hexafluoride
         // UraniumHexafluoride // TODO: How???
 
@@ -54,6 +67,6 @@ public class MaterialModifications {
         DistilledWater.setProperty(SCPropertyKey.COOLANT,
                 new CoolantProperty(DistilledWater, HighPressureSteam, FluidStorageKeys.LIQUID, 1., 1000,
                         373, 2260000, 4168.)
-                                .setAccumulatesHydrogen(true));
+                        .setAccumulatesHydrogen(true));
     }
 }

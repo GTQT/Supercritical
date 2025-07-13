@@ -33,13 +33,34 @@ public interface IFissionFuelStats {
     double getFastNeutronFissionCrossSection();
 
     /**
+     * @return The average number of neutrons emitted from a fission event.
+     */
+    double getReleasedNeutrons();
+
+    /**
+     * @return The average number of neutrons required to trigger a fission event (usually 1, but can be higher for
+     *         bred fuels).
+     */
+    double getRequiredNeutrons();
+
+    /**
+     * @return The average energy emitted from a fission event.
+     */
+    double getReleasedHeatEnergy();
+
+    /**
+     * @return A linear decay rate.
+     */
+    double getDecayRate();
+
+    /**
      * @return The average time for a neutron to be emitted during a fission event. Do not make this accurate.
      */
     double getNeutronGenerationTime();
 
     /**
      * Helper method for the tooltip
-     * 
+     *
      * @return An integer corresponding to the stability of the fuel. 0 corresponds to stable, 1 to somewhat stable, 2
      *         to dangerous, 3 to very dangerous
      */
@@ -55,8 +76,17 @@ public interface IFissionFuelStats {
         }
     }
 
+    // Helper methods for internal fission reactor calculations
+    default double getFastFissionMultiplier() {
+        return getFastNeutronFissionCrossSection() * getReleasedNeutrons() / getRequiredNeutrons();
+    }
+
+    default double getSlowFissionMultiplier() {
+        return getSlowNeutronFissionCrossSection() * getReleasedNeutrons() / getRequiredNeutrons();
+    }
+
     /**
      * @return A unique ID for this fuel.
      */
-    String getID();
+    String getId();
 }

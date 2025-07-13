@@ -5,7 +5,10 @@ import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import supercritical.SCValues;
+import lombok.experimental.UtilityClass;
+import supercritical.SCValues;
 
+@UtilityClass
 public class SCUtility {
 
     @NotNull

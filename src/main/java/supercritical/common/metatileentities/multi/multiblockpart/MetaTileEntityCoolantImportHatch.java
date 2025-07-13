@@ -49,13 +49,61 @@ import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.metatileentities.SCMetaTileEntities;
 
+import static supercritical.SCValues.FISSION_LOCK_UPDATE;
+
+import java.util.List;
+
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.IControllable;
+import gregtech.api.capability.impl.FilteredItemHandler;
+import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.FluidContainerSlotWidget;
+import gregtech.api.gui.widgets.ImageWidget;
+import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.gui.widgets.TankWidget;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
+import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.client.renderer.texture.Textures;
+import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockNotifiablePart;
+import supercritical.api.capability.ICoolantHandler;
+import supercritical.api.capability.impl.LockableFluidTank;
+import supercritical.api.metatileentity.multiblock.IFissionReactorHatch;
+import supercritical.api.metatileentity.multiblock.SCMultiblockAbility;
+import supercritical.api.nuclear.fission.ICoolantStats;
+import supercritical.common.blocks.BlockFissionCasing;
+import supercritical.common.blocks.SCMetaBlocks;
+
 public class MetaTileEntityCoolantImportHatch extends MetaTileEntityMultiblockNotifiablePart
-                                              implements IMultiblockAbilityPart<ICoolantHandler>, ICoolantHandler,
-                                              IControllable, IFissionReactorHatch {
+        implements IMultiblockAbilityPart<ICoolantHandler>, ICoolantHandler,
+        IControllable, IFissionReactorHatch {
 
     private boolean workingEnabled;
     private LockableFluidTank fluidTank;
     private ICoolantStats coolant;
+    public MetaTileEntityCoolantExportHatch pairedHatch;
 
     public MetaTileEntityCoolantImportHatch(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, 4, false);
@@ -122,19 +170,25 @@ public class MetaTileEntityCoolantImportHatch extends MetaTileEntityMultiblockNo
 
     @Override
     public boolean checkValidity(int depth) {
+        this.pairedHatch = getExportHatch(depth);
+        return this.pairedHatch != null;
+    }
+
+    public MetaTileEntityCoolantExportHatch getExportHatch(int depth) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(this.getPos());
         for (int i = 1; i < depth; i++) {
             if (getWorld().getBlockState(pos.move(this.frontFacing.getOpposite())) !=
                     SCMetaBlocks.FISSION_CASING.getState(BlockFissionCasing.FissionCasingType.COOLANT_CHANNEL)) {
-                return false;
+                return null;
             }
         }
-        if (getWorld()
-                .getTileEntity(pos.move(this.frontFacing.getOpposite())) instanceof IGregTechTileEntity gtTe) {
-            return gtTe.getMetaTileEntity().metaTileEntityId
-                    .equals(SCMetaTileEntities.COOLANT_OUTPUT.metaTileEntityId);
+        if (getWorld().getTileEntity(pos.move(this.frontFacing.getOpposite())) instanceof IGregTechTileEntity gtTe) {
+            MetaTileEntity mte = gtTe.getMetaTileEntity();
+            if (mte instanceof MetaTileEntityCoolantExportHatch export) {
+                return export;
+            }
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -146,6 +200,8 @@ public class MetaTileEntityCoolantImportHatch extends MetaTileEntityMultiblockNo
     public void registerAbilities(@NotNull AbilityInstances abilityInstances) {
         abilityInstances.add(this);
     }
+
+
     @Override
     protected IItemHandlerModifiable createImportItemHandler() {
         return new FilteredItemHandler(this).setFillPredicate(
@@ -204,6 +260,11 @@ public class MetaTileEntityCoolantImportHatch extends MetaTileEntityMultiblockNo
     @Override
     public @NotNull LockableFluidTank getFluidTank() {
         return this.fluidTank;
+    }
+
+    @Override
+    public ICoolantHandler getOutputHandler() {
+        return pairedHatch;
     }
 
     @Override

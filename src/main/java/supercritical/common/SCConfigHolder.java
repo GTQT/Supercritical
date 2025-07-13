@@ -1,6 +1,9 @@
 package supercritical.common;
 
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.RangeDouble;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
 import supercritical.SCValues;
 
@@ -38,27 +41,66 @@ public class SCConfigHolder {
         @Config.RangeInt(min = 5, max = 10000)
         public double fissionReactorResolution = 100;
 
-        @Config.Comment({
+        @Comment({
+                "The number of times the neutron multiplication value is calculated. May cause more lag at higher values.",
+                "Default: 6"
+        })
+        public int fissionReactorPowerIterations = 6;
+
+        @Comment({
                 "Nuclear coolant heat exchanger recipe efficiency multiplier for balancing purposes.",
                 "Default: 0.1"
         })
-        @Config.RangeDouble(min = 0, max = 1000)
+        @RangeDouble(min = 0, max = 1000)
         public double heatExchangerEfficiencyMultiplier = 0.25;
+
+        @Comment({
+                "Whether to enable meltdowns and associated explosions or not.",
+                "Default: true"
+        })
+        public boolean enableMeltdown = true;
+
     }
 
     public static class MiscOptions {
 
-        @Config.Comment({
+        @Comment({
                 "Do material modifications, like adding flags or properties.",
                 "Modpack devs might want to disable this to reduce conflicts.",
                 "Default: true"
         })
         public boolean enableMaterialModifications = true;
 
-        @Config.Comment({
-                "Remove all recipes from Supercritical",
+        @Comment({
+                "Whether to register heat exchanger or not. Useful for SuSy.",
+                "Default: true"
+        })
+        public boolean enableHX = true;
+
+        @Comment({
+                "Remove all recipes from Supercritical.",
                 "Default: false"
         })
         public boolean disableAllRecipes = false;
+
+        @Comment({
+                "Remove all materials from Supercritical, except Corium.",
+                "Default: false"
+        })
+        public boolean disableAllMaterials = false;
+
+        @Comment({
+                "Make auto-filled fluid block showup in the JEI / in-world preview.",
+                "Default: false"
+        })
+        @RequiresMcRestart
+        public boolean showFluidsForAutoFillingMultiblocks = false;
+
+        @Comment({
+                "Allow extended facing for Fission Reactor.",
+                "Default: false"
+        })
+        @RequiresMcRestart
+        public boolean allowExtendedFacingForFissionReactor = false;
     }
 }

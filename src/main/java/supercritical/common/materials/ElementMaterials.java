@@ -34,21 +34,21 @@ public class ElementMaterials {
                 .ingot().fluid().dust()
                 .color(0x3B3B3B)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Uranium233)
+                .element(SCElements.U233)
                 .build();
 
         Uranium234 = new Material.Builder(getStartID(), scId("uranium_234"))
                 .ingot().fluid().dust()
                 .color(0x90EE90)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Uranium234)
+                .element(SCElements.U234)
                 .build();
 
         Uranium236 = new Material.Builder(getStartID(), scId("uranium_236"))
                 .ingot().fluid().dust()
                 .color(0x8FBC8F)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Uranium236)
+                .element(SCElements.U236)
                 .build();
 
         Uranium239 = new Material.Builder(getStartID(), scId("uranium_239"))
@@ -122,63 +122,63 @@ public class ElementMaterials {
                 .ingot().fluid().dust()
                 .color(0xFFD700)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Thorium229)
+                .element(SCElements.Th229)
                 .build();
 
         Thorium230 = new Material.Builder(getStartID(), scId("thorium_230"))
                 .ingot().fluid().dust()
                 .color(0xFFA500)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Thorium230)
+                .element(SCElements.Th230)
                 .build();
 
         Americium241 = new Material.Builder(getStartID(), scId("americium_241"))
                 .ingot().fluid().dust()
                 .color(0x00868B)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Americium241)
+                .element(SCElements.Am241)
                 .build();
 
         Americium242 = new Material.Builder(getStartID(), scId("americium_242"))
                 .ingot().fluid().dust()
                 .color(0x008B45)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Americium242)
+                .element(SCElements.Am242)
                 .build();
 
         Americium243 = new Material.Builder(getStartID(), scId("americium_243"))
                 .ingot().fluid().dust()
                 .color(0x006400)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Americium243)
+                .element(SCElements.Am243)
                 .build();
 
         Curium243 = new Material.Builder(getStartID(), scId("curium_243"))
                 .ingot().fluid().dust()
                 .color(0x0000FF)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Curium243)
+                .element(SCElements.Cm243)
                 .build();
 
         Curium245 = new Material.Builder(getStartID(), scId("curium_245"))
                 .ingot().fluid().dust()
                 .color(0x0000EE)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Curium245)
+                .element(SCElements.Cm245)
                 .build();
 
         Curium246 = new Material.Builder(getStartID(), scId("curium_246"))
                 .ingot().fluid().dust()
                 .color(0x0000CD)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Curium246)
+                .element(SCElements.Cm246)
                 .build();
 
         Curium247 = new Material.Builder(getStartID(), scId("curium_247"))
                 .ingot().fluid().dust()
                 .color(0x0000AA)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Curium247)
+                .element(SCElements.Cm247   )
                 .build();
     }
 }

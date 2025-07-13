@@ -1,5 +1,6 @@
 package supercritical.common.metatileentities.multi;
 
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,13 +41,17 @@ public class MetaTileEntityHeatExchanger extends RecipeMapMultiblockController {
                 .aisle("CCC", "BSB", "AEA")
                 .where('S', selfPredicate())
                 .where('A', frames(Materials.Steel))
-                .where('B', autoAbilities(false, false, false, false, false, true, false).setMinGlobalLimited(2)
-                        .or(autoAbilities(false, false, false, false, true, false, false).setMinGlobalLimited(2)))
+                .where('B', states(MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID)).setMinGlobalLimited(2)
+                        .or(abilities(MultiblockAbility.IMPORT_FLUIDS)).setMinGlobalLimited(2)
+                        .or(abilities(MultiblockAbility.EXPORT_FLUIDS)).setMinGlobalLimited(2)
+                )
                 .where('C', states(MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID))
-                        .or(autoAbilities(false, true, false, false, false, false, false)))
+                        .or(abilities(MultiblockAbility.MAINTENANCE_HATCH)).setExactLimit(1)
+                )
                 .where('D', states(MetaBlocks.BOILER_CASING.getState(BoilerCasingType.STEEL_PIPE)))
                 .where('E', states(MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID))
-                        .or(autoAbilities(false, false, true, false, false, false, false)))
+                        .or(abilities(MultiblockAbility.IMPORT_ITEMS)).setMinGlobalLimited(2)
+                )
                 .build();
     }
 
