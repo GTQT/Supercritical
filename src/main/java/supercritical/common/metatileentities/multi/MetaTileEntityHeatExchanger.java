@@ -41,7 +41,7 @@ public class MetaTileEntityHeatExchanger extends RecipeMapMultiblockController {
                 .aisle("CCC", "BSB", "AEA")
                 .where('S', selfPredicate())
                 .where('A', frames(Materials.Steel))
-                .where('B', states(MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID)).setMinGlobalLimited(2)
+                .where('B', states(MetaBlocks.METAL_CASING.getState(MetalCasingType.STEEL_SOLID))
                         .or(abilities(MultiblockAbility.IMPORT_FLUIDS)).setMinGlobalLimited(2)
                         .or(abilities(MultiblockAbility.EXPORT_FLUIDS)).setMinGlobalLimited(2)
                 )

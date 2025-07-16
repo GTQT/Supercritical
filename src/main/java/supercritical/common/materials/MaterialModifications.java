@@ -26,9 +26,6 @@ public class MaterialModifications {
         Hafnium.setProperty(PropertyKey.BLAST, new BlastProperty(2227));
         // Hafnium.setProperty(PropertyKey.INGOT, new IngotProperty());
 
-        // Plutonium-239
-        Plutonium239.getProperty(PropertyKey.ORE).setOreByProducts();
-
         // Uranium-238
         Uranium238.setMaterialRGB(0x46FA46);
         Uranium238.setMaterialIconSet(MaterialIconSet.SHINY);
