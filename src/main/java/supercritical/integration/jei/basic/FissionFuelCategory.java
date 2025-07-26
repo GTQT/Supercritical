@@ -1,10 +1,5 @@
 package supercritical.integration.jei.basic;
 
-import net.minecraft.client.Minecraft;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import gregtech.api.gui.GuiTextures;
 import gregtech.integration.jei.basic.BasicRecipeCategory;
 import mezz.jei.api.IGuiHelper;
@@ -13,13 +8,16 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import supercritical.SCValues;
 import supercritical.common.metatileentities.SCMetaTileEntities;
 
 public class FissionFuelCategory extends BasicRecipeCategory<FissionFuelInfo, FissionFuelInfo> {
 
-    private final IDrawable icon;
     protected final IDrawable slot;
+    private final IDrawable icon;
     private final IDrawable arrow;
 
     public FissionFuelCategory(IGuiHelper guiHelper) {
@@ -46,7 +44,7 @@ public class FissionFuelCategory extends BasicRecipeCategory<FissionFuelInfo, Fi
         itemStackGroup.init(0, true, 54, 8);
         itemStackGroup.set(0, recipeWrapper.rod);
         itemStackGroup.init(1, true, 104, 8);
-        itemStackGroup.set(1, recipeWrapper.depletedRod);
+        itemStackGroup.set(1, recipeWrapper.depletedRods.get(0));
     }
 
     @Override

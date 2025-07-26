@@ -1,11 +1,22 @@
 package supercritical.common.metatileentities.multi.multiblockpart;
 
-import static supercritical.SCValues.FISSION_LOCK_UPDATE;
-
-import java.io.IOException;
-import java.util.List;
-
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
+import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.IControllable;
+import gregtech.api.gui.GuiTextures;
+import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.widgets.AdvancedTextWidget;
+import gregtech.api.gui.widgets.BlockableSlotWidget;
+import gregtech.api.gui.widgets.ClickButtonWidget;
+import gregtech.api.gui.widgets.SlotWidget;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.AbilityInstances;
+import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.client.renderer.texture.Textures;
+import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockNotifiablePart;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,23 +28,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.pipeline.IVertexOperation;
-import codechicken.lib.vec.Matrix4;
-import gregtech.api.capability.IControllable;
-import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.ModularUI;
-import gregtech.api.gui.widgets.*;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
-import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
-import gregtech.api.metatileentity.multiblock.MultiblockAbility;
-import gregtech.client.renderer.texture.Textures;
-import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockNotifiablePart;
 import supercritical.api.capability.IFuelRodHandler;
 import supercritical.api.items.itemhandlers.LockableItemStackHandler;
 import supercritical.api.metatileentity.multiblock.IFissionReactorHatch;
@@ -45,13 +41,18 @@ import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.metatileentities.multi.MetaTileEntityFissionReactor;
 
+import java.io.IOException;
+import java.util.List;
+
+import static supercritical.SCValues.FISSION_LOCK_UPDATE;
+
 public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNotifiablePart
         implements IMultiblockAbilityPart<IFuelRodHandler>, IFuelRodHandler,
         IControllable, IFissionReactorHatch {
 
+    public MetaTileEntityFuelRodExportBus pairedHatch;
     private boolean workingEnabled;
     private IFissionFuelStats fuelProperty;
-    public MetaTileEntityFuelRodExportBus pairedHatch;
     private IFissionFuelStats partialFuel;
     private FuelRod internalFuelRod;
     private double depletionPoint;
@@ -87,7 +88,7 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
     }
 
     private ModularUI.Builder createUITemplate(EntityPlayer player) {
-        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 143).label(10, 5, getMetaFullName());
+        ModularUI.Builder builder = ModularUI.builder(GuiTextures.BACKGROUND, 176, 163).label(10, 5, getMetaFullName());
 
         builder.widget(new BlockableSlotWidget(importItems, 0, 40, 18, true, true)
                 .setIsBlocked(this::isLocked).setBackgroundTexture(GuiTextures.SLOT));
@@ -96,7 +97,7 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
                 .setBackgroundTexture(GuiTextures.MAINTENANCE_ICON));
 
         builder.widget(new ClickButtonWidget(140, 18, 18, 18, "", (d) -> voidPartialFuel())
-                .setTooltipText("fuelbus.void")
+                .setTooltipText("supercritical.gui.void_fuel")
                 .setButtonTexture(GuiTextures.BUTTON_VOID_NONE)
                 .setShouldClientCallback(true));
 
@@ -104,8 +105,13 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
             list.add(new TextComponentTranslation("supercritical.gui.fission.depletion",
                     String.format("%.2f", getCurrentDepletionRatio() * 100)));
         }, 0));
+        builder.widget(new AdvancedTextWidget(10, 60, (list) -> {
+            ItemStack depleted = getDepletedFuel();
+            String translation = depleted.getItem().getItemStackDisplayName(depleted);
+            list.add(new TextComponentTranslation("supercritical.gui.fission.depleted_rod", translation));
+        }, 0));
 
-        return builder.bindPlayerInventory(player.inventory, GuiTextures.SLOT, 7, 60);
+        return builder.bindPlayerInventory(player.inventory, GuiTextures.SLOT, 7, 80);
     }
 
     public double getCurrentDepletionRatio() {
@@ -168,9 +174,8 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
 
     @Override
     public void registerAbilities(@NotNull AbilityInstances abilityInstances) {
-        abilityInstances.add( this);
+        abilityInstances.add(this);
     }
-
 
     @Override
     public boolean checkValidity(int depth) {
@@ -305,6 +310,14 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
             return;
         }
         this.depletionPoint -= fuelDepletion * this.internalFuelRod.getWeight();
+    }
+
+    @Override
+    public ItemStack getDepletedFuel() {
+        if (this.internalFuelRod == null) {
+            return ItemStack.EMPTY;
+        }
+        return this.internalFuelRod.getDepletedFuel();
     }
 
     @Override

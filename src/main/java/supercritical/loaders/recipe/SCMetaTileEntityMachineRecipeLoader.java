@@ -1,5 +1,7 @@
 package supercritical.loaders.recipe;
 
+import gregtech.api.unification.material.MarkerMaterials;
+
 import static gregtech.api.GTValues.EV;
 import static gregtech.api.GTValues.VA;
 import static gregtech.api.recipes.RecipeMaps.ASSEMBLER_RECIPES;
@@ -9,8 +11,6 @@ import static gregtech.common.metatileentities.MetaTileEntities.HULL;
 import static supercritical.api.unification.material.SCMaterials.Inconel;
 import static supercritical.api.unification.material.SCMaterials.Zircaloy;
 import static supercritical.common.metatileentities.SCMetaTileEntities.*;
-
-import gregtech.api.unification.material.MarkerMaterials;
 
 public class SCMetaTileEntityMachineRecipeLoader {
 

@@ -3,6 +3,7 @@ package supercritical.loaders.recipe;
 import supercritical.common.SCConfigHolder;
 import supercritical.loaders.recipe.handlers.FluidRecipeHandler;
 import supercritical.loaders.recipe.handlers.NuclearRecipeHandler;
+
 /**
  * Copyright (C) SymmetricDevs 2025
  * 由 KeQingSoCute520 于 2025 修改。

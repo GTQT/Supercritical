@@ -1,13 +1,12 @@
 package supercritical.mixins.gregtech;
 
-import java.util.List;
-import java.util.Map;
-
+import gregtech.api.pattern.MultiblockShapeInfo;
+import gregtech.api.util.BlockInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import gregtech.api.pattern.MultiblockShapeInfo;
-import gregtech.api.util.BlockInfo;
+import java.util.List;
+import java.util.Map;
 
 @Mixin(value = MultiblockShapeInfo.Builder.class, remap = false)
 public interface MultiblockShapeInfoBuilderAccessor {
@@ -19,8 +18,8 @@ public interface MultiblockShapeInfoBuilderAccessor {
     void setShape(List<String[]> shape);
 
     @Accessor("symbolMap")
-    void setSymbolMap(Map<Character, BlockInfo> symbolMap);
+    Map<Character, BlockInfo> getSymbolMap();
 
     @Accessor("symbolMap")
-    Map<Character, BlockInfo> getSymbolMap();
+    void setSymbolMap(Map<Character, BlockInfo> symbolMap);
 }

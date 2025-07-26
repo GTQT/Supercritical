@@ -1,7 +1,5 @@
 package supercritical.api.unification.material.properties;
 
-import net.minecraftforge.fluids.Fluid;
-
 import gregtech.api.fluids.store.FluidStorageKey;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.properties.IMaterialProperty;
@@ -9,10 +7,15 @@ import gregtech.api.unification.material.properties.MaterialProperties;
 import gregtech.api.unification.material.properties.PropertyKey;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraftforge.fluids.Fluid;
 import supercritical.api.nuclear.fission.ICoolantStats;
 
 public class CoolantProperty implements IMaterialProperty, ICoolantStats {
 
+    // To store the specific key
+    private final FluidStorageKey key;
+    @Getter
+    private final double mass;
     @Setter
     @Getter
     private Material hotHPCoolant;
@@ -39,11 +42,10 @@ public class CoolantProperty implements IMaterialProperty, ICoolantStats {
     @Getter
     private double specificHeatCapacity;
     private boolean accumulatesHydrogen = false;
-    // To store the specific key
-    private final FluidStorageKey key;
-
     @Getter
-    private final double mass;
+    private double slowAbsorptionFactor = 0;
+    @Getter
+    private double fastAbsorptionFactor = 0;
 
     public CoolantProperty(Material mat, Material hotHPCoolant, FluidStorageKey key, double moderatorFactor,
                            double coolingFactor,
@@ -75,6 +77,16 @@ public class CoolantProperty implements IMaterialProperty, ICoolantStats {
 
     public Fluid getHotCoolant() {
         return hotHPCoolant.getFluid();
+    }
+
+    public CoolantProperty setFastAbsorptionFactor(double fastAbsorptionFactor) {
+        this.fastAbsorptionFactor = fastAbsorptionFactor;
+        return this;
+    }
+
+    public CoolantProperty setSlowAbsorptionFactor(double slowAbsorptionFactor) {
+        this.slowAbsorptionFactor = slowAbsorptionFactor;
+        return this;
     }
 
     public FluidStorageKey getCoolantKey() {

@@ -1,5 +1,6 @@
 package supercritical.common.metatileentities.multi.multiblockpart;
 
+
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
@@ -10,6 +11,8 @@ import gregtech.api.metatileentity.multiblock.AbilityInstances;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockNotifiablePart;
+import lombok.Getter;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,26 +23,28 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import supercritical.api.metatileentity.multiblock.IFissionReactorHatch;
 import supercritical.api.metatileentity.multiblock.SCMultiblockAbility;
+import supercritical.api.nuclear.fission.IModeratorStats;
+import supercritical.api.nuclear.fission.ModeratorRegistry;
 import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.SCMetaBlocks;
 
 import java.util.List;
 
-public class MetaTileEntityControlRodPort extends MetaTileEntityMultiblockNotifiablePart
+public class MetaTileEntityModeratorPort extends MetaTileEntityMultiblockNotifiablePart
         implements IFissionReactorHatch,
-        IMultiblockAbilityPart<MetaTileEntityControlRodPort> {
+        IMultiblockAbilityPart<MetaTileEntityModeratorPort> {
 
-    private final boolean hasModeratorTip;
+    @Getter
+    private IModeratorStats moderator;
 
-    public MetaTileEntityControlRodPort(ResourceLocation metaTileEntityId, boolean hasModeratorTip) {
+    public MetaTileEntityModeratorPort(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, 4, false);
-        this.hasModeratorTip = hasModeratorTip;
     }
 
     @Override
     public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
-        return new MetaTileEntityControlRodPort(metaTileEntityId, hasModeratorTip);
+        return new MetaTileEntityModeratorPort(metaTileEntityId);
     }
 
     @Override
@@ -55,9 +60,14 @@ public class MetaTileEntityControlRodPort extends MetaTileEntityMultiblockNotifi
     @Override
     public boolean checkValidity(int depth) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(this.getPos());
-        for (int i = 1; i < depth; i++) {
-            if (getWorld().getBlockState(pos.move(this.frontFacing.getOpposite())) !=
-                    SCMetaBlocks.FISSION_CASING.getState(BlockFissionCasing.FissionCasingType.CONTROL_ROD_CHANNEL)) {
+        IBlockState defaultState = getWorld().getBlockState(pos.move(this.frontFacing.getOpposite()));
+        IModeratorStats stats = ModeratorRegistry.getModerator(defaultState);
+        this.moderator = stats;
+        if (stats == null) {
+            return false;
+        }
+        for (int i = 2; i < depth; i++) {
+            if (getWorld().getBlockState(pos.move(this.frontFacing.getOpposite())).equals(defaultState)) {
                 return false;
             }
         }
@@ -66,8 +76,8 @@ public class MetaTileEntityControlRodPort extends MetaTileEntityMultiblockNotifi
     }
 
     @Override
-    public MultiblockAbility<MetaTileEntityControlRodPort> getAbility() {
-        return SCMultiblockAbility.CONTROL_ROD_PORT;
+    public MultiblockAbility<MetaTileEntityModeratorPort> getAbility() {
+        return SCMultiblockAbility.MODERATOR_PORT;
     }
 
     @Override
@@ -75,9 +85,6 @@ public class MetaTileEntityControlRodPort extends MetaTileEntityMultiblockNotifi
         abilityInstances.add(this);
     }
 
-    public boolean hasModeratorTip() {
-        return hasModeratorTip;
-    }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, @NotNull List<String> tooltip,
@@ -89,10 +96,6 @@ public class MetaTileEntityControlRodPort extends MetaTileEntityMultiblockNotifi
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        if (!this.hasModeratorTip) {
-            SCTextures.CONTROL_ROD.renderSided(getFrontFacing(), renderState, translation, pipeline);
-        } else {
-            SCTextures.CONTROL_ROD_MODERATED.renderSided(getFrontFacing(), renderState, translation, pipeline);
-        }
+        SCTextures.MODERATOR_PORT.renderSided(getFrontFacing(), renderState, translation, pipeline);
     }
 }

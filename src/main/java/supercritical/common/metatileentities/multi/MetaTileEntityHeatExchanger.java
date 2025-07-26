@@ -1,13 +1,9 @@
 package supercritical.common.metatileentities.multi;
 
-import gregtech.api.metatileentity.multiblock.MultiblockAbility;
-import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
-
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
+import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.pattern.BlockPattern;
 import gregtech.api.pattern.FactoryBlockPattern;
@@ -17,6 +13,8 @@ import gregtech.client.renderer.texture.Textures;
 import gregtech.common.blocks.BlockBoilerCasing.BoilerCasingType;
 import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
+import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import supercritical.api.capability.impl.NoEnergyRecipeLogic;
 import supercritical.api.recipes.SCRecipeMaps;
 import supercritical.client.renderer.textures.SCTextures;

@@ -1,10 +1,10 @@
 package supercritical.api.pattern;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.capability.impl.AbstractRecipeLogic;
+import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
+import gregtech.api.pattern.TraceabilityPredicate;
+import gregtech.api.util.BlockInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -13,14 +13,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.impl.AbstractRecipeLogic;
-import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.api.pattern.TraceabilityPredicate;
-import gregtech.api.util.BlockInfo;
 import supercritical.common.SCConfigHolder;
 import supercritical.mixins.gregtech.AbstractRecipeLogicAccessor;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
@@ -56,7 +54,7 @@ public class SCPredicates {
                     }
                     return false;
                 },
-                () -> new BlockInfo[] {
+                () -> new BlockInfo[]{
                         SCConfigHolder.misc.showFluidsForAutoFillingMultiblocks ?
                                 new BlockInfo(stillState) : new BlockInfo(Blocks.AIR)
                 });

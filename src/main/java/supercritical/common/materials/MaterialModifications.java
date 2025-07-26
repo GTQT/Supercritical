@@ -1,8 +1,5 @@
 package supercritical.common.materials;
 
-import static gregtech.api.unification.material.Materials.*;
-import static supercritical.api.unification.material.SCMaterials.HighPressureSteam;
-
 import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.fluids.store.FluidStorageKeys;
 import gregtech.api.unification.material.info.MaterialFlags;
@@ -13,7 +10,11 @@ import gregtech.api.unification.material.properties.FluidProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import supercritical.api.unification.material.properties.CoolantProperty;
 import supercritical.api.unification.material.properties.FissionFuelProperty;
+import supercritical.api.unification.material.properties.ModeratorProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
+
+import static gregtech.api.unification.material.Materials.*;
+import static supercritical.api.unification.material.SCMaterials.HighPressureSteam;
 
 public class MaterialModifications {
 
@@ -41,6 +42,7 @@ public class MaterialModifications {
         // Uraninite // TODO: How???
         Uraninite.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(Uraninite.getRegistryName(), 1800, 60000, 2.4)
+                        .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(1)
                         .slowNeutronFissionCrossSection(1)
                         .requiredNeutrons(1)
@@ -62,8 +64,20 @@ public class MaterialModifications {
 
         // Distilled Water
         DistilledWater.setProperty(SCPropertyKey.COOLANT,
-                new CoolantProperty(DistilledWater, HighPressureSteam, FluidStorageKeys.LIQUID, 1., 1000,
+                new CoolantProperty(DistilledWater, HighPressureSteam, FluidStorageKeys.LIQUID, 2., 1000,
                         373, 2260000, 4168.)
-                        .setAccumulatesHydrogen(true));
+                        .setAccumulatesHydrogen(true).setSlowAbsorptionFactor(0.1875).setFastAbsorptionFactor(0.0625));
+
+        Graphite.setProperty(SCPropertyKey.MODERATOR, ModeratorProperty.builder()
+                .maxTemperature(3650)
+                .absorptionFactor(0.0625)
+                .moderationFactor(3).build());
+        Graphite.addFlags(MaterialFlags.FORCE_GENERATE_BLOCK);
+
+        Beryllium.setProperty(SCPropertyKey.MODERATOR, ModeratorProperty.builder()
+                .maxTemperature(1500)
+                .absorptionFactor(0.015625)
+                .moderationFactor(5).build());
+        Beryllium.addFlags(MaterialFlags.FORCE_GENERATE_BLOCK);
     }
 }

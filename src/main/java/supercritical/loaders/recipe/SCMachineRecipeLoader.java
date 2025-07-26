@@ -1,10 +1,5 @@
 package supercritical.loaders.recipe;
 
-import static gregtech.api.recipes.RecipeMaps.ASSEMBLER_RECIPES;
-import static gregtech.api.unification.material.Materials.*;
-import static gregtech.api.unification.ore.OrePrefix.*;
-import static supercritical.api.unification.material.SCMaterials.*;
-
 import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.BlockBoilerCasing;
 import gregtech.common.blocks.MetaBlocks;
@@ -12,6 +7,11 @@ import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.BlockGasCentrifugeCasing;
 import supercritical.common.blocks.BlockNuclearCasing;
 import supercritical.common.blocks.SCMetaBlocks;
+
+import static gregtech.api.recipes.RecipeMaps.ASSEMBLER_RECIPES;
+import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.ore.OrePrefix.*;
+import static supercritical.api.unification.material.SCMaterials.*;
 
 public class SCMachineRecipeLoader {
 

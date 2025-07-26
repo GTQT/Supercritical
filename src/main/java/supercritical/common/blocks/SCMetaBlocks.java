@@ -1,5 +1,6 @@
 package supercritical.common.blocks;
 
+import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -7,10 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.jetbrains.annotations.NotNull;
-
-import gregtech.common.blocks.MetaBlocks;
 
 public class SCMetaBlocks {
 
@@ -21,6 +19,7 @@ public class SCMetaBlocks {
     public static BlockPanelling PANELLING;
     // Molten Corium
     public static BlockMoltenCorium MOLTEN_CORIUM;
+
     public static void init() {
         FISSION_CASING = new BlockFissionCasing();
         FISSION_CASING.setRegistryName("fission_casing");

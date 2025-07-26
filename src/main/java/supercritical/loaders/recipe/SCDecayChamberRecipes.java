@@ -33,6 +33,7 @@ public class SCDecayChamberRecipes {
         DECAY_CHAMBER_RECIPES(Curium246, Plutonium242, 4);
         DECAY_CHAMBER_RECIPES(Curium247, Americium243, 4);
     }
+
     private static void DECAY_CHAMBER_RECIPES(Material material1, Material material2, int tier) {
         DECAY_CHAMBER_RECIPES.recipeBuilder()
                 .input(dust, material1)

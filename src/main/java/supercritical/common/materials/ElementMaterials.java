@@ -1,11 +1,9 @@
 package supercritical.common.materials;
 
 import gregtech.api.fluids.FluidBuilder;
-import gregtech.api.unification.Elements;
 import gregtech.api.unification.material.Material;
 import supercritical.api.unification.SCElements;
 
-import static gregtech.api.unification.material.Materials.EXT_METAL;
 import static gregtech.api.unification.material.info.MaterialIconSet.METALLIC;
 import static gregtech.api.unification.material.info.MaterialIconSet.SHINY;
 import static supercritical.api.unification.material.SCMaterials.*;
@@ -22,10 +20,9 @@ import static supercritical.api.util.SCUtility.scId;
  * Ranges 1-499
  */
 public class ElementMaterials {
-    static int startID=1;
+    static int startID = 1;
 
-    public static int getStartID()
-    {
+    public static int getStartID() {
         return startID++;
     }
 
@@ -178,7 +175,7 @@ public class ElementMaterials {
                 .ingot().fluid().dust()
                 .color(0x0000AA)
                 .flags(GENERATE_PELLETS)
-                .element(SCElements.Cm247   )
+                .element(SCElements.Cm247)
                 .build();
     }
 }

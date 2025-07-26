@@ -1,17 +1,17 @@
 package supercritical.api.nuclear.fission.components;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class ControlRod extends ReactorComponent {
 
+    private final boolean tipModeration;
     // How much the control rod affects reactivity
     @Setter
     @Getter
     private double weight;
-    private final boolean tipModeration;
     private int relatedFuelRodPairs;
 
     public ControlRod(double maxTemperature, boolean tipModeration, double thermalConductivity, double mass) {

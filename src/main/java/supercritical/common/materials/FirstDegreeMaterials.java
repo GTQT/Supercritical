@@ -1,14 +1,5 @@
 package supercritical.common.materials;
 
-import static gregtech.api.GTValues.EV;
-import static gregtech.api.unification.material.Materials.*;
-import static gregtech.api.unification.material.Materials.Plutonium;
-import static gregtech.api.unification.material.Materials.Uranium;
-import static gregtech.api.unification.material.info.MaterialFlags.*;
-import static gregtech.api.unification.material.info.MaterialIconSet.*;
-import static supercritical.api.unification.material.SCMaterials.*;
-import static supercritical.api.util.SCUtility.scId;
-
 import gregtech.api.GTValues;
 import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.fluids.store.FluidStorageKeys;
@@ -17,14 +8,21 @@ import gregtech.api.unification.material.properties.BlastProperty;
 import supercritical.api.unification.material.properties.CoolantProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 
+import static gregtech.api.GTValues.EV;
+import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.material.info.MaterialFlags.*;
+import static gregtech.api.unification.material.info.MaterialIconSet.*;
+import static supercritical.api.unification.material.SCMaterials.*;
+import static supercritical.api.util.SCUtility.scId;
+
 /*
  * Ranges 500-999
  */
 public class FirstDegreeMaterials {
 
     static int startId = 500;
-    public static int getID()
-    {
+
+    public static int getID() {
         return startId++;
     }
 
@@ -125,6 +123,6 @@ public class FirstDegreeMaterials {
         HeavyWater.setProperty(SCPropertyKey.COOLANT,
                 new CoolantProperty(HeavyWater, HighPressureHeavyWater, FluidStorageKeys.LIQUID, 4., 1000,
                         374.4, 2064000, 4228.)
-                                .setAccumulatesHydrogen(true));
+                        .setAccumulatesHydrogen(true));
     }
 }

@@ -7,14 +7,16 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.metatileentities.MetaTileEntities;
 import supercritical.api.unification.material.SCMaterials;
 import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.metatileentities.SCMetaTileEntities;
 
 import static gregtech.common.blocks.BlockMetalCasing.MetalCasingType.*;
-import static gregtech.loaders.recipe.CraftingComponent.CABLE_QUAD;
-import static gregtech.loaders.recipe.CraftingComponent.SENSOR;
+import static gregtech.loaders.recipe.CraftingComponent.*;
+import static gregtech.loaders.recipe.CraftingComponent.CABLE;
+import static gregtech.loaders.recipe.MetaTileEntityLoader.registerMachineRecipe;
 
 public class SCMetaTileEnityLoader {
 
@@ -48,5 +50,9 @@ public class SCMetaTileEnityLoader {
                 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.LV),
                 'F', MetaBlocks.METAL_CASING.getItemVariant(STAINLESS_CLEAN),
                 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel));
+
+        registerMachineRecipe(SCMetaTileEntities.DECAY_CHAMBER, "EWE", "CMC", "EWE", 'M', HULL, 'E', SENSOR, 'C', CIRCUIT, 'W', CABLE);
+
+        registerMachineRecipe(SCMetaTileEntities.RTG, "EWE", "CMC", "EWE", 'M', HULL, 'E', FIELD_GENERATOR, 'C', CIRCUIT, 'W', CABLE);
     }
 }

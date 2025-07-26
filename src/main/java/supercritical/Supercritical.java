@@ -4,25 +4,23 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
 import org.jetbrains.annotations.NotNull;
-
 import supercritical.common.CommonProxy;
 import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.item.SCMetaItems;
 import supercritical.common.metatileentities.SCMetaTileEntities;
 
 @Mod(modid = SCInternalTags.MODID,
-     version = SCInternalTags.VERSION,
-     name = SCInternalTags.MODNAME,
-     dependencies = "required-after:gregtech@[2.8.10-beta,);" +
-             "required-after:mixinbooter@[8.9,);",
-     acceptedMinecraftVersions = "[1.12.2]")
+        version = SCInternalTags.VERSION,
+        name = SCInternalTags.MODNAME,
+        dependencies = "required-after:gregtech@[2.8.10-beta,);" +
+                "required-after:mixinbooter@[8.9,);",
+        acceptedMinecraftVersions = "[1.12.2]")
 public class Supercritical {
 
     @SidedProxy(modId = SCValues.MODID,
-                clientSide = "supercritical.common.ClientProxy",
-                serverSide = "supercritical.common.CommonProxy")
+            clientSide = "supercritical.common.ClientProxy",
+            serverSide = "supercritical.common.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance(SCValues.MODID)

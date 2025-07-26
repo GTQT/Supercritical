@@ -8,19 +8,16 @@ public class ReactorComponent {
     @Getter
     private final double moderationFactor;
     @Getter
-    protected double maxTemperature;
-    @Getter
     private final double thermalConductivity;
     @Getter
     private final double mass;
-
+    private final boolean isValid;
+    @Getter
+    protected double maxTemperature;
     @Getter
     private int x;
     @Getter
     private int y;
-
-    private final boolean isValid;
-
     // The index of the reactor component, which is -1 if unset
     @Setter
     @Getter

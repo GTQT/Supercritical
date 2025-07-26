@@ -1,12 +1,11 @@
 package supercritical.mixins.gregtech;
 
-import java.util.function.Function;
-
+import gregtech.api.unification.ore.OrePrefix;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-
-import gregtech.api.unification.ore.OrePrefix;
 import supercritical.api.unification.ore.OrePrefixExtension;
+
+import java.util.function.Function;
 
 @Mixin(value = OrePrefix.class, remap = false)
 public abstract class MixinOrePrefix implements OrePrefixExtension {

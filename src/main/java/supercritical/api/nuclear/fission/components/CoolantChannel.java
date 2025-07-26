@@ -1,28 +1,26 @@
 package supercritical.api.nuclear.fission.components;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import supercritical.api.capability.ICoolantHandler;
 import supercritical.api.nuclear.fission.ICoolantStats;
 
+import java.util.List;
+
 public class CoolantChannel extends ReactorComponent {
 
     @Getter
     private final ICoolantStats coolant;
-    @Setter
-    @Getter
-    private double weight;
-    private int relatedFuelRodPairs;
-
     @Getter
     private final ICoolantHandler inputHandler;
     @Getter
     private final ICoolantHandler outputHandler;
-
     // Allows fission reactors to heat up less than a full liter of coolant.
     public double partialCoolant;
+    @Setter
+    @Getter
+    private double weight;
+    private int relatedFuelRodPairs;
 
     public CoolantChannel(double maxTemperature, double thermalConductivity, ICoolantStats coolant, double mass,
                           ICoolantHandler inputHandler, ICoolantHandler outputHandler) {
@@ -50,5 +48,10 @@ public class CoolantChannel extends ReactorComponent {
 
     public void computeWeightFromFuelRodMap() {
         this.weight = relatedFuelRodPairs * 2;
+    }
+
+    @Override
+    public double getAbsorptionFactor(boolean controlsInserted, boolean isThermal) {
+        return isThermal ? coolant.getSlowAbsorptionFactor() : coolant.getFastAbsorptionFactor();
     }
 }

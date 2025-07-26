@@ -1,6 +1,7 @@
 package supercritical.api.unification.material.info;
 
 import gregtech.api.unification.material.info.MaterialIconType;
+
 /**
  * Copyright (C) SymmetricDevs 2025
  * 由 KeQingSoCute520 于 2025 修改。

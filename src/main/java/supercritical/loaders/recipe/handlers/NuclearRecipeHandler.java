@@ -1,11 +1,5 @@
 package supercritical.loaders.recipe.handlers;
 
-import static gregtech.api.GTValues.*;
-import static gregtech.api.recipes.RecipeMaps.*;
-import static gregtech.api.unification.ore.OrePrefix.dust;
-import static supercritical.api.recipes.SCRecipeMaps.SPENT_FUEL_POOL_RECIPES;
-import static supercritical.api.unification.ore.SCOrePrefix.*;
-
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.MetaItems;
@@ -13,6 +7,12 @@ import supercritical.api.unification.material.properties.FissionFuelProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 import supercritical.api.unification.ore.SCOrePrefix;
 import supercritical.common.item.SCMetaItems;
+
+import static gregtech.api.GTValues.*;
+import static gregtech.api.recipes.RecipeMaps.*;
+import static gregtech.api.unification.ore.OrePrefix.dust;
+import static supercritical.api.recipes.SCRecipeMaps.SPENT_FUEL_POOL_RECIPES;
+import static supercritical.api.unification.ore.SCOrePrefix.*;
 
 public class NuclearRecipeHandler {
 

@@ -1,9 +1,8 @@
 package supercritical.mixins.gregtech;
 
+import gregtech.api.unification.Element;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-
-import gregtech.api.unification.Element;
 import supercritical.api.unification.ElementExtension;
 
 /**

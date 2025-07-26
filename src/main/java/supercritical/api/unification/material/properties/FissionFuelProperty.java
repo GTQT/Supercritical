@@ -5,7 +5,13 @@ import gregtech.api.unification.material.properties.MaterialProperties;
 import gregtech.api.unification.material.properties.PropertyKey;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.item.ItemStack;
 import supercritical.api.nuclear.fission.IFissionFuelStats;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Builder
 public class FissionFuelProperty implements IMaterialProperty, IFissionFuelStats {
@@ -40,14 +46,14 @@ public class FissionFuelProperty implements IMaterialProperty, IFissionFuelStats
     private double releasedHeatEnergy;
     @Getter
     private double decayRate;
-
     @Getter
     private String id;
 
-    @Override
-    public void verifyProperty(MaterialProperties properties) {
-        properties.ensureSet(PropertyKey.DUST, true);
-    }
+    @Getter
+    @Setter
+    private Function<Double, ItemStack> depletedFuelSupplier;
+    @Setter
+    private Supplier<List<ItemStack>> allDepletedFuels;
 
     public static FissionFuelPropertyBuilder builder(String id, int maxTemperature, int duration,
                                                      double neutronGenerationTime) {
@@ -56,5 +62,20 @@ public class FissionFuelProperty implements IMaterialProperty, IFissionFuelStats
                 .maxTemperature(maxTemperature)
                 .duration(duration)
                 .neutronGenerationTime(neutronGenerationTime);
+    }
+
+    @Override
+    public void verifyProperty(MaterialProperties properties) {
+        properties.ensureSet(PropertyKey.DUST, true);
+    }
+
+    @Override
+    public List<ItemStack> getDepletedFuels() {
+        return allDepletedFuels.get();
+    }
+
+    @Override
+    public ItemStack getDepletedFuel(double thermalRatio) {
+        return depletedFuelSupplier.apply(thermalRatio);
     }
 }

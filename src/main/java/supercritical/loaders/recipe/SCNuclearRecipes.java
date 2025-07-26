@@ -1,5 +1,7 @@
 package supercritical.loaders.recipe;
 
+import supercritical.common.item.SCMetaItems;
+
 import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.*;
 import static gregtech.api.unification.material.Materials.*;
@@ -8,7 +10,6 @@ import static supercritical.api.recipes.SCRecipeMaps.GAS_CENTRIFUGE_RECIPES;
 import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.unification.ore.SCOrePrefix.*;
 
-import supercritical.common.item.SCMetaItems;
 /**
  * Copyright (C) SymmetricDevs 2025
  * 由 KeQingSoCute520 于 2025 修改。
@@ -130,6 +131,7 @@ public class SCNuclearRecipes {
         ASSEMBLER_RECIPES.recipeBuilder().duration(400).EUt(VA[LV])
                 .input(ring, Titanium, 2)
                 .input(stick, Titanium, 16)
+                .circuitMeta(1)
                 .output(SCMetaItems.ANODE_BASKET)
                 .buildAndRegister();
 

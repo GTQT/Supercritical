@@ -1,25 +1,23 @@
 package supercritical.integration.jei.basic;
 
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import supercritical.api.nuclear.fission.CoolantRegistry;
 import supercritical.api.nuclear.fission.ICoolantStats;
 
 public class CoolantInfo implements IRecipeWrapper {
 
-    public FluidStack coolant;
-    public FluidStack hotCoolant;
-
     private final String temps;
     private final String heatCapacity;
     private final String heatTransfer;
     private final String moderation;
+    public FluidStack coolant;
+    public FluidStack hotCoolant;
     private String hydrogen;
 
     public CoolantInfo(Fluid coolant, Fluid hotCoolant) {

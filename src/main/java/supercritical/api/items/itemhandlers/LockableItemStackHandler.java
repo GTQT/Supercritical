@@ -1,12 +1,10 @@
 package supercritical.api.items.itemhandlers;
 
-import net.minecraft.item.ItemStack;
-
-import org.jetbrains.annotations.NotNull;
-
 import gregtech.api.capability.impl.NotifiableItemStackHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 import lombok.Getter;
+import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import supercritical.api.capability.ILockableHandler;
 
 public class LockableItemStackHandler extends NotifiableItemStackHandler implements ILockableHandler<ItemStack> {

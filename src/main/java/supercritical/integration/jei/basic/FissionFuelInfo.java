@@ -1,33 +1,35 @@
 package supercritical.integration.jei.basic;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import supercritical.api.nuclear.fission.FissionFuelRegistry;
 import supercritical.api.nuclear.fission.IFissionFuelStats;
 
-public class FissionFuelInfo implements IRecipeWrapper {
+import java.util.ArrayList;
+import java.util.List;
 
-    public ItemStack rod;
-    public ItemStack depletedRod;
+public class FissionFuelInfo implements IRecipeWrapper {
 
     private final String duration;
     private final String maxTemp;
     private final String crossSectionFast;
     private final String crossSectionSlow;
     private final String neutronGenerationTime;
+    public ItemStack rod;
+    public List<List<ItemStack>> depletedRods;
 
-    public FissionFuelInfo(ItemStack rod, ItemStack depletedRod) {
+    public FissionFuelInfo(ItemStack rod) {
         this.rod = rod;
-        this.depletedRod = depletedRod;
 
         IFissionFuelStats prop = FissionFuelRegistry.getFissionFuel(rod);
+        this.depletedRods = new ArrayList<>();
+        this.depletedRods.add(prop.getDepletedFuels()); // Needed for the rotation
 
-        duration = I18n.format("metaitem.nuclear.tooltip.duration", prop.getDuration());
+        duration = I18n.format("metaitem.nuclear.tooltip.duration", prop.getDuration() * prop.getReleasedHeatEnergy());
         maxTemp = I18n.format("metaitem.nuclear.tooltip.temperature", prop.getMaxTemperature());
         crossSectionFast = I18n.format("metaitem.nuclear.tooltip.cross_section_fast",
                 prop.getFastNeutronFissionCrossSection());
@@ -41,7 +43,7 @@ public class FissionFuelInfo implements IRecipeWrapper {
     @Override
     public void getIngredients(IIngredients ingredients) {
         ingredients.setInput(VanillaTypes.ITEM, rod);
-        ingredients.setOutput(VanillaTypes.ITEM, depletedRod);
+        ingredients.setOutputLists(VanillaTypes.ITEM, depletedRods);
     }
 
     @Override

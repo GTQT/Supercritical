@@ -2,18 +2,17 @@ package supercritical.common;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.registry.MTEManager;
+import gregtech.api.unification.material.event.MaterialEvent;
+import gregtech.api.unification.material.event.PostMaterialEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import gregtech.api.unification.material.event.MaterialEvent;
-import gregtech.api.unification.material.event.PostMaterialEvent;
 import supercritical.SCValues;
 import supercritical.api.unification.material.SCMaterialFlagAddition;
 import supercritical.api.unification.material.SCMaterialPropertyAddition;
 import supercritical.api.unification.material.SCMaterials;
 import supercritical.api.unification.ore.SCOrePrefix;
-import supercritical.common.materials.*;
+import supercritical.common.materials.MaterialModifications;
 
 @Mod.EventBusSubscriber(modid = SCValues.MODID)
 public final class SCEventHandlers {

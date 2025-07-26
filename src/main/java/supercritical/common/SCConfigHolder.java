@@ -4,7 +4,6 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
-
 import supercritical.SCValues;
 
 @Config(modid = SCValues.MODID)

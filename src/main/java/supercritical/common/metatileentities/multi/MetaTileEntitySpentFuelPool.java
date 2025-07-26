@@ -1,27 +1,5 @@
 package supercritical.common.metatileentities.multi;
 
-import static gregtech.api.util.RelativeDirection.*;
-import static supercritical.api.pattern.SCPredicates.*;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
@@ -35,10 +13,30 @@ import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.common.blocks.BlockMetalCasing;
 import gregtech.common.blocks.MetaBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import supercritical.api.recipes.SCRecipeMaps;
 import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.blocks.BlockNuclearCasing;
 import supercritical.common.blocks.SCMetaBlocks;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import static gregtech.api.util.RelativeDirection.*;
+import static supercritical.api.pattern.SCPredicates.*;
 
 public class MetaTileEntitySpentFuelPool extends RecipeMapMultiblockController {
 
@@ -51,6 +49,14 @@ public class MetaTileEntitySpentFuelPool extends RecipeMapMultiblockController {
         super(metaTileEntityId, SCRecipeMaps.SPENT_FUEL_POOL_RECIPES);
     }
 
+    private static IBlockState getRodState() {
+        return SCMetaBlocks.NUCLEAR_CASING.getState(BlockNuclearCasing.NuclearCasingType.SPENT_FUEL_CASING);
+    }
+
+    private static IBlockState getMetalCasingState() {
+        return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN);
+    }
+
     @Override
     public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntitySpentFuelPool(metaTileEntityId);
@@ -59,14 +65,6 @@ public class MetaTileEntitySpentFuelPool extends RecipeMapMultiblockController {
     @Override
     public boolean hasMaintenanceMechanics() {
         return false;
-    }
-
-    private static IBlockState getRodState() {
-        return SCMetaBlocks.NUCLEAR_CASING.getState(BlockNuclearCasing.NuclearCasingType.SPENT_FUEL_CASING);
-    }
-
-    private static IBlockState getMetalCasingState() {
-        return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN);
     }
 
     @Override

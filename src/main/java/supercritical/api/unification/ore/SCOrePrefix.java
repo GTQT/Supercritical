@@ -4,7 +4,6 @@ import gregtech.api.unification.ore.OrePrefix;
 import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.resources.I18n;
 import supercritical.api.unification.material.info.SCMaterialIconType;
-import supercritical.api.unification.material.properties.SCMaterialsFlag;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 
 import java.util.Collections;
@@ -55,6 +54,7 @@ public class SCOrePrefix {
             mat -> mat.hasFlag(GENERATE_PELLETS));
     public static final OrePrefix fuelPebbleDepleted = new OrePrefix("fuelPebbleDepleted", -1, null, SCMaterialIconType.fuelPebbleDepleted, ENABLE_UNIFICATION,
             mat -> mat.hasFlag(GENERATE_PELLETS));
+
     public static void init() {
         fuelRod.setRadiationDamageFunction(neutrons -> neutrons / 10e23);
         fuelPelletRaw.setRadiationDamageFunction(neutrons -> neutrons / 160e23);

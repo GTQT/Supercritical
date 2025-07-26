@@ -1,10 +1,5 @@
 package supercritical.common.metatileentities;
 
-import static gregtech.api.util.GTUtility.genericGeneratorTankSizeFunction;
-import static gregtech.common.metatileentities.MetaTileEntities.registerMetaTileEntity;
-import static gregtech.common.metatileentities.MetaTileEntities.registerSimpleMetaTileEntity;
-import static supercritical.api.util.SCUtility.scId;
-
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
 import gregtech.api.metatileentity.SimpleMachineMetaTileEntity;
@@ -13,12 +8,17 @@ import gregtech.client.renderer.texture.Textures;
 import supercritical.api.recipes.SCRecipeMaps;
 import supercritical.api.util.SCUtility;
 import supercritical.client.renderer.textures.SCTextures;
-import supercritical.common.SCConfigHolder;
 import supercritical.common.metatileentities.multi.MetaTileEntityFissionReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntityHeatExchanger;
 import supercritical.common.metatileentities.multi.MetaTileEntitySpentFuelPool;
 import supercritical.common.metatileentities.multi.electric.MetaTileEntityGasCentrifuge;
 import supercritical.common.metatileentities.multi.multiblockpart.*;
+
+import static gregtech.api.util.GTUtility.genericGeneratorTankSizeFunction;
+import static gregtech.common.metatileentities.MetaTileEntities.registerMetaTileEntity;
+import static gregtech.common.metatileentities.MetaTileEntities.registerSimpleMetaTileEntity;
+import static supercritical.api.util.SCUtility.scId;
+
 /**
  * Copyright (C) SymmetricDevs 2025
  * 由 KeQingSoCute520 于 2025 修改。
@@ -29,6 +29,9 @@ import supercritical.common.metatileentities.multi.multiblockpart.*;
  * Ranges 14000-14499
  */
 public class SCMetaTileEntities {
+
+    public static final SimpleGeneratorMetaTileEntity[] RTG = new SimpleGeneratorMetaTileEntity[5];
+    public static SimpleMachineMetaTileEntity[] DECAY_CHAMBER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
 
     // Nuclear MTEs
     public static MetaTileEntityHeatExchanger HEAT_EXCHANGER;
@@ -41,9 +44,8 @@ public class SCMetaTileEntities {
     public static MetaTileEntityControlRodPort CONTROL_ROD_MODERATED;
     public static MetaTileEntitySpentFuelPool SPENT_FUEL_POOL;
     public static MetaTileEntityGasCentrifuge GAS_CENTRIFUGE;
+    public static MetaTileEntityModeratorPort MODERATOR_PORT;
 
-    public static final SimpleGeneratorMetaTileEntity[] RTG = new SimpleGeneratorMetaTileEntity[5];
-    public static SimpleMachineMetaTileEntity[] DECAY_CHAMBER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static void init() {
         //多方块部分
         HEAT_EXCHANGER = registerMetaTileEntity(1, new MetaTileEntityHeatExchanger(scId("heat_exchanger")));
@@ -57,7 +59,7 @@ public class SCMetaTileEntities {
         COOLANT_OUTPUT = registerMetaTileEntity(13, new MetaTileEntityCoolantExportHatch(scId("coolant_output")));
         CONTROL_ROD = registerMetaTileEntity(14, new MetaTileEntityControlRodPort(scId("control_rod"), false));
         CONTROL_ROD_MODERATED = registerMetaTileEntity(15, new MetaTileEntityControlRodPort(scId("control_rod_moderated"), true));
-
+        MODERATOR_PORT = registerMetaTileEntity(16, new MetaTileEntityModeratorPort(scId("moderator_port")));
         //单方块发电机
         //RTG发电机
         RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction, true));

@@ -1,11 +1,8 @@
 package supercritical.api.util;
 
-import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
-
-import supercritical.SCValues;
 import lombok.experimental.UtilityClass;
+import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import supercritical.SCValues;
 
 @UtilityClass

@@ -1,13 +1,12 @@
 package supercritical.api.gui.widgets;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.widgets.SliderWidget;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import gregtech.api.util.function.FloatConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import supercritical.api.util.function.FloatSupplier;
 import supercritical.mixins.gregtech.SliderWidgetAccessor;
 

@@ -1,10 +1,9 @@
 package supercritical.api.unification;
 
-import static gregtech.api.unification.Elements.*;
-
 import gregtech.api.unification.Element;
-import gregtech.api.unification.Elements;
 import lombok.experimental.ExtensionMethod;
+
+import static gregtech.api.unification.Elements.*;
 
 /**
  * Copyright (C) SymmetricDevs 2025

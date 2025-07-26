@@ -1,9 +1,9 @@
 package supercritical.api.unification.ore;
 
-import java.util.function.Function;
-
 import gregtech.api.unification.ore.OrePrefix;
 import lombok.experimental.UtilityClass;
+
+import java.util.function.Function;
 
 /// Extends [OrePrefix] to include radiation properties.
 /// Also see [MixinOrePrefix] and [SCOrePrefix].

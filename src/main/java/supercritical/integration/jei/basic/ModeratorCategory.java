@@ -1,10 +1,11 @@
 package supercritical.integration.jei.basic;
 
+
 import gregtech.api.gui.GuiTextures;
 import gregtech.integration.jei.basic.BasicRecipeCategory;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -14,20 +15,17 @@ import org.jetbrains.annotations.Nullable;
 import supercritical.SCValues;
 import supercritical.common.metatileentities.SCMetaTileEntities;
 
-public class CoolantCategory extends BasicRecipeCategory<CoolantInfo, CoolantInfo> {
+public class ModeratorCategory extends BasicRecipeCategory<ModeratorInfo, ModeratorInfo> {
 
     protected final IDrawable slot;
     private final IDrawable icon;
-    private final IDrawable arrow;
 
-    public CoolantCategory(IGuiHelper guiHelper) {
-        super("coolant", "fission.coolant.name", guiHelper.createBlankDrawable(176, 90), guiHelper);
+    public ModeratorCategory(IGuiHelper guiHelper) {
+        super("moderator", "fission.moderator.name", guiHelper.createBlankDrawable(176, 70), guiHelper);
 
         this.icon = guiHelper.createDrawableIngredient(SCMetaTileEntities.FISSION_REACTOR.getStackForm());
         this.slot = guiHelper.drawableBuilder(GuiTextures.SLOT.imageLocation, 0, 0, 18, 18).setTextureSize(18, 18)
                 .build();
-        this.arrow = guiHelper.drawableBuilder(GuiTextures.PROGRESS_BAR_ARROW.imageLocation, 0, 20, 20, 20)
-                .setTextureSize(20, 40).build();
     }
 
     @Nullable
@@ -37,25 +35,21 @@ public class CoolantCategory extends BasicRecipeCategory<CoolantInfo, CoolantInf
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, CoolantInfo recipeWrapper, @NotNull IIngredients ingredients) {
-        IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
+    public void setRecipe(IRecipeLayout recipeLayout, ModeratorInfo recipeWrapper, @NotNull IIngredients ingredients) {
+        IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 
-        fluidStackGroup.init(0, true, 55, 9);
-        fluidStackGroup.set(0, recipeWrapper.coolant);
-        fluidStackGroup.init(1, true, 105, 9);
-        fluidStackGroup.set(1, recipeWrapper.hotCoolant);
+        itemStackGroup.init(0, true, 77, 8);
+        itemStackGroup.set(0, recipeWrapper.stack);
     }
 
     @Override
     public void drawExtras(@NotNull Minecraft minecraft) {
-        slot.draw(minecraft, 54, 8);
-        slot.draw(minecraft, 104, 8);
-        arrow.draw(minecraft, 77, 6);
+        slot.draw(minecraft, 77, 8);
     }
 
     @NotNull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@NotNull CoolantInfo recipe) {
+    public IRecipeWrapper getRecipeWrapper(@NotNull ModeratorInfo recipe) {
         return recipe;
     }
 

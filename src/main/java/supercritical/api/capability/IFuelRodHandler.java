@@ -2,7 +2,6 @@ package supercritical.api.capability;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
 import supercritical.api.items.itemhandlers.LockableItemStackHandler;
 import supercritical.api.nuclear.fission.IFissionFuelStats;
 import supercritical.api.nuclear.fission.components.FuelRod;
@@ -36,4 +35,6 @@ public interface IFuelRodHandler extends ILockableHandler<ItemStack> {
     IItemHandlerModifiable getOutputStackHandler(int depth);
 
     void resetDepletion(double fuelDepletion);
+
+    ItemStack getDepletedFuel();
 }

@@ -1,10 +1,9 @@
 package supercritical.mixins.gregtech;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.gui.widgets.SliderWidget;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(value = SliderWidget.class, remap = false)
 public interface SliderWidgetAccessor {

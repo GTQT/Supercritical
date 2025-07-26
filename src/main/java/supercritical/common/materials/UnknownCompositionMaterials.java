@@ -1,12 +1,12 @@
 package supercritical.common.materials;
 
+import gregtech.api.fluids.FluidBuilder;
+import gregtech.api.unification.material.Material;
+
 import static gregtech.api.unification.material.info.MaterialFlags.*;
 import static gregtech.api.unification.material.info.MaterialIconSet.DULL;
 import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.util.SCUtility.scId;
-
-import gregtech.api.fluids.FluidBuilder;
-import gregtech.api.unification.material.Material;
 
 /*
  * Ranges 1500-1999
@@ -15,10 +15,10 @@ public class UnknownCompositionMaterials {
 
     static int startID = 1500;
 
-    public static int getStartID()
-    {
+    public static int getStartID() {
         return startID++;
     }
+
     public static void register() {
         Corium = new Material.Builder(getStartID(), scId("corium"))
                 .liquid(new FluidBuilder()

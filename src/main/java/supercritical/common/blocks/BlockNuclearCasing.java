@@ -1,14 +1,12 @@
 package supercritical.common.blocks;
 
+import gregtech.api.block.IStateHarvestLevel;
+import gregtech.api.block.VariantActiveBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
-
 import org.jetbrains.annotations.NotNull;
-
-import gregtech.api.block.IStateHarvestLevel;
-import gregtech.api.block.VariantActiveBlock;
 
 public class BlockNuclearCasing extends VariantActiveBlock<BlockNuclearCasing.NuclearCasingType> {
 
@@ -26,13 +24,12 @@ public class BlockNuclearCasing extends VariantActiveBlock<BlockNuclearCasing.Nu
         SPENT_FUEL_CASING("spent_fuel_casing", 2),
         GAS_CENTRIFUGE_HEATER("gas_centrifuge_heater", 1);
 
+        private final String name;
+        private final int harvestLevel;
         NuclearCasingType(String name, int harvestLevel) {
             this.name = name;
             this.harvestLevel = harvestLevel;
         }
-
-        private final String name;
-        private final int harvestLevel;
 
         @NotNull
         @Override

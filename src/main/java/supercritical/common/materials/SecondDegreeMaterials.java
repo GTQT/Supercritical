@@ -1,16 +1,15 @@
 package supercritical.common.materials;
 
+import gregtech.api.unification.material.Material;
+import supercritical.api.unification.material.properties.FissionFuelProperty;
+import supercritical.api.unification.material.properties.SCPropertyKey;
+
 import static gregtech.api.unification.material.Materials.*;
-import static gregtech.api.unification.material.Materials.Plutonium;
 import static gregtech.api.unification.material.info.MaterialFlags.DISABLE_DECOMPOSITION;
 import static gregtech.api.unification.material.info.MaterialIconSet.METALLIC;
 import static gregtech.api.unification.material.info.MaterialIconSet.SHINY;
 import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.util.SCUtility.scId;
-
-import gregtech.api.unification.material.Material;
-import supercritical.api.unification.material.properties.FissionFuelProperty;
-import supercritical.api.unification.material.properties.SCPropertyKey;
 
 /*
  * Ranges 1000-1499
@@ -21,6 +20,7 @@ public class SecondDegreeMaterials {
     public static int getStartID() {
         return startID++;
     }
+
     public static void register() {
         LEU235 = new Material.Builder(getStartID(), scId("leu_235"))
                 .dust(3)
@@ -32,10 +32,9 @@ public class SecondDegreeMaterials {
 
         LEU235.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(LEU235.getRegistryName(), 1500, 75000, 3.5)
-                        .slowNeutronCaptureCrossSection(1.5)
-                        .slowNeutronFissionCrossSection(1.5)
-                        .slowNeutronCaptureCrossSection(1.5)
-                        .slowNeutronFissionCrossSection(1.5)
+                        .fastNeutronCaptureCrossSection(0.4)
+                        .slowNeutronCaptureCrossSection(1.8)
+                        .slowNeutronFissionCrossSection(1.8)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.5)
                         .releasedHeatEnergy(0.01)
@@ -52,8 +51,9 @@ public class SecondDegreeMaterials {
 
         HEU235.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(HEU235.getRegistryName(), 1800, 60000, 2.5)
-                        .slowNeutronCaptureCrossSection(2)
-                        .slowNeutronFissionCrossSection(2)
+                        .fastNeutronCaptureCrossSection(0.3)
+                        .slowNeutronCaptureCrossSection(2.2)
+                        .slowNeutronFissionCrossSection(2.2)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.5)
                         .releasedHeatEnergy(0.01)
@@ -70,6 +70,7 @@ public class SecondDegreeMaterials {
 
         LowGradeMOX.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(LowGradeMOX.getRegistryName(), 1600, 50000, 1.5)
+                        .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(2)
                         .slowNeutronFissionCrossSection(2)
                         .requiredNeutrons(1)
@@ -89,6 +90,7 @@ public class SecondDegreeMaterials {
 
         HighGradeMOX.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(HighGradeMOX.getRegistryName(), 2000, 80000, 1)
+                        .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(2.4)
                         .slowNeutronFissionCrossSection(2.4)
                         .requiredNeutrons(1)
@@ -108,6 +110,7 @@ public class SecondDegreeMaterials {
 
         FBR.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(FBR.getRegistryName(), 2200, 90000, 0.8)
+                        .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(1.8)
                         .slowNeutronFissionCrossSection(2.8)
                         .requiredNeutrons(1)
@@ -127,6 +130,7 @@ public class SecondDegreeMaterials {
 
         THOR.setProperty(SCPropertyKey.FISSION_FUEL,
                 FissionFuelProperty.builder(THOR.getRegistryName(), 1800, 100000, 2.0)
+                        .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(3.2)
                         .slowNeutronFissionCrossSection(0.8)
                         .requiredNeutrons(1)

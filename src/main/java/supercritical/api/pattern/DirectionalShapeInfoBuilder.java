@@ -1,17 +1,17 @@
 package supercritical.api.pattern;
 
-import java.util.*;
-import java.util.function.Supplier;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.pattern.MultiblockShapeInfo;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.RelativeDirection;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Extends {@link MultiblockShapeInfo.Builder} to incorporate directional awareness.
@@ -121,13 +121,26 @@ public class DirectionalShapeInfoBuilder {
             Objects.requireNonNull(actualFacing, "无法解析实际方向");
 
             switch (actualFacing) {
-                case UP:    c1[1] = c0[i]; break;
-                case DOWN:  c1[1] = -c0[i]; break;
-                case WEST:  c1[0] = -c0[i]; break;
-                case EAST:  c1[0] = c0[i]; break;
-                case NORTH: c1[2] = -c0[i]; break;
-                case SOUTH: c1[2] = c0[i]; break;
-                default: throw new IllegalStateException("意外的方向: " + actualFacing);
+                case UP:
+                    c1[1] = c0[i];
+                    break;
+                case DOWN:
+                    c1[1] = -c0[i];
+                    break;
+                case WEST:
+                    c1[0] = -c0[i];
+                    break;
+                case EAST:
+                    c1[0] = c0[i];
+                    break;
+                case NORTH:
+                    c1[2] = -c0[i];
+                    break;
+                case SOUTH:
+                    c1[2] = c0[i];
+                    break;
+                default:
+                    throw new IllegalStateException("意外的方向: " + actualFacing);
             }
         }
 

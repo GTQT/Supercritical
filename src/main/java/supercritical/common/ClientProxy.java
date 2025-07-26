@@ -4,7 +4,6 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
 import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.blocks.SCMetaBlocks;
 

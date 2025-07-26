@@ -1,5 +1,9 @@
 package supercritical.api.nuclear.fission;
 
+import net.minecraft.item.ItemStack;
+
+import java.util.List;
+
 public interface IFissionFuelStats {
 
     /**
@@ -39,7 +43,7 @@ public interface IFissionFuelStats {
 
     /**
      * @return The average number of neutrons required to trigger a fission event (usually 1, but can be higher for
-     *         bred fuels).
+     * bred fuels).
      */
     double getRequiredNeutrons();
 
@@ -62,7 +66,7 @@ public interface IFissionFuelStats {
      * Helper method for the tooltip
      *
      * @return An integer corresponding to the stability of the fuel. 0 corresponds to stable, 1 to somewhat stable, 2
-     *         to dangerous, 3 to very dangerous
+     * to dangerous, 3 to very dangerous
      */
     default int getNeutronGenerationTimeCategory() {
         if (this.getNeutronGenerationTime() > 2) {
@@ -89,4 +93,15 @@ public interface IFissionFuelStats {
      * @return A unique ID for this fuel.
      */
     String getId();
+
+    /**
+     * @return A collection of all of the possible items that this fuel can be depleted into.
+     */
+    List<ItemStack> getDepletedFuels();
+
+    /**
+     * @param thermalRatio The ratio of captured thermal neutrons to total neutrons.
+     * @return An item stack that represents the depleted fuel given the ratio of thermal neutrons.
+     */
+    ItemStack getDepletedFuel(double thermalRatio);
 }

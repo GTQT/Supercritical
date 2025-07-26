@@ -1,14 +1,14 @@
 package supercritical.loaders.recipe;
 
+import supercritical.common.blocks.BlockPanelling;
+import supercritical.common.blocks.SCMetaBlocks;
+
 import static gregtech.api.GTValues.LV;
 import static gregtech.api.GTValues.VH;
 import static gregtech.api.recipes.RecipeMaps.*;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.plate;
 import static supercritical.api.unification.material.SCMaterials.HeavyWater;
-
-import supercritical.common.blocks.BlockPanelling;
-import supercritical.common.blocks.SCMetaBlocks;
 
 public class SCMiscRecipes {
 
