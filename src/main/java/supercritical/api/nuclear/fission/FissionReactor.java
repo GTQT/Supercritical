@@ -1,17 +1,18 @@
 package supercritical.api.nuclear.fission;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
 import supercritical.api.nuclear.fission.components.ControlRod;
 import supercritical.api.nuclear.fission.components.CoolantChannel;
 import supercritical.api.nuclear.fission.components.FuelRod;
 import supercritical.api.nuclear.fission.components.ReactorComponent;
 import supercritical.common.SCConfigHolder;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class FissionReactor {
 
@@ -34,64 +35,52 @@ public class FissionReactor {
      * Boiling point of air at standard pressure in Kelvin
      */
     public static final double airBoilingPoint = 78.8;
-    public static double zircaloyHydrogenReactionTemperature = 1500;
-    public static double thermalConductivity = 45; // 45 W/(m K), for steel
-    public static double wallThickness = 0.1;
-    public static double coolantWallThickness = 0.06; // Ideal for a 1-m diameter steel pipe with the given maximum
-    // pressure
-    public static double specificHeatCapacity = 420; // 420 J/(kg K), for steel
-    public static double convectiveHeatTransferCoefficient = 10; // 10 W/(m^2 K), for slow-moving air
-    public static double powerDefectCoefficient = 0.016; // In units of reactivity
-    public static double decayProductRate = 0.997; // Based on the half-life of xenon-135, using real-life days as
-    // Minecraft days, and yes, I am using this for plutonium too
-    public static double poisonFraction = 0.063; // Xenon-135 yield from fission
-    public static double crossSectionRatio = 4; // The ratio between the cross section for typical fuels and xenon-135;
+
+    private final ReactorComponent[][] reactorLayout;
     private final List<FuelRod> fuelRods;
     private final List<ControlRod> controlRods;
     private final List<CoolantChannel> coolantChannels;
     private final List<ControlRod> effectiveControlRods;
-    private final List<CoolantChannel> effectiveCoolantChannels;
+
+    private double k;
+
+    private double controlRodFactor;
+
     public double kEff; // criticality value, based on k
+
     /**
      * Integers used on variables with direct player control for easier adjustments (normalize this to 0,1)
      */
     public double controlRodInsertion;
+    private final int reactorDepth;
+    private final double reactorRadius;
+
+    private boolean moderatorTipped; // set by the type of control rod in the reactor(prepInitialConditions)
+
     /**
      * Megawatts
      */
     public double power;
+
     /**
      * Temperature of the reactor
      */
     public double temperature = roomTemperature;
     public double pressure = standardPressure;
-    public double fuelDepletion = -1;
-    public double accumulatedHydrogen;
-    public double maxTemperature = 2000;
-    // Pascals
-    public double maxPressure = 15000000;
-    // In MW apparently
-    public double maxPower = 3; // determined by the amount of fuel in reactor and neutron matrices
-    public double fuelMass;
-    public boolean controlRodRegulationOn = true;
-    protected boolean isOn = false;
-    private final ReactorComponent[][] reactorLayout;
-    private double k;
-    private double controlRodFactor;
-    private final int reactorDepth;
-    private final double reactorRadius;
-    private boolean moderatorTipped; // set by the type of control rod in the reactor(prepInitialConditions)
     private final double exteriorPressure = standardPressure;
     /**
      * Temperature of boiling point in kelvin at standard pressure Determined by a weighted sum of the individual
      * coolant boiling points in {@link FissionReactor#prepareInitialConditions()}
      */
     private double coolantBoilingPointStandardPressure;
+
     /**
      * Average temperature of the coolant in kelvin as coolant exits the reactor.
      */
     private double coolantExitTemperature;
+
     private double prevTemperature;
+
     /**
      * Latent heat of vaporization in J/mol Determined by a weighted sum of the individual heats of vaporization in
      * {@link FissionReactor#prepareInitialConditions()}
@@ -102,18 +91,85 @@ public class FissionReactor {
      * {@link FissionReactor#prepareInitialConditions()}
      */
     private double coolantBaseTemperature;
+    public double fuelDepletion = -1;
     private double neutronPoisonAmount; // can kill reactor if power is lowered and this value is high
     private double decayProductsAmount;
+    private final double envTemperature = roomTemperature; // maybe gotten from config per dim
+    public double accumulatedHydrogen;
+    private double weightedGenerationTime = 2; // The mean generation time in seconds, accounting for delayed neutrons
+
+    public double maxTemperature = 2000;
+    // Pascals
+    public double maxPressure = 15000000;
+    // In MW apparently
+    public double maxPower = 3; // determined by the amount of fuel in reactor and neutron matrices
+    public static double zircaloyHydrogenReactionTemperature = 1500;
+
+    private final double surfaceArea;
+    public static double thermalConductivity = 45; // 45 W/(m K), for steel
+    public static double wallThickness = 0.1;
+    // 0.06m is ideal for a 1-m diameter steel pipe with the given maximum, and was the original value
+    // This was then / 3 for balance
+    public static double coolantWallThickness = 0.02;
+    // pressure
+    public static double specificHeatCapacity = 420; // 420 J/(kg K), for steel
+    public static double convectiveHeatTransferCoefficient = 10; // 10 W/(m^2 K), for slow-moving air
+
+    public static double powerDefectCoefficient = 0.016; // In units of reactivity
+    public static double decayProductRate = 0.997; // Based on the half-life of xenon-135, using real-life days as
+    // Minecraft days, and yes, I am using this for plutonium too
+    public static double poisonFraction = 0.063; // Xenon-135 yield from fission
+    public static double crossSectionRatio = 4; // The ratio between the cross section for typical fuels and xenon-135;
 
     // very much changed here for balance purposes
-    private final double envTemperature = roomTemperature; // maybe gotten from config per dim
-    private double weightedGenerationTime = 2; // The mean generation time in seconds, accounting for delayed neutrons
-    private final double surfaceArea;
+
     private double decayNeutrons;
     private double neutronFlux;
     private double neutronToPowerConversion;
+
     private double coolantMass;
+    public double fuelMass;
     private double structuralMass;
+    public boolean controlRodRegulationOn = true;
+    protected boolean isOn = false;
+
+    protected static double responseFunction(double target, double current, double criticalRate) {
+        if (current < 0) {
+            if (criticalRate < 1) {
+                return 0;
+            } else {
+                current = 0.1;
+            }
+        }
+        double expDecay = Math.exp(-criticalRate);
+        return current * expDecay + target * (1 - expDecay);
+    }
+
+    protected double responseFunctionTemperature(double envTemperature, double currentTemperature, double heatAdded,
+                                                 double heatAbsorbed) {
+        currentTemperature = Math.max(0.1, currentTemperature);
+        heatAbsorbed = Math.max(0, heatAbsorbed);
+        /*
+         * Simplifies what is the following:
+         * heatTransferCoefficient = 1 / (1 / convectiveHeatTransferCoefficient + wallThickness / thermalConductivity);
+         * (https://en.wikipedia.org/wiki/Newton%27s_law_of_cooling#First-order_transient_response_of_lumped-
+         * capacitance_objects)
+         * This assumes that we're extracting heat from the reactor through the wall into slowly moving air, removing
+         * the second convective heat.
+         * timeConstant = heatTransferCoefficient * this.surfaceArea / specificHeatCapacity;
+         */
+        // Technically the inverse.
+        double timeConstant = specificHeatCapacity *
+                (1 / convectiveHeatTransferCoefficient + wallThickness / thermalConductivity) / this.surfaceArea;
+
+        // Solves the following differential equation:
+        // dT/dt = h_added_tot / m_tot - k(T - T_env) at t = 1s with T(0) = T_0
+        double expDecay = Math.exp(-timeConstant);
+
+        double effectiveEnvTemperature = envTemperature +
+                (heatAdded - heatAbsorbed) / (timeConstant * (this.coolantMass + this.structuralMass + this.fuelMass));
+        return currentTemperature * expDecay + effectiveEnvTemperature * (1 - expDecay);
+    }
 
     public FissionReactor(int size, int depth, double controlRodInsertion) {
         reactorLayout = new ReactorComponent[size][size];
@@ -126,23 +182,54 @@ public class FissionReactor {
         controlRods = new ArrayList<>();
         coolantChannels = new ArrayList<>();
         effectiveControlRods = new ArrayList<>();
-        effectiveCoolantChannels = new ArrayList<>();
         // 2pi * r^2 + 2pi * r * l
         surfaceArea = (reactorRadius * reactorRadius) * Math.PI * 2 + reactorDepth * reactorRadius * Math.PI * 2;
-        structuralMass = reactorDepth * reactorRadius * reactorRadius * Math.PI *
-                300; // Assuming 300 kg/m^3 when it's basically empty, does not have to be precise
+
+        // Apparently we do need to initialize it here as well.
+        structuralMass = reactorDepth * reactorRadius * reactorRadius * Math.PI * 300;
     }
 
-    protected static double responseFunction(double target, double current, double criticalRate) {
-        if (current < 0) {
-            if (criticalRate < 1) {
-                return 0;
-            } else {
-                current = 0.1;
+    /**
+     * Should be called before computeGeometry()
+     */
+    public void prepareThermalProperties() {
+        structuralMass = reactorDepth * reactorRadius * reactorRadius * Math.PI *
+                300; // Assuming 300 kg/m^3 when it's basically empty, does not have to be precise
+
+        int idRod = 0, idControl = 0, idChannel = 0;
+
+        for (int i = 0; i < reactorLayout.length; i++) {
+            for (int j = 0; j < reactorLayout[i].length; j++) {
+                /*
+                 * Check for null because the layout
+                 * is in general not a square
+                 */
+                ReactorComponent comp = reactorLayout[i][j];
+                if (comp != null && comp.isValid()) {
+                    comp.setPos(i, j);
+                    maxTemperature = Double.min(maxTemperature, comp.getMaxTemperature());
+                    structuralMass += comp.getMass();
+                    if (comp instanceof FuelRod fuelRod) {
+                        comp.setIndex(idRod);
+                        fuelRods.add(fuelRod);
+                        idRod++;
+                    }
+
+                    if (comp instanceof ControlRod controlRod) {
+                        comp.setIndex(idControl);
+                        controlRods.add(controlRod);
+                        idControl++;
+                    }
+
+                    if (comp instanceof CoolantChannel coolantChannel) {
+                        comp.setIndex(idChannel);
+                        coolantChannels.add(coolantChannel);
+                        coolantChannel.setWeight(0);
+                        idChannel++;
+                    }
+                }
             }
         }
-        double expDecay = Math.exp(-criticalRate);
-        return current * expDecay + target * (1 - expDecay);
     }
 
     public static double getMagnitude(double[] vector) {
@@ -181,68 +268,6 @@ public class FissionReactor {
             }
         }
         System.arraycopy(result, 0, vector, 0, result.length);
-    }
-
-    protected double responseFunctionTemperature(double envTemperature, double currentTemperature, double heatAdded,
-                                                 double heatAbsorbed) {
-        currentTemperature = Math.max(0.1, currentTemperature);
-        heatAbsorbed = Math.max(0, heatAbsorbed);
-        /*
-         * Simplifies what is the following:
-         * heatTransferCoefficient = 1 / (1 / convectiveHeatTransferCoefficient + wallThickness / thermalConductivity);
-         * (https://en.wikipedia.org/wiki/Newton%27s_law_of_cooling#First-order_transient_response_of_lumped-
-         * capacitance_objects)
-         * This assumes that we're extracting heat from the reactor through the wall into slowly moving air, removing
-         * the second convective heat.
-         * timeConstant = heatTransferCoefficient * this.surfaceArea / specificHeatCapacity;
-         */
-        // Technically the inverse.
-        double timeConstant = specificHeatCapacity *
-                (1 / convectiveHeatTransferCoefficient + wallThickness / thermalConductivity) / this.surfaceArea;
-
-        // Solves the following differential equation:
-        // dT/dt = h_added_tot / m_tot - k(T - T_env) at t = 1s with T(0) = T_0
-        double expDecay = Math.exp(-timeConstant);
-
-        double effectiveEnvTemperature = envTemperature +
-                (heatAdded - heatAbsorbed) / (timeConstant * (this.coolantMass + this.structuralMass + this.fuelMass));
-        return currentTemperature * expDecay + effectiveEnvTemperature * (1 - expDecay);
-    }
-
-    public void prepareThermalProperties() {
-        int idRod = 0, idControl = 0, idChannel = 0;
-
-        for (int i = 0; i < reactorLayout.length; i++) {
-            for (int j = 0; j < reactorLayout[i].length; j++) {
-                /*
-                 * Check for null because the layout
-                 * is in general not a square
-                 */
-                ReactorComponent comp = reactorLayout[i][j];
-                if (comp != null && comp.isValid()) {
-                    comp.setPos(i, j);
-                    maxTemperature = Double.min(maxTemperature, comp.getMaxTemperature());
-                    structuralMass += comp.getMass();
-                    if (comp instanceof FuelRod fuelRod) {
-                        comp.setIndex(idRod);
-                        fuelRods.add(fuelRod);
-                        idRod++;
-                    }
-
-                    if (comp instanceof ControlRod controlRod) {
-                        comp.setIndex(idControl);
-                        controlRods.add(controlRod);
-                        idControl++;
-                    }
-
-                    if (comp instanceof CoolantChannel coolantChannel) {
-                        comp.setIndex(idChannel);
-                        coolantChannels.add(coolantChannel);
-                        idChannel++;
-                    }
-                }
-            }
-        }
     }
 
     public double computeK(boolean addToEffectiveLists, boolean controlRodsInserted) {
@@ -307,9 +332,7 @@ public class FissionReactor {
                      * We keep track of which active elements we hit, so we can determine how important they are
                      * relative to the others later
                      */
-                    if (component instanceof CoolantChannel channel) {
-                        channel.addFuelRodPair();
-                    } else if (component instanceof ControlRod controlRod) {
+                    if (component instanceof ControlRod controlRod) {
                         controlRod.addFuelRodPair();
                     }
                 }
@@ -395,7 +418,6 @@ public class FissionReactor {
 
     public void computeGeometry() {
         effectiveControlRods.clear();
-        effectiveCoolantChannels.clear();
         moderatorTipped = false;
 
         // We compute K twice to see the effectiveness of the control rods.
@@ -416,6 +438,7 @@ public class FissionReactor {
             neutronToPowerConversion += i.getFuel().getReleasedHeatEnergy() / i.getFuel().getReleasedNeutrons();
             decayNeutrons += i.getFuel().getDecayRate();
         }
+        computeCoolantWeights();
 
         if (fuelRods.size() > 1) {
             neutronToPowerConversion /= fuelRods.size();
@@ -426,14 +449,34 @@ public class FissionReactor {
             maxPower = 0.1 * SCConfigHolder.nuclear.nuclearPowerMultiplier;
         }
         /*
-         * We give each control rod and coolant channel a weight depending on how many fuel rods they affect
+         * We give each control rod a weight depending on how many fuel rods they affect
          */
-
-        this.computeCoolantChannelWeights();
 
         controlRodFactor = ControlRod.controlRodFactor(effectiveControlRods, this.controlRodInsertion);
 
         this.prepareInitialConditions();
+    }
+
+    /**
+     * Loops over all the coolant channels and determine which ones are adjacent to fuel rods
+     */
+    private final int[] dx = { 0, 1, 0, -1 };
+    private final int[] dy = { 1, 0, -1, 0 };
+
+    protected void computeCoolantWeights() {
+        for (FuelRod rod : fuelRods) {
+            // Loop over all four directions
+            for (int i = 0; i < 4; i++) {
+                int x = rod.getX() + dx[i];
+                int y = rod.getY() + dy[i];
+                if (x < 0 || x >= this.reactorLayout.length || y < 0 || y >= this.reactorLayout[x].length)
+                    continue;
+                ReactorComponent comp = this.reactorLayout[x][y];
+                if (comp instanceof CoolantChannel coolantChannel) {
+                    coolantChannel.addWeight(rod.getWeight());
+                }
+            }
+        }
     }
 
     /**
@@ -450,20 +493,6 @@ public class FissionReactor {
             }
         }
         ControlRod.normalizeWeights(effectiveControlRods, totalWeight, totalWorth);
-    }
-
-    /**
-     * Loops over all the coolant channels, determines which ones actually affect reactivity, and gives them a weight
-     * depending on how many fuel rods they affect
-     */
-    protected void computeCoolantChannelWeights() {
-        for (CoolantChannel channel : coolantChannels) {
-            channel.computeWeightFromFuelRodMap();
-            if (channel.getWeight() > 0) {
-                effectiveCoolantChannels.add(channel);
-            }
-        }
-        CoolantChannel.normalizeWeights(effectiveCoolantChannels);
     }
 
     public void resetFuelDepletion() {
@@ -539,7 +568,7 @@ public class FissionReactor {
                 // https://physics.stackexchange.com/questions/153434/heat-transfer-between-the-bulk-of-the-fluid-inside-the-pipe-and-the-pipe-externa
                 double heatFluxPerAreaAndTemp = 1 /
                         (1 / prop.getCoolingFactor() + coolantWallThickness / thermalConductivity);
-                double idealHeatFlux = heatFluxPerAreaAndTemp * 4 * reactorDepth *
+                double idealHeatFlux = heatFluxPerAreaAndTemp * channel.getWeight() * reactorDepth *
                         (temperature - cooledTemperature);
 
                 double idealFluidUsed = idealHeatFlux / heatRemovedPerLiter;
@@ -600,7 +629,7 @@ public class FissionReactor {
             // https://physics.stackexchange.com/questions/153434/heat-transfer-between-the-bulk-of-the-fluid-inside-the-pipe-and-the-pipe-externa
             double heatFluxPerAreaAndTemp = 1 /
                     (1 / prop.getCoolingFactor() + coolantWallThickness / thermalConductivity);
-            double idealHeatFlux = heatFluxPerAreaAndTemp * 4 * reactorDepth *
+            double idealHeatFlux = heatFluxPerAreaAndTemp * channel.getWeight() * reactorDepth *
                     (hypotheticalTemperature - cooledTemperature);
 
             double idealFluidUsed = idealHeatFlux / heatRemovedPerLiter;
@@ -659,6 +688,7 @@ public class FissionReactor {
     }
 
     public void updateNeutronPoisoning() {
+        this.decayProductsAmount *= decayProductRate;
         this.neutronPoisonAmount += this.decayProductsAmount * (1 - decayProductRate) * poisonFraction;
         this.neutronPoisonAmount *= decayProductRate * Math.exp(-crossSectionRatio * power / surfaceArea);
     }
@@ -682,14 +712,14 @@ public class FissionReactor {
             this.neutronFlux *= Math.exp(inverseReactorPeriod);
 
             this.fuelDepletion += this.neutronFlux * reactorDepth;
-            this.decayProductsAmount += Math.max(neutronFlux, 0.) / 1000;
+            // Should be about 0.001x of the value of the variable "power".
+            this.decayProductsAmount += Math.max(neutronFlux, 0.) / 250000;
 
             this.power = this.neutronFlux * this.neutronToPowerConversion;
         } else {
             this.neutronFlux *= 0.5;
             this.power *= 0.5;
         }
-        this.decayProductsAmount *= decayProductRate;
     }
 
     public boolean checkForMeltdown() {
@@ -799,6 +829,5 @@ public class FissionReactor {
         controlRods.clear();
         coolantChannels.clear();
         effectiveControlRods.clear();
-        effectiveCoolantChannels.clear();
     }
 }

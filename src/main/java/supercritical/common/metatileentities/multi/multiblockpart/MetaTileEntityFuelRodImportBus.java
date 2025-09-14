@@ -286,7 +286,7 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
 
     @Override
     public boolean isDepleted(double totalDepletion) {
-        return this.depletionPoint <= totalDepletion;
+        return this.depletionPoint <= totalDepletion * this.internalFuelRod.getWeight();
     }
 
     @Override
