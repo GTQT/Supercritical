@@ -1,5 +1,6 @@
 package supercritical.loaders.recipe;
 
+import supercritical.api.unification.material.SCMaterials;
 import supercritical.common.item.SCMetaItems;
 
 import static gregtech.api.GTValues.*;
@@ -12,7 +13,7 @@ import static supercritical.api.unification.ore.SCOrePrefix.*;
 
 /**
  * Copyright (C) SymmetricDevs 2025
- * 由 KeQingSoCute520 于 2025 修改。
+ * 由 MeowmelMuku 于 2025 修改。
  * 修改内容：添加高浓缩铀二氧化物产线。
  * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
  */
@@ -355,7 +356,7 @@ public class SCNuclearRecipes {
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().duration(200).EUt(VA[MV])
-                .input(plate, Zircaloy, 4)
+                .input(plate, SCMaterials.Zircaloy4, 4)
                 .input(spring, Inconel, 1)
                 .input(round, StainlessSteel, 2)
                 .output(SCMetaItems.FUEL_CLADDING)

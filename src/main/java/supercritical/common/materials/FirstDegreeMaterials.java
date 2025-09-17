@@ -5,6 +5,7 @@ import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.fluids.store.FluidStorageKeys;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.properties.BlastProperty;
+import supercritical.api.unification.material.SCMaterials;
 import supercritical.api.unification.material.properties.CoolantProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 
@@ -59,13 +60,8 @@ public class FirstDegreeMaterials {
                 .components(Plutonium, 1, Oxygen, 2)
                 .build();
 
-        Zircaloy = new Material.Builder(getID(), scId("zircaloy"))
-                .ingot().ore()
-                .color(0x566570).iconSet(METALLIC)
-                .flags(GENERATE_RING, GENERATE_PLATE)
-                .components(Zirconium, 16, Tin, 2, Chrome, 1)
-                .blast(1700, BlastProperty.GasTier.LOW)
-                .build();
+        //TODO
+        startId++;
 
         LowEnrichedUraniumDioxide = new Material.Builder(getID(), scId("low_enriched_uranium_dioxide"))
                 .dust()
@@ -80,7 +76,7 @@ public class FirstDegreeMaterials {
                 .color(0x7F8F75).iconSet(SHINY)
                 .flags(GENERATE_DOUBLE_PLATE, GENERATE_SPRING, DISABLE_DECOMPOSITION)
                 .components(Nickel, 5, Chrome, 2, Iron, 2, Niobium, 1, Molybdenum, 1)
-                .blast(b -> b.temp(1610, BlastProperty.GasTier.MID).blastStats(GTValues.VA[EV], 200))
+                .blast(b -> b.temp(4500, BlastProperty.GasTier.MID).blastStats(GTValues.VA[EV], 200))
                 .fluidPipeProperties(2010, 175, true, true, true, false)
                 .build();
 

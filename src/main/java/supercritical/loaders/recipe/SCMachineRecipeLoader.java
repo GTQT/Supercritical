@@ -11,7 +11,8 @@ import supercritical.common.blocks.SCMetaBlocks;
 import static gregtech.api.recipes.RecipeMaps.ASSEMBLER_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
-import static supercritical.api.unification.material.SCMaterials.*;
+import static supercritical.api.unification.material.SCMaterials.BoronCarbide;
+import static supercritical.api.unification.material.SCMaterials.Inconel;
 
 public class SCMachineRecipeLoader {
 
@@ -32,16 +33,16 @@ public class SCMachineRecipeLoader {
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().EUt(48).duration(280)
-                .input(stick, Zircaloy, 6)
-                .input(ring, Zircaloy, 1)
+                .input(stick, Zircaloy4, 6)
+                .input(ring, Zircaloy4, 1)
                 .circuitMeta(1)
                 .outputs(SCMetaBlocks.FISSION_CASING.getItemVariant(
                         BlockFissionCasing.FissionCasingType.FUEL_CHANNEL))
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().EUt(48).duration(280)
-                .input(stick, Zircaloy, 3)
-                .input(ring, Zircaloy, 1)
+                .input(stick, Zircaloy4, 3)
+                .input(ring, Zircaloy4, 1)
                 .circuitMeta(2)
                 .outputs(SCMetaBlocks.FISSION_CASING.getItemVariant(
                         BlockFissionCasing.FissionCasingType.CONTROL_ROD_CHANNEL))

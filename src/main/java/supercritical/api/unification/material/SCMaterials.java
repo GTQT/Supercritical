@@ -8,7 +8,7 @@ import supercritical.common.materials.UnknownCompositionMaterials;
 
 /**
  * Copyright (C) SymmetricDevs 2025
- * 由 KeQingSoCute520 于 2025 修改。
+ * 由 MeowmelMuku 于 2025 修改。
  * 修改内容：添加靶丸。
  * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
  */
@@ -34,7 +34,7 @@ public class SCMaterials {
     /* public static Material Uranium238 = Materials.Uranium238; */
     public static Material Uranium239;
 
-    //Additions Nuclear stuff, introduced by KeQingSoCute520
+    //Additions Nuclear stuff, introduced by MeowmelMuku
     public static Material Uranium233;
     public static Material Uranium234;
     public static Material Uranium236;
@@ -55,7 +55,6 @@ public class SCMaterials {
     public static Material DepletedUraniumDioxide;
     public static Material HighPressureSteam;
     public static Material FissilePlutoniumDioxide;
-    public static Material Zircaloy;
     public static Material Inconel;
     public static Material BoronTrioxide;
     public static Material BoronCarbide;

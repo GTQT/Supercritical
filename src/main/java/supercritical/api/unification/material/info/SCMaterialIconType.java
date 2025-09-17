@@ -4,7 +4,7 @@ import gregtech.api.unification.material.info.MaterialIconType;
 
 /**
  * Copyright (C) SymmetricDevs 2025
- * 由 KeQingSoCute520 于 2025 修改。
+ * 由 MeowmelMuku 于 2025 修改。
  * 修改内容：添加靶丸。
  * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
  */
@@ -22,7 +22,7 @@ public class SCMaterialIconType {
     public static final MaterialIconType dustBredFuel = new MaterialIconType("dustBredFuel");
     public static final MaterialIconType dustFissionByproduct = new MaterialIconType("dustFissionByproduct");
 
-    //Additions Nuclear stuff, introduced by KeQingSoCute520
+    //Additions Nuclear stuff, introduced by MeowmelMuku
     public static final MaterialIconType fuelPebble = new MaterialIconType("fuelPebble");
     public static final MaterialIconType fuelPebbleDepleted = new MaterialIconType("fuelPebbleDepleted");
 }

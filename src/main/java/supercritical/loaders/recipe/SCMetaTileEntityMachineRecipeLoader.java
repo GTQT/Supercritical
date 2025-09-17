@@ -9,7 +9,6 @@ import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static gregtech.common.metatileentities.MetaTileEntities.HULL;
 import static supercritical.api.unification.material.SCMaterials.Inconel;
-import static supercritical.api.unification.material.SCMaterials.Zircaloy;
 import static supercritical.common.metatileentities.SCMetaTileEntities.*;
 
 public class SCMetaTileEntityMachineRecipeLoader {
@@ -34,7 +33,7 @@ public class SCMetaTileEntityMachineRecipeLoader {
                 .duration(300).EUt(VA[EV]).buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder()
-                .input(stick, Zircaloy, 6)
+                .input(stick, Zircaloy4, 6)
                 .input(HULL[EV])
                 .fluidInputs(Polyethylene.getFluid(144))
                 .circuitMeta(1)
@@ -42,7 +41,7 @@ public class SCMetaTileEntityMachineRecipeLoader {
                 .duration(300).EUt(VA[EV]).buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder()
-                .input(stick, Zircaloy, 6)
+                .input(stick, Zircaloy4, 6)
                 .input(HULL[EV])
                 .fluidInputs(Polyethylene.getFluid(144))
                 .circuitMeta(2)

@@ -32,7 +32,7 @@
 在每个新增或者修改的文件头部都需要添加如下内容：
 /*
  * Copyright (C) SymmetricDevs 2025
- * 由 KeQingSoCute520 于 2025 修改。
+ * 由 MeowmelMuku 于 2025 修改。
  * 修改内容：(这里填修改的内容)。
  * 
  * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
