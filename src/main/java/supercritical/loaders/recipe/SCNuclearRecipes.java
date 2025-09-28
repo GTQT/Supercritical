@@ -356,7 +356,7 @@ public class SCNuclearRecipes {
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().duration(200).EUt(VA[MV])
-                .input(plate, SCMaterials.Zircaloy4, 4)
+                .input(plate, Zircaloy4, 4)
                 .input(spring, Inconel, 1)
                 .input(round, StainlessSteel, 2)
                 .output(SCMetaItems.FUEL_CLADDING)
