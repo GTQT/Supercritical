@@ -39,16 +39,20 @@
  */
 dependencies {
     api("com.cleanroommc:groovyscript:1.2.0-hotfix1") { transitive = false }
-    api("com.cleanroommc:modularui:2.5.0-rc4") { transitive = false }
+    api("com.cleanroommc:modularui:3.0.5") { transitive = false }
 
     implementation rfg.deobf("curse.maven:codechicken-lib-1-8-242818:2779848")
-    implementation rfg.deobf(files("libs/!mixinbooter-8.9.jar"))
-    implementation rfg.deobf(files("libs/gregtech-MeowmelMuku-1.12.2-2.9.0-187.jar"))
-    implementation rfg.deobf(files("libs/ae2-uel-v0.56.6.jar"))
-    implementation rfg.deobf(files("libs/Chisel-MC1.12.2-1.0.2.45.jar"))
-    implementation rfg.deobf(files("libs/CTM-MC1.12.2-1.0.2.31.jar"))
-    implementation rfg.deobf(files("libs/OpenComputers-MC1.12.2-1.8.6+cd8851e.jar"))
 
+    // AE2 Unofficial Extended Life 0.56.6
+    implementation rfg.deobf("curse.maven:ae2-extended-life-570458:6302098")
+    // AE2 Fluid Crafting Rework 2.6.6
+    implementation rfg.deobf("curse.maven:ae2fluidcraft-rework-unofficial-1404390:7336029")
+
+    implementation rfg.deobf(files("libs/gregtech-MeowmelMuku-1.12.2-2.9.0-190.jar"))
+    implementation rfg.deobf("curse.maven:mixin-booter-419286:4835295")
+    api rfg.deobf("curse.maven:ctm-267602:2915363") // CTM 1.0.2.31
+
+    implementation rfg.deobf("curse.maven:opencomputers-223008:6608365")
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'

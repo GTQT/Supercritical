@@ -37,7 +37,7 @@ public class SecondDegreeMaterials {
                         .slowNeutronFissionCrossSection(1.8)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.5)
-                        .releasedHeatEnergy(0.01)
+                        .releasedHeatEnergy(0.025)
                         .decayRate(0.025)
                         .build());
 
@@ -56,7 +56,7 @@ public class SecondDegreeMaterials {
                         .slowNeutronFissionCrossSection(2.2)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.5)
-                        .releasedHeatEnergy(0.01)
+                        .releasedHeatEnergy(0.025)
                         .decayRate(0.05)
                         .build());
 
@@ -75,7 +75,7 @@ public class SecondDegreeMaterials {
                         .slowNeutronFissionCrossSection(2)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.60)
-                        .releasedHeatEnergy(0.02)
+                        .releasedHeatEnergy(0.052)
                         .decayRate(0.1)
                         .build());
 
@@ -95,7 +95,7 @@ public class SecondDegreeMaterials {
                         .slowNeutronFissionCrossSection(2.4)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.80)
-                        .releasedHeatEnergy(0.02)
+                        .releasedHeatEnergy(0.056)
                         .decayRate(0.2)
                         .build());
 
@@ -115,7 +115,7 @@ public class SecondDegreeMaterials {
                         .slowNeutronFissionCrossSection(2.8)
                         .requiredNeutrons(1)
                         .releasedNeutrons(3.0)
-                        .releasedHeatEnergy(0.025)
+                        .releasedHeatEnergy(0.060)
                         .decayRate(0.25)
                         .build());
 
@@ -135,7 +135,7 @@ public class SecondDegreeMaterials {
                         .slowNeutronFissionCrossSection(0.8)
                         .requiredNeutrons(1)
                         .releasedNeutrons(2.2)
-                        .releasedHeatEnergy(0.008)
+                        .releasedHeatEnergy(0.060)
                         .decayRate(0.12)
                         .build());
     }

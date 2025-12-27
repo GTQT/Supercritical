@@ -114,11 +114,6 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
     }
 
     @NotNull
-    protected static IBlockState getVesselState() {
-        return SCMetaBlocks.FISSION_CASING.getState(BlockFissionCasing.FissionCasingType.REACTOR_VESSEL);
-    }
-
-    @NotNull
     protected static IBlockState getFuelChannelState() {
         return SCMetaBlocks.FISSION_CASING.getState(BlockFissionCasing.FissionCasingType.FUEL_CHANNEL);
     }
@@ -143,6 +138,10 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
         return new MetaTileEntityFissionReactor(metaTileEntityId);
     }
 
+    @NotNull
+    protected static IBlockState getVesselState() {
+        return SCMetaBlocks.FISSION_CASING.getState(BlockFissionCasing.FissionCasingType.REACTOR_VESSEL);
+    }
     @Override
     public double getFillPercentage(int index) {
         if (index == 0) {
@@ -876,6 +875,9 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
                                 foundFuel = true;
                                 continue;
                             }
+                        } else if (fuelIn.getPartialFuel() != null) {
+                            foundFuel = true;
+                            continue;
                         }
                         this.unlockAll();
                         setLockingState(LockingState.MISSING_FUEL);
