@@ -10,6 +10,7 @@ import supercritical.api.util.SCUtility;
 import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.metatileentities.multi.MetaTileEntityFissionReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntityHeatExchanger;
+import supercritical.common.metatileentities.multi.MetaTileEntityNuclearReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntitySpentFuelPool;
 import supercritical.common.metatileentities.multi.electric.MetaTileEntityGasCentrifuge;
 import supercritical.common.metatileentities.multi.multiblockpart.*;
@@ -45,6 +46,7 @@ public class SCMetaTileEntities {
     public static MetaTileEntitySpentFuelPool SPENT_FUEL_POOL;
     public static MetaTileEntityGasCentrifuge GAS_CENTRIFUGE;
     public static MetaTileEntityModeratorPort MODERATOR_PORT;
+    public static MetaTileEntityNuclearReactor aaa;
 
     public static void init() {
         //多方块部分
@@ -62,11 +64,11 @@ public class SCMetaTileEntities {
         MODERATOR_PORT = registerMetaTileEntity(16, new MetaTileEntityModeratorPort(scId("moderator_port")));
         //单方块发电机
         //RTG发电机
-        RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction, true));
-        RTG[1] = registerMetaTileEntity(21, new SimpleGeneratorMetaTileEntity(scId("rtg.ev"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 4, genericGeneratorTankSizeFunction, true));
-        RTG[2] = registerMetaTileEntity(22, new SimpleGeneratorMetaTileEntity(scId("rtg.iv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 5, genericGeneratorTankSizeFunction, true));
-        RTG[3] = registerMetaTileEntity(23, new SimpleGeneratorMetaTileEntity(scId("rtg.luv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 6, genericGeneratorTankSizeFunction, true));
-        RTG[4] = registerMetaTileEntity(24, new SimpleGeneratorMetaTileEntity(scId("rtg.zpm"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 7, genericGeneratorTankSizeFunction, true));
+        RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction,1));
+        RTG[1] = registerMetaTileEntity(21, new SimpleGeneratorMetaTileEntity(scId("rtg.ev"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 4, genericGeneratorTankSizeFunction, 1));
+        RTG[2] = registerMetaTileEntity(22, new SimpleGeneratorMetaTileEntity(scId("rtg.iv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 5, genericGeneratorTankSizeFunction, 1));
+        RTG[3] = registerMetaTileEntity(23, new SimpleGeneratorMetaTileEntity(scId("rtg.luv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 6, genericGeneratorTankSizeFunction, 1));
+        RTG[4] = registerMetaTileEntity(24, new SimpleGeneratorMetaTileEntity(scId("rtg.zpm"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 7, genericGeneratorTankSizeFunction, 1));
         //可以随便再来几个
 
 
@@ -74,6 +76,6 @@ public class SCMetaTileEntities {
         //衰变加速器 30-45
         registerSimpleMetaTileEntity(DECAY_CHAMBER, 30, "decay_chamber", SCRecipeMaps.DECAY_CHAMBER_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, true, SCUtility::scId, GTUtility.hvCappedTankSizeFunction);
 
-
+        aaa = registerMetaTileEntity(100, new MetaTileEntityNuclearReactor(scId("nuclear_reactor")));
     }
 }
