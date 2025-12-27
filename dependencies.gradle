@@ -54,8 +54,6 @@ dependencies {
 
     implementation rfg.deobf("curse.maven:opencomputers-223008:6608365")
 
-    implementation rfg.deobf("curse.maven:industrial-craft-242638:3838713")
-
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
