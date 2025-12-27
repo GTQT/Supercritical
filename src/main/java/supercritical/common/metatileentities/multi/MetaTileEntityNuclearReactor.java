@@ -29,6 +29,7 @@ import gregtech.api.mui.GTGuiTextures;
 import gregtech.api.mui.GTGuis;
 import gregtech.api.pattern.BlockPattern;
 import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.util.GTLog;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.common.blocks.BlockMetalCasing;
@@ -52,6 +53,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
+
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl implements ProgressBarMultiblock {
 
@@ -293,12 +296,19 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
 
-        // 读取库存
+        // ==================== 首先确保关键对象初始化 ====================
+        // 立即初始化模拟器，防止NBT加载时出现空指针
+        if (reactorSimulator == null) {
+            reactorSimulator = new NuclearReactorSimulator(GRID_SIZE, GRID_SIZE);
+            GTLog.logger.warn("Reactor simulator was null during NBT load at {}", getPos());
+        }
+
+        // ==================== 读取库存 ====================
         if (data.hasKey("ComponentInventory")) {
             componentHandler.deserializeNBT(data.getCompoundTag("ComponentInventory"));
         }
 
-        // 读取基本状态
+        // ==================== 读取基本状态 ====================
         hasMeltdown = data.getBoolean("HasMeltdown");
         tickCounter = data.getInteger("TickCounter");
         updateTimer = data.getInteger("UpdateTimer");
@@ -308,34 +318,39 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         efficiency = data.getFloat("Efficiency");
         isReactorActive = data.getBoolean("IsReactorActive");
 
-        // 确保反应堆模拟器已初始化
-        if (reactorSimulator == null) {
-            reactorSimulator = new NuclearReactorSimulator(GRID_SIZE, GRID_SIZE);
-        }
-
-        // 读取模拟器状态（如果存在）
-        if (data.hasKey("ReactorSimulator")) {
+        // ==================== 读取模拟器状态 (增强防御) ====================
+        if (data.hasKey("ReactorSimulator",  TAG_COMPOUND)) {
             NBTTagCompound simulatorNBT = data.getCompoundTag("ReactorSimulator");
-            if (simulatorNBT != null && !simulatorNBT.isEmpty()) {
+
+            // 严格验证 NBT 结构
+            if (simulatorNBT != null && simulatorNBT.hasKey("ComponentGrid", TAG_COMPOUND)) {
                 try {
                     reactorSimulator.readFromNBT(simulatorNBT);
                 } catch (Exception e) {
-                    // 如果读取失败，使用基本状态恢复
-                    reactorSimulator = new NuclearReactorSimulator(GRID_SIZE, GRID_SIZE);
-                    // 设置基础热容量
-                    reactorSimulator.setHeat(currentHeat);
+                    // 详细记录错误信息
+                    GTLog.logger.fatal("Reactor simulator NBT corrupted at {} - Resetting to safe state", getPos(), e);
+                    resetSimulatorToSafeState();
                 }
+            } else {
+                GTLog.logger.warn("Incomplete reactor simulator NBT at {}", getPos());
+                resetSimulatorToSafeState();
             }
         } else {
-            // 如果没有保存的模拟器数据，使用当前状态
-            reactorSimulator.setHeat(currentHeat);
+            GTLog.logger.info("No reactor simulator data found at {}", getPos());
+            resetSimulatorToSafeState();
         }
 
-        // 只在服务端重新同步库存到模拟器
-        if (!getWorld().isRemote) {
+        // ==================== 同步状态 ====================
+        if (getWorld() != null && !getWorld().isRemote) {
             syncInventoryToSimulator();
             updateLocalCache();
         }
+    }
+
+    // 重置模拟器到安全状态
+    private void resetSimulatorToSafeState() {
+        reactorSimulator = new NuclearReactorSimulator(GRID_SIZE, GRID_SIZE);
+        reactorSimulator.setHeat(currentHeat); // 保留当前热量
     }
 
     // ==================== 网络同步 ====================
