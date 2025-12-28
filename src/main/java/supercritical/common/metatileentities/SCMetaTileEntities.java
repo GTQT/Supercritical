@@ -10,7 +10,8 @@ import supercritical.api.util.SCUtility;
 import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.metatileentities.multi.MetaTileEntityFissionReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntityHeatExchanger;
-import supercritical.common.metatileentities.multi.MetaTileEntityNuclearReactor;
+import supercritical.common.metatileentities.multi.nuclearReactor.MetaTileEntityNuclearExtend;
+import supercritical.common.metatileentities.multi.nuclearReactor.MetaTileEntityNuclearReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntitySpentFuelPool;
 import supercritical.common.metatileentities.multi.electric.MetaTileEntityGasCentrifuge;
 import supercritical.common.metatileentities.multi.multiblockpart.*;
@@ -46,7 +47,9 @@ public class SCMetaTileEntities {
     public static MetaTileEntitySpentFuelPool SPENT_FUEL_POOL;
     public static MetaTileEntityGasCentrifuge GAS_CENTRIFUGE;
     public static MetaTileEntityModeratorPort MODERATOR_PORT;
-    public static MetaTileEntityNuclearReactor aaa;
+
+    public static MetaTileEntityNuclearReactor NUCLEAR_REACTOR;
+    public static MetaTileEntityNuclearExtend NUCLEAR_EXTEND_HATCH;
 
     public static void init() {
         //多方块部分
@@ -76,6 +79,7 @@ public class SCMetaTileEntities {
         //衰变加速器 30-45
         registerSimpleMetaTileEntity(DECAY_CHAMBER, 30, "decay_chamber", SCRecipeMaps.DECAY_CHAMBER_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, true, SCUtility::scId, GTUtility.hvCappedTankSizeFunction);
 
-        aaa = registerMetaTileEntity(100, new MetaTileEntityNuclearReactor(scId("nuclear_reactor")));
+        NUCLEAR_REACTOR = registerMetaTileEntity(100, new MetaTileEntityNuclearReactor(scId("nuclear_reactor")));
+        NUCLEAR_EXTEND_HATCH = registerMetaTileEntity(101, new MetaTileEntityNuclearExtend(scId("nuclear_extend_hatch")));
     }
 }

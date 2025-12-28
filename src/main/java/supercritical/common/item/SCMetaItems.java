@@ -59,7 +59,8 @@ public class SCMetaItems {
                         Materials.Uranium,
                         4,          // 热量产出 HU/t
                         5,          // 能量产出 EU/t
-                        1.0f        // 中子发射率
+                        1.0f,        // 中子发射率
+                        SCMetaItems.ANODE_BASKET.getStackForm()
                 ));
 
         FUEL_ROD_MOX = metaItem.addItem(1001, "fuel_rod.mox")
@@ -68,7 +69,8 @@ public class SCMetaItems {
                         Materials.Plutonium,
                         6,          // 热量产出 HU/t
                         8,          // 能量产出 EU/t
-                        1.2f        // 中子发射率
+                        1.2f,        // 中子发射率
+                        SCMetaItems.ANODE_BASKET.getStackForm()
                 ));
 
         FUEL_ROD_DUAL_URANIUM = metaItem.addItem(1002, "fuel_rod.dual_uranium")
@@ -77,7 +79,8 @@ public class SCMetaItems {
                         Materials.Uranium,
                         8,          // 热量产出 HU/t
                         10,         // 能量产出 EU/t
-                        2.0f        // 中子发射率
+                        2.0f,        // 中子发射率
+                        SCMetaItems.ANODE_BASKET.getStackForm()
                 ));
 
         FUEL_ROD_QUAD_URANIUM = metaItem.addItem(1003, "fuel_rod.quad_uranium")
@@ -86,7 +89,8 @@ public class SCMetaItems {
                         Materials.Uranium,
                         16,         // 热量产出 HU/t
                         20,         // 能量产出 EU/t
-                        4.0f        // 中子发射率
+                        4.0f,        // 中子发射率
+                        SCMetaItems.ANODE_BASKET.getStackForm()
                 ));
 
         // 2. 散热片

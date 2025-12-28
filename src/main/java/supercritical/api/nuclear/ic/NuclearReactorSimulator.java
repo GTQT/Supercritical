@@ -1,12 +1,10 @@
 package supercritical.api.nuclear.ic;
 
-
-import gregtech.api.unification.material.Material;
 import gregtech.api.util.GTLog;
+import gregtech.common.items.behaviors.AbstractMaterialPartBehavior;
+import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import supercritical.common.item.behaviors.*;
 
 import javax.annotation.Nonnull;
@@ -20,51 +18,60 @@ import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
  * 负责管理反应堆网格、计算热量、能量产出和组件交互
  */
 public class NuclearReactorSimulator {
-
-    private static final String NBT_GRID_WIDTH = "GridWidth";
-    private static final String NBT_GRID_HEIGHT = "GridHeight";
-    private static final String NBT_COMPONENT_GRID = "ComponentGrid";
-    private static final String NBT_CURRENT_HEAT = "CurrentHeat";
     // ==================== 反应堆状态 ====================
     private final ItemStack[][] componentGrid;      // 组件网格 (x * y)
+    @Getter
     private final int gridWidth;                    // 网格宽度 (3-9)
-    private final int gridHeight;                   // 网格高度 (固定为6)
-
+    @Getter
+    private final int gridHeight;                   // 网格高度 (3-9)
+    // ==================== 缓存数据 (内部缓存，不污染组件NBT) ====================
+    private final int[][] reflectorCounts;          // 每个位置的反射板数量缓存
+    private final int[][] lastEnergyOutput;          // 每个燃料棒上一tick的能量产出缓存
+    private final int[][] lastHeatOutput;            // 每个燃料棒上一tick的热量产出缓存
+    private final boolean[][] isDepleted;            // 组件耗尽状态缓存
+    private final List<GridPosition> fuelRodPositions = new ArrayList<>();      // 燃料棒位置缓存
+    private final List<GridPosition> heatVentPositions = new ArrayList<>();     // 散热片位置缓存
+    private final List<GridPosition> coolantCellPositions = new ArrayList<>();  // 冷却单元位置缓存
+    private final List<GridPosition> reflectorPositions = new ArrayList<>();    // 反射板位置缓存
+    private final int overheatingThreshold = 8500;  // 过热阈值 (HU)
+    private final int meltdownThreshold = 9500;     // 熔毁阈值 (HU)
+    @Getter
     private int currentHeat = 0;                    // 当前热量 (HU)
+    @Getter
     private int maxHeatCapacity = 10000;            // 最大热容量 (HU)
+    @Getter
     private long currentOutput = 0;                 // 当前能量产出 (EU/t)
+    @Getter
     private int totalFuelRods = 0;                  // 燃料棒总数
+    @Getter
     private int totalHeatVents = 0;                 // 散热片总数
+    @Getter
     private int totalCoolantCells = 0;              // 冷却单元总数
+    @Getter
     private int totalReflectors = 0;                // 反射板总数
+    @Getter
     private int totalPlating = 0;                   // 隔板总数
-
     // ==================== 统计数据 ====================
     private int tickCount = 0;                      // 运行tick数
     private long totalEnergyProduced = 0;           // 总能量产出
     private long totalHeatProduced = 0;             // 总热量产出
     private int maxHeatReached = 0;                 // 达到过的最高热量
+    @Getter
     private boolean isActive = false;               // 是否激活状态
-
     // ==================== 安全参数 ====================
     private float explosionResistance = 0.0f;       // 爆炸抗性 (0.0-1.0)
-    private int overheatingThreshold = 8500;        // 过热阈值 (HU)
-    private int meltdownThreshold = 9500;           // 熔毁阈值 (HU)
     private boolean hasMeltdown = false;            // 是否已熔毁
-
-    // ==================== 缓存数据 ====================
-    private final List<GridPosition> fuelRodPositions = new ArrayList<>();      // 燃料棒位置缓存
-    private final List<GridPosition> heatVentPositions = new ArrayList<>();     // 散热片位置缓存
-    private final List<GridPosition> coolantCellPositions = new ArrayList<>();  // 冷却单元位置缓存
-    private final List<GridPosition> reflectorPositions = new ArrayList<>();    // 反射板位置缓存
-    private final boolean[][] adjacencyCache;                                    // 邻接关系缓存
 
     // ==================== 构建器 ====================
     public NuclearReactorSimulator(int width, int height) {
         this.gridWidth = Math.max(3, Math.min(9, width));
-        this.gridHeight = Math.max(1, Math.min(6, height));
+        this.gridHeight = Math.max(3, Math.min(9, height));
         this.componentGrid = new ItemStack[gridWidth][gridHeight];
-        this.adjacencyCache = new boolean[gridWidth][gridHeight];
+        // 初始化内部缓存 (不使用组件NBT存储临时数据)
+        this.reflectorCounts = new int[gridWidth][gridHeight];
+        this.lastEnergyOutput = new int[gridWidth][gridHeight];
+        this.lastHeatOutput = new int[gridWidth][gridHeight];
+        this.isDepleted = new boolean[gridWidth][gridHeight];
 
         // 初始化网格
         for (int x = 0; x < gridWidth; x++) {
@@ -78,6 +85,7 @@ public class NuclearReactorSimulator {
 
     /**
      * 模拟一个tick的反应堆运行
+     *
      * @return 返回true表示正常运行，false表示发生熔毁
      */
     public boolean simulateTick() {
@@ -122,7 +130,7 @@ public class NuclearReactorSimulator {
     // ==================== 各阶段详细实现 ====================
 
     /**
-     * 第一阶段：收集组件信息
+     * 第一阶段：收集组件信息 (跳过耗尽组件)
      */
     private void collectComponentInfo() {
         totalFuelRods = 0;
@@ -143,6 +151,9 @@ public class NuclearReactorSimulator {
             for (int y = 0; y < gridHeight; y++) {
                 ItemStack stack = componentGrid[x][y];
                 if (stack.isEmpty()) continue;
+
+                // 检查是否耗尽 (使用内部缓存而不是NBT)
+                if (isDepleted[x][y]) continue;
 
                 // 检查组件类型并收集信息
                 if (isFuelRod(stack)) {
@@ -169,9 +180,6 @@ public class NuclearReactorSimulator {
                 }
             }
         }
-
-        // 计算邻接关系缓存（用于优化性能）
-        calculateAdjacencyCache();
     }
 
     /**
@@ -181,7 +189,7 @@ public class NuclearReactorSimulator {
         // 为每个燃料棒计算相邻反射板数量
         for (GridPosition pos : fuelRodPositions) {
             int reflectorCount = countAdjacentReflectors(pos.x, pos.y);
-            setReflectorCount(pos.x, pos.y, reflectorCount);
+            reflectorCounts[pos.x][pos.y] = reflectorCount; // 存储到内部缓存
         }
     }
 
@@ -197,7 +205,7 @@ public class NuclearReactorSimulator {
             FuelRodBehavior fuelRod = getFuelRodBehavior(stack);
             if (fuelRod == null) continue;
 
-            int reflectorCount = getReflectorCount(pos.x, pos.y);
+            int reflectorCount = reflectorCounts[pos.x][pos.y]; // 从内部缓存读取
 
             // 计算基础产出
             int energyOutput = fuelRod.getEnergyOutput();
@@ -207,14 +215,15 @@ public class NuclearReactorSimulator {
             float reflectorBonus = 1.0f + (reflectorCount * 0.2f);
 
             // 最终产出
-            int finalEnergy = (int)(energyOutput * reflectorBonus);
-            int finalHeat = (int)(heatOutput * reflectorBonus);
+            int finalEnergy = (int) (energyOutput * reflectorBonus);
+            int finalHeat = (int) (heatOutput * reflectorBonus);
 
             totalEnergy += finalEnergy;
             totalHeat += finalHeat;
 
-            // 标记该燃料棒已贡献产出
-            setFuelOutput(pos.x, pos.y, finalEnergy, finalHeat);
+            // 缓存产出数据 (内部缓存)
+            lastEnergyOutput[pos.x][pos.y] = finalEnergy;
+            lastHeatOutput[pos.x][pos.y] = finalHeat;
         }
 
         currentOutput = totalEnergy;
@@ -238,7 +247,7 @@ public class NuclearReactorSimulator {
             } else if (isComponentHeatVent(stack)) {
                 ComponentHeatVentBehavior componentVent = getComponentHeatVentBehavior(stack);
                 if (componentVent != null) {
-                    // 元件散热片：冷却相邻的燃料棒
+                    // 优化：直接计算冷却效果，避免重复遍历
                     totalDissipation += coolAdjacentFuelRods(pos.x, pos.y, componentVent);
                 }
             }
@@ -285,25 +294,33 @@ public class NuclearReactorSimulator {
      * 第七阶段：检查安全状态
      */
     private void checkSafetyStatus() {
+        if (hasMeltdown) return; // 已熔毁则跳过检查
+
         // 检查过热
         if (currentHeat > overheatingThreshold) {
             // 过热警告：增加熔毁概率
-            float overheatRatio = (float)(currentHeat - overheatingThreshold) /
+            float overheatRatio = (float) (currentHeat - overheatingThreshold) /
                     (meltdownThreshold - overheatingThreshold);
 
             // 基础熔毁概率：每tick 0.1% * 过热比例
             float meltdownChance = 0.001f * overheatRatio;
 
-            // 随机检查是否熔毁
-            if (Math.random() < meltdownChance) {
-                hasMeltdown = true;
+            // 随机检查是否熔毁 (添加安全裕度)
+            if (Math.random() < meltdownChance && currentHeat > overheatingThreshold + 500) {
+                triggerMeltdown();
             }
         }
 
         // 检查熔毁
         if (currentHeat >= meltdownThreshold) {
-            hasMeltdown = true;
+            triggerMeltdown();
         }
+    }
+
+    private void triggerMeltdown() {
+        hasMeltdown = true;
+        GTLog.logger.error("Reactor meltdown at {} heat! (Max capacity: {})", currentHeat, maxHeatCapacity);
+        // 实际熔毁逻辑应由外部处理 (如爆炸)
     }
 
     /**
@@ -314,18 +331,19 @@ public class NuclearReactorSimulator {
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
                 ItemStack stack = componentGrid[x][y];
-                if (stack.isEmpty()) continue;
+                if (stack.isEmpty() || isDepleted[x][y]) continue;
 
                 NuclearComponentBehavior behavior = getComponentBehavior(stack);
-                if (behavior != null) {
-                    // 应用耐久消耗
-                    behavior.applyDamage(stack, 1);
+                if (behavior == null) continue;
 
-                    // 检查是否耗尽
-                    if (behavior.getPartDamage(stack) >= behavior.getPartMaxDurability(stack)) {
-                        // 标记为耗尽（但不移除，保留0耐久）
-                        markAsDepleted(x, y);
-                    }
+                // 应用耐久消耗
+                behavior.applyDamage(stack, 1);
+
+                // 检查是否耗尽
+                int currentDamage = AbstractMaterialPartBehavior.getPartDamage(stack);
+                int maxDurability = behavior.getPartMaxDurability(stack);
+                if (currentDamage >= maxDurability) {
+                    markAsDepleted(x, y); // 标记内部缓存
                 }
             }
         }
@@ -334,26 +352,27 @@ public class NuclearReactorSimulator {
     // ==================== 辅助方法 ====================
 
     /**
-     * 计算元件散热片对相邻燃料棒的冷却
+     * 计算元件散热片对相邻燃料棒的冷却 (优化分配)
      */
     private int coolAdjacentFuelRods(int x, int y, ComponentHeatVentBehavior vent) {
-        int totalCooling = 0;
         int coolingRate = vent.getCoolingRate();
+        int adjacentFuelRods = 0;
 
         // 检查四个方向的相邻格子
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
         for (int[] dir : directions) {
             int nx = x + dir[0];
             int ny = y + dir[1];
-
-            if (isValidPosition(nx, ny) && isFuelRod(componentGrid[nx][ny])) {
-                // 冷却相邻燃料棒
-                totalCooling += Math.min(coolingRate / 4, 100); // 平均分配冷却量
+            if (isValidPosition(nx, ny) && isFuelRod(componentGrid[nx][ny]) && !isDepleted[nx][ny]) {
+                adjacentFuelRods++;
             }
         }
 
-        return Math.min(coolingRate, totalCooling);
+        if (adjacentFuelRods == 0) return 0;
+
+        // 均匀分配冷却量 (不超过单格100)
+        int coolingPerRod = Math.min(100, coolingRate / adjacentFuelRods);
+        return coolingPerRod * adjacentFuelRods;
     }
 
     /**
@@ -361,15 +380,14 @@ public class NuclearReactorSimulator {
      */
     private int countAdjacentReflectors(int x, int y) {
         int count = 0;
-
-        // 检查四个方向的相邻格子
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
         for (int[] dir : directions) {
             int nx = x + dir[0];
             int ny = y + dir[1];
-
-            if (isValidPosition(nx, ny) && isNeutronReflector(componentGrid[nx][ny])) {
+            if (isValidPosition(nx, ny) &&
+                    isNeutronReflector(componentGrid[nx][ny]) &&
+                    !isDepleted[nx][ny]) {
                 count++;
             }
         }
@@ -378,39 +396,24 @@ public class NuclearReactorSimulator {
     }
 
     /**
-     * 计算邻接关系缓存
-     */
-    private void calculateAdjacencyCache() {
-        // 清空缓存
-        for (int x = 0; x < gridWidth; x++) {
-            for (int y = 0; y < gridHeight; y++) {
-                adjacencyCache[x][y] = false;
-            }
-        }
-
-        // 标记所有有相邻燃料棒的格子
-        for (GridPosition pos : fuelRodPositions) {
-            int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-            for (int[] dir : directions) {
-                int nx = pos.x + dir[0];
-                int ny = pos.y + dir[1];
-                if (isValidPosition(nx, ny)) {
-                    adjacencyCache[nx][ny] = true;
-                }
-            }
-        }
-    }
-
-    /**
-     * 清空缓存数据
+     * 清空内部缓存数据
      */
     private void clearCaches() {
-        // 清空燃料棒产出缓存
+        // 重置内部缓存
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
-                clearCellCache(x, y);
+                reflectorCounts[x][y] = 0;
+                lastEnergyOutput[x][y] = 0;
+                lastHeatOutput[x][y] = 0;
+                // 注意: isDepleted 状态需要保留，不在这里重置
             }
         }
+
+        // 清空位置缓存
+        fuelRodPositions.clear();
+        heatVentPositions.clear();
+        coolantCellPositions.clear();
+        reflectorPositions.clear();
     }
 
     // ==================== 组件类型检查 ====================
@@ -566,19 +569,9 @@ public class NuclearReactorSimulator {
 
     // ==================== Getter方法 ====================
 
-    public int getGridWidth() { return gridWidth; }
-    public int getGridHeight() { return gridHeight; }
-    public int getCurrentHeat() { return currentHeat; }
-    public int getMaxHeatCapacity() { return maxHeatCapacity; }
-    public long getCurrentOutput() { return currentOutput; }
-    public boolean isActive() { return isActive; }
-    public boolean hasMeltdown() { return hasMeltdown; }
-
-    public int getTotalFuelRods() { return totalFuelRods; }
-    public int getTotalHeatVents() { return totalHeatVents; }
-    public int getTotalCoolantCells() { return totalCoolantCells; }
-    public int getTotalReflectors() { return totalReflectors; }
-    public int getTotalPlating() { return totalPlating; }
+    public boolean hasMeltdown() {
+        return hasMeltdown;
+    }
 
     public int getHeatPercentage() {
         return maxHeatCapacity > 0 ? (currentHeat * 100) / maxHeatCapacity : 0;
@@ -595,18 +588,6 @@ public class NuclearReactorSimulator {
 
     public void setHeat(int currentHeat) {
         this.currentHeat = currentHeat;
-    }
-
-    // ==================== 网格位置内部类 ====================
-
-    private static class GridPosition {
-        public final int x;
-        public final int y;
-
-        public GridPosition(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 
     // ==================== NBT序列化 ====================
@@ -639,60 +620,100 @@ public class NuclearReactorSimulator {
         }
         nbt.setTag("ComponentGrid", gridNBT);
 
+        // 保存耗尽状态
+        NBTTagCompound depletedNBT = new NBTTagCompound();
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                if (isDepleted[x][y]) {
+                    depletedNBT.setBoolean(x + "," + y, true);
+                }
+            }
+        }
+        nbt.setTag("DepletedStates", depletedNBT);
+
         return nbt;
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
         // 基础状态
         currentHeat = nbt.getInteger("CurrentHeat");
-        maxHeatCapacity = Math.max(10000, nbt.getInteger("MaxHeatCapacity")); // 防止无效值
+        maxHeatCapacity = Math.max(10000, nbt.getInteger("MaxHeatCapacity"));
         currentOutput = nbt.getLong("CurrentOutput");
         isActive = nbt.getBoolean("IsActive");
         hasMeltdown = nbt.getBoolean("HasMeltdown");
         tickCount = nbt.getInteger("TickCount");
-        // ... [其他状态] ...
+        totalEnergyProduced = nbt.getLong("TotalEnergyProduced");
+        totalHeatProduced = nbt.getLong("TotalHeatProduced");
+        maxHeatReached = nbt.getInteger("MaxHeatReached");
+        explosionResistance = nbt.getFloat("ExplosionResistance");
 
-        // ==================== 安全处理网格数据 ====================
-        NBTTagCompound gridNBT = nbt.getCompoundTag("ComponentGrid");
-
-        // 严格验证网格尺寸
+        // 安全处理网格数据
         int savedWidth = nbt.getInteger("GridWidth");
         int savedHeight = nbt.getInteger("GridHeight");
 
         if (savedWidth != gridWidth || savedHeight != gridHeight) {
-            GTLog.logger.warn("Reactor grid size mismatch: {}x{} vs {}x{}",
+            GTLog.logger.warn("Reactor grid size mismatch: {}x{} vs {}x{}. Resetting grid.",
                     savedWidth, savedHeight, gridWidth, gridHeight);
-            // 初始化为空网格
-            for (int x = 0; x < gridWidth; x++) {
-                for (int y = 0; y < gridHeight; y++) {
-                    componentGrid[x][y] = ItemStack.EMPTY;
-                }
-            }
+            resetGrid();
             return;
         }
 
-        // 安全读取每个单元格
+        // 读取网格
+        NBTTagCompound gridNBT = nbt.getCompoundTag("ComponentGrid");
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
                 String key = x + "," + y;
+                componentGrid[x][y] = ItemStack.EMPTY;
                 if (gridNBT.hasKey(key, TAG_COMPOUND)) {
                     try {
                         NBTTagCompound stackNBT = gridNBT.getCompoundTag(key);
                         ItemStack stack = new ItemStack(stackNBT);
-
-                        // 额外验证物品有效性
-                        if (stack.isEmpty() || !stack.hasTagCompound()) {
-                            componentGrid[x][y] = ItemStack.EMPTY;
-                        } else {
+                        if (!stack.isEmpty()) {
                             componentGrid[x][y] = stack;
                         }
                     } catch (Exception e) {
                         GTLog.logger.error("Failed to load component at ({}, {})", x, y, e);
-                        componentGrid[x][y] = ItemStack.EMPTY;
                     }
-                } else {
-                    componentGrid[x][y] = ItemStack.EMPTY;
                 }
+            }
+        }
+
+        // 读取耗尽状态
+        clearDepletedStates(); // 先重置
+        if (nbt.hasKey("DepletedStates")) {
+            NBTTagCompound depletedNBT = nbt.getCompoundTag("DepletedStates");
+            for (String key : depletedNBT.getKeySet()) {
+                if (depletedNBT.getBoolean(key)) {
+                    String[] parts = key.split(",");
+                    if (parts.length == 2) {
+                        try {
+                            int x = Integer.parseInt(parts[0]);
+                            int y = Integer.parseInt(parts[1]);
+                            if (isValidPosition(x, y)) {
+                                isDepleted[x][y] = true;
+                            }
+                        } catch (NumberFormatException e) {
+                            GTLog.logger.error("Invalid depleted state key: {}", key);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void resetGrid() {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                componentGrid[x][y] = ItemStack.EMPTY;
+            }
+        }
+        clearDepletedStates();
+    }
+
+    private void clearDepletedStates() {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                isDepleted[x][y] = false;
             }
         }
     }

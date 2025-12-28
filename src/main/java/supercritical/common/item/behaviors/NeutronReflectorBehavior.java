@@ -51,7 +51,7 @@ public class NeutronReflectorBehavior extends NuclearComponentBehavior {
         lines.add(I18n.format("材料: " + material.getLocalizedName()));
 
         // 性能参数
-        lines.add(I18n.format("中子反射效率: " + String.format("%.1f", reflectionEfficiency * 100) + "%"));
+        lines.add(I18n.format("中子反射效率: " + String.format("%.1f", reflectionEfficiency * 100) + "%%"));
 
         // 每tick耐久消耗
         lines.add(I18n.format("耐久消耗: " + getDurabilityCost() + "/tick"));

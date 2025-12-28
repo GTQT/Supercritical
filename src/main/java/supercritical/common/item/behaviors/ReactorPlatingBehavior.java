@@ -60,7 +60,7 @@ public class ReactorPlatingBehavior extends NuclearComponentBehavior {
         }
 
         if (explosionResistance > 0) {
-            lines.add(I18n.format("爆炸抗性: " + String.format("%.1f", explosionResistance * 100) + "%"));
+            lines.add(I18n.format("爆炸抗性: " + String.format("%.1f", explosionResistance * 100) + "%%"));
         }
 
         // 每tick耐久消耗

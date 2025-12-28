@@ -2,6 +2,7 @@ package supercritical;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,7 @@ import supercritical.common.CommonProxy;
 import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.item.SCMetaItems;
 import supercritical.common.metatileentities.SCMetaTileEntities;
+import supercritical.integration.top.TheOneProbeModule;
 
 @Mod(modid = SCInternalTags.MODID,
         version = SCInternalTags.VERSION,
@@ -25,6 +27,11 @@ public class Supercritical {
 
     @Mod.Instance(SCValues.MODID)
     public static Supercritical instance;
+
+    @Mod.EventHandler
+    public void onInit(FMLInitializationEvent event) {
+        TheOneProbeModule.init();
+    }
 
     @Mod.EventHandler
     public void onPreInit(@NotNull FMLPreInitializationEvent event) {

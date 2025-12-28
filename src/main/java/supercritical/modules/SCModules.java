@@ -10,6 +10,7 @@ public class SCModules implements IModuleContainer {
     public static final String MODULE_CORE = "supercritical_core";
     public static final String MODULE_JEI = "supercritical_jei_integration";
     public static final String MODULE_OC = "supercritical_oc_integration";
+    public static final String MODULE_TOP = "supercritical_top_integration";
 
     @Override
     public String getID() {
