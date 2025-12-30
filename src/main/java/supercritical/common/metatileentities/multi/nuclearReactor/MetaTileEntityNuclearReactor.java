@@ -64,19 +64,18 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
+import static supercritical.SCValues.SYNC_REACTOR_STATE;
 
 public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl implements ProgressBarMultiblock {
 
     private static final int UPDATE_TICK_RATE = 20; // 20 ticks = 1秒更新一次
     private static final int BASE_HEAT_CAPACITY = 10000; // 基础热容量
-    private static final int BASE_SIZE = 3; // 基础大小
-    private static final int MAX_SIZE = 9;  // 最大大小
 
     // ==================== 核反应堆参数 ====================
     @Getter
-    private int reactorWidth = BASE_SIZE;
+    private final int reactorWidth = 9;
     @Getter
-    private int reactorHeight = BASE_SIZE;
+    private final int reactorHeight = 6;
     @Getter
     private int extendCount = 0;
 
@@ -103,15 +102,12 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
     public MetaTileEntityNuclearReactor(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
-        initializeReactor(BASE_SIZE, BASE_SIZE);
+        initializeReactor(reactorWidth, reactorHeight);
     }
 
     private void initializeReactor(int width, int height) {
-        this.reactorWidth = Math.max(BASE_SIZE, Math.min(MAX_SIZE, width));
-        this.reactorHeight = Math.max(BASE_SIZE, Math.min(MAX_SIZE, height));
-
-        this.reactorSimulator = new NuclearReactorSimulator(reactorWidth, reactorHeight);
-        this.componentHandler = createComponentHandler(reactorWidth, reactorHeight);
+        this.reactorSimulator = new NuclearReactorSimulator(width, height);
+        this.componentHandler = createComponentHandler(width, height);
     }
 
     private GTItemStackHandler createComponentHandler(int width, int height) {
@@ -154,37 +150,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
         // 获取扩展仓数量
         List<INuclearExtend> extendHatches = getEnergyHatch();
-        this.extendCount = extendHatches != null ? extendHatches.size() : 0;
-
-        // 计算新尺寸 (基础3x3 + 扩展数量，但不超过9x9)
-        int newWidth = Math.min(MAX_SIZE, BASE_SIZE + extendCount);
-        int newHeight = Math.min(MAX_SIZE, BASE_SIZE + extendCount);
-
-        // 仅在尺寸变化时重新初始化
-        if (newWidth != reactorWidth || newHeight != reactorHeight) {
-            // 保存当前库存
-            ItemStack[] savedItems = saveInventory();
-            int savedHeat = this.currentHeat;
-
-            // 重新初始化反应堆
-            initializeReactor(newWidth, newHeight);
-
-            // 恢复库存
-            restoreInventory(savedItems);
-
-            // 恢复热量
-            this.reactorSimulator.setHeat(savedHeat);
-
-            // 标记需要同步
-            markDirty();
-            writeCustomData(100, buf -> {
-                buf.writeInt(currentHeat);
-                buf.writeInt(maxHeatCapacity);
-                buf.writeLong(currentOutput);
-                buf.writeBoolean(isReactorActive);
-                buf.writeBoolean(hasMeltdown);
-            });
-        }
     }
 
     private ItemStack[] saveInventory() {
@@ -238,7 +203,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
             // 5. 标记需要同步到客户端
             markDirty();
-            writeCustomData(100, buf -> {
+            writeCustomData(SYNC_REACTOR_STATE, buf -> {
                 buf.writeInt(currentHeat);
                 buf.writeInt(maxHeatCapacity);
                 buf.writeLong(currentOutput);
@@ -363,10 +328,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
-        data.setInteger("reactorWidth", reactorWidth);
-        data.setInteger("reactorHeight", reactorHeight);
-        data.setInteger("extendCount", extendCount);
-
         // 保存库存
         data.setTag("ComponentInventory", componentHandler.serializeNBT());
 
@@ -393,22 +354,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-
-        // 读取尺寸
-        if (data.hasKey("reactorWidth")) {
-            reactorWidth = data.getInteger("reactorWidth");
-            reactorHeight = data.getInteger("reactorHeight");
-            extendCount = data.getInteger("extendCount");
-        } else {
-            // 兼容旧存档
-            reactorWidth = data.getInteger("xSize");
-            reactorHeight = data.getInteger("ySize");
-            extendCount = Math.max(0, Math.min(reactorWidth, reactorHeight) - BASE_SIZE);
-        }
-
-        // 限制在有效范围内
-        reactorWidth = Math.max(BASE_SIZE, Math.min(MAX_SIZE, reactorWidth));
-        reactorHeight = Math.max(BASE_SIZE, Math.min(MAX_SIZE, reactorHeight));
 
         // 重新初始化反应堆
         initializeReactor(reactorWidth, reactorHeight);
@@ -478,14 +423,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     public void receiveInitialSyncData(PacketBuffer buf) {
         super.receiveInitialSyncData(buf);
 
-        int newWidth = buf.readInt();
-        int newHeight = buf.readInt();
-
-        // 仅在尺寸不同时重新初始化
-        if (newWidth != reactorWidth || newHeight != reactorHeight) {
-            initializeReactor(newWidth, newHeight);
-        }
-
         currentHeat = buf.readInt();
         maxHeatCapacity = buf.readInt();
         currentOutput = buf.readLong();
@@ -508,7 +445,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
 
-        if (dataId == 100) {
+        if (dataId == SYNC_REACTOR_STATE) {
             currentHeat = buf.readInt();
             maxHeatCapacity = buf.readInt();
             currentOutput = buf.readLong();
@@ -542,25 +479,12 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
      * 创建组件管理面板
      */
     private ModularPanel makeComponentPanel(PanelSyncManager syncManager, IPanelHandler syncHandler) {
-        // 注册反应堆尺寸同步值
-        IntSyncValue widthValue = new IntSyncValue(this::getReactorWidth);
-        IntSyncValue heightValue = new IntSyncValue(this::getReactorHeight);
-
-        // 将尺寸值同步到管理器
-        syncManager.syncValue("reactor_width", widthValue);
-        syncManager.syncValue("reactor_height", heightValue);
-
-        System.out.println(reactorSimulator.getGridWidth());
-        System.out.println(reactorWidth);
-        System.out.println(widthValue.getValue());
-
-
         // 注册槽位组，使用宽度作为每行的槽位数
-        syncManager.registerSlotGroup("reactor_inventory", widthValue.getValue());
+        syncManager.registerSlotGroup("reactor_inventory", reactorWidth);
 
         // 计算面板大小
-        int panelHeight = 4 + 20 + (heightValue.getValue() * 18) + 4;
-        int panelWidth = 4 + (widthValue.getValue() * 18) + 4;
+        int panelHeight = 4 + 20 + (reactorHeight * 18) + 4;
+        int panelWidth = 4 + (reactorWidth * 18) + 4;
 
         return GTGuis.createPopupPanel("nuclear_components", panelWidth, panelHeight)
                 // 标题栏
@@ -572,16 +496,16 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                                 .asWidget()
                                 .size(16)
                                 .marginRight(4))
-                        .child(IKey.str("核电组件 (" + widthValue.getValue() + "×" + heightValue.getValue() + ")")
+                        .child(IKey.str("核电组件 (" + reactorWidth + "×" + reactorHeight + ")")
                                 .asWidget()
                                 .heightRel(1.0f)))
                 // 组件网格
                 .child(Flow.column()
                         .top(24)
                         .left(4)
-                        .width(widthValue.getValue() * 18)
-                        .height(heightValue.getValue() * 18)
-                        .child(createComponentGrid(widthValue.getValue(), heightValue.getValue(), syncManager)));
+                        .width(reactorWidth * 18)
+                        .height(reactorHeight * 18)
+                        .child(createComponentGrid(reactorWidth, reactorHeight, syncManager)));
     }
 
     /**
@@ -725,8 +649,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                     boolean meltdown = syncer.syncBoolean(hasMeltdown);
                     boolean active = syncer.syncBoolean(isReactorActive);
                     boolean working = syncer.syncBoolean(isWorkingEnabled());
-                    int width = syncer.syncInt(reactorWidth);
-                    int height = syncer.syncInt(reactorHeight);
+
 
                     if (meltdown) {
                         richText.add(IKey.str(TextFormatting.DARK_RED + "✗ 反应堆熔毁"));
@@ -737,8 +660,8 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                     }
 
                     // 大小
-                    richText.add(IKey.str(TextFormatting.GRAY + "大小: " + width + "×" + height));
-                    richText.add(IKey.str(TextFormatting.GRAY + "扩展仓: " + extendCount + "/" + (MAX_SIZE - BASE_SIZE)));
+                    richText.add(IKey.str(TextFormatting.GRAY + "大小: " + reactorWidth + "×" + reactorHeight));
+                    //richText.add(IKey.str(TextFormatting.GRAY + "扩展仓: " + extendCount + "/" + (MAX_SIZE - BASE_SIZE)));
 
                     // 添加组件统计
                     richText.add(IKey.str(TextFormatting.GRAY + "燃料棒: " +
@@ -867,7 +790,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 .where('S', selfPredicate())
                 .where('Y', states(getCasingState())
                         .or(abilities(MultiblockAbility.OUTPUT_ENERGY).setMinGlobalLimited(1).setMaxGlobalLimited(3))
-                        .or(abilities(SCMultiblockAbility.REACTOR_EXTEND_HATCH).setMinGlobalLimited(0).setMaxGlobalLimited(6))
+                        .or(abilities(SCMultiblockAbility.REACTOR_EXTEND_HATCH).setMinGlobalLimited(0).setMaxGlobalLimited(1))
                 )
                 .where(' ', any())
                 .build();
@@ -989,7 +912,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         tooltip.add("中子反射板将逃逸的中子反射回燃料棒，提高裂变效率但同时增加热量产生，需要精密的热平衡设计");
         tooltip.add("当热量超过9500HU阈值时，反应堆将发生不可逆的熔毁，摧毁所有内部组件并对周围环境造成严重破坏");
         tooltip.add(TextFormatting.GREEN + I18n.format("-拓展升级："));
-        tooltip.add("通过安装燃料拓展仓来扩展核反应堆的内部容量，每个燃料拓展仓将反应堆内部空间的X和Y方向各增加1格（最大9*9）。");
+        tooltip.add("通过安装燃料拓展仓来扩展核反应堆的功能属性。");
         tooltip.add(TextFormatting.GREEN + I18n.format("-组件功能："));
         tooltip.add("燃料棒-反应堆的核心能源来源，基础输出功率取决于燃料类型，相邻燃料棒会产生额外的链式反应加成");
         tooltip.add("散热片-被动散热组件，每tick移除固定量热量，分为普通散热片(冷却自身)和元件散热片(冷却相邻燃料棒)");

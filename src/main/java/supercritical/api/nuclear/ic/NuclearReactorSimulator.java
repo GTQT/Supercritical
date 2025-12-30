@@ -64,8 +64,8 @@ public class NuclearReactorSimulator {
 
     // ==================== 构建器 ====================
     public NuclearReactorSimulator(int width, int height) {
-        this.gridWidth = Math.max(3, Math.min(9, width));
-        this.gridHeight = Math.max(3, Math.min(9, height));
+        this.gridWidth = width;
+        this.gridHeight = height;
         this.componentGrid = new ItemStack[gridWidth][gridHeight];
         // 初始化内部缓存 (不使用组件NBT存储临时数据)
         this.reflectorCounts = new int[gridWidth][gridHeight];
