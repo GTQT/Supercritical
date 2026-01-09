@@ -33,9 +33,6 @@ import gregtech.api.pattern.PatternMatchContext;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.tooltips.InformationHandler;
 import gregtech.client.renderer.ICubeRenderer;
-import gregtech.client.renderer.texture.Textures;
-import gregtech.common.blocks.BlockMetalCasing;
-import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.behaviors.AbstractMaterialPartBehavior;
 import gregtech.core.sound.GTSoundEvents;
 import lombok.Getter;
@@ -56,6 +53,9 @@ import org.jetbrains.annotations.NotNull;
 import supercritical.api.capability.INuclearExtend;
 import supercritical.api.metatileentity.multiblock.SCMultiblockAbility;
 import supercritical.api.nuclear.ic.NuclearReactorSimulator;
+import supercritical.client.renderer.textures.SCTextures;
+import supercritical.common.blocks.BlockNuclearReactorCasing;
+import supercritical.common.blocks.SCMetaBlocks;
 import supercritical.common.item.behaviors.NuclearComponentBehavior;
 
 import java.io.IOException;
@@ -65,6 +65,7 @@ import java.util.function.UnaryOperator;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 import static supercritical.SCValues.SYNC_REACTOR_STATE;
+import static supercritical.common.metatileentities.multi.nuclearReactor.NuclearAbility.STOP_WORK;
 
 public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl implements ProgressBarMultiblock {
 
@@ -139,7 +140,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         return new MetaTileEntityNuclearReactor(metaTileEntityId);
     }
 
-    public List<INuclearExtend> getEnergyHatch() {
+    public List<INuclearExtend> getExtendHatch() {
         List<INuclearExtend> abilities = getAbilities(SCMultiblockAbility.REACTOR_EXTEND_HATCH);
         return abilities.isEmpty() ? null : abilities;
     }
@@ -149,7 +150,17 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         super.formStructure(context);
 
         // 获取扩展仓数量
-        List<INuclearExtend> extendHatches = getEnergyHatch();
+        List<INuclearExtend> extendHatches = getExtendHatch();
+        if(getExtendHatch()!=null) extendCount = extendHatches.size();
+    }
+
+    public boolean haveAbilities(NuclearAbility ability){
+        if(extendCount > 0){
+            for(INuclearExtend extend:getExtendHatch()){
+                if(extend.getUpdateAbilities().contains(ability))return true;
+            }
+        }
+        return false;
     }
 
     private ItemStack[] saveInventory() {
@@ -213,6 +224,12 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         }
         // 6. 输出能量
         outputEnergy();
+
+        if(haveAbilities(STOP_WORK) && reactorSimulator.isOverHeat())
+        {
+            setWorkingEnabled(false);
+        }
+
     }
 
     // ==================== 核心方法 ====================
@@ -797,13 +814,13 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     }
 
     private IBlockState getCasingState() {
-        return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.ALUMINIUM_FROSTPROOF);
+        return SCMetaBlocks.NUCLEAR_REACTOR_CASING.getState(BlockNuclearReactorCasing.NuclearReactorType.NUCLEAR_REACTOR_CASING);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart iMultiblockPart) {
-        return Textures.FROST_PROOF_CASING;
+        return SCTextures.NUCLEAR_REACTOR_CASING;
     }
 
     @SideOnly(Side.CLIENT)
@@ -817,7 +834,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     @SideOnly(Side.CLIENT)
     @Override
     protected @NotNull ICubeRenderer getFrontOverlay() {
-        return Textures.LARGE_GAS_TURBINE_OVERLAY;
+        return SCTextures.NUCLEAR_REACTOR_OVERLAY;
     }
 
     @Override

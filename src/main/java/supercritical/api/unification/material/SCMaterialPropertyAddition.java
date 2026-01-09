@@ -6,8 +6,10 @@ import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.properties.FluidProperty;
 import gregtech.api.unification.material.properties.IngotProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
+import gregtech.api.unification.ore.OrePrefix;
 
 import static gregtech.api.unification.material.Materials.*;
+import static supercritical.api.unification.material.SCMaterials.*;
 
 public class SCMaterialPropertyAddition {
     public static void init() {
@@ -18,5 +20,19 @@ public class SCMaterialPropertyAddition {
         Protactinium.setProperty(PropertyKey.DUST, new DustProperty());
         Radium.setProperty(PropertyKey.DUST, new DustProperty());
         Neptunium.setProperty(PropertyKey.DUST, new DustProperty());
+
+
+        OrePrefix.dustSmall.setIgnored(GelidCryotheum);
+        OrePrefix.dustTiny.setIgnored(GelidCryotheum);
+
+        OrePrefix.dustSmall.setIgnored(BlazingPyrotheum);
+        OrePrefix.dustTiny.setIgnored(BlazingPyrotheum);
+
+        OrePrefix.dustSmall.setIgnored(TectonicPetrotheum);
+        OrePrefix.dustTiny.setIgnored(TectonicPetrotheum);
+
+        OrePrefix.dustSmall.setIgnored(ZephyreanAerotheum);
+        OrePrefix.dustTiny.setIgnored(ZephyreanAerotheum);
+
     }
 }

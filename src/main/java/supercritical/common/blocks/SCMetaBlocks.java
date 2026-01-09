@@ -17,6 +17,9 @@ public class SCMetaBlocks {
     public static BlockNuclearCasing NUCLEAR_CASING;
     public static BlockGasCentrifugeCasing GAS_CENTRIFUGE_CASING;
     public static BlockPanelling PANELLING;
+    public static BlockNuclearReactorCasing NUCLEAR_REACTOR_CASING;
+
+
     // Molten Corium
     public static BlockMoltenCorium MOLTEN_CORIUM;
 
@@ -29,6 +32,8 @@ public class SCMetaBlocks {
         GAS_CENTRIFUGE_CASING.setRegistryName("gas_centrifuge_casing");
         PANELLING = new BlockPanelling();
         PANELLING.setRegistryName("panelling");
+        NUCLEAR_REACTOR_CASING = new BlockNuclearReactorCasing();
+        NUCLEAR_REACTOR_CASING.setRegistryName("nuclear_reactor_casing");
 
 
         MOLTEN_CORIUM = BlockMoltenCorium.register();
@@ -39,6 +44,7 @@ public class SCMetaBlocks {
         registerItemModel(FISSION_CASING);
         registerItemModel(GAS_CENTRIFUGE_CASING);
         registerItemModel(PANELLING);
+        registerItemModel(NUCLEAR_REACTOR_CASING);
         NUCLEAR_CASING.onModelRegister();
     }
 

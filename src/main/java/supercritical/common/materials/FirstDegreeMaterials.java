@@ -14,6 +14,7 @@ import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.material.info.MaterialFlags.*;
 import static gregtech.api.unification.material.info.MaterialIconSet.*;
 import static supercritical.api.unification.material.SCMaterials.*;
+import static supercritical.api.unification.material.info.SCMaterialIconSet.*;
 import static supercritical.api.util.SCUtility.scId;
 
 /*
@@ -120,5 +121,34 @@ public class FirstDegreeMaterials {
                 new CoolantProperty(HeavyWater, HighPressureHeavyWater, FluidStorageKeys.LIQUID, 4., 1000,
                         374.4, 2064000, 4228.)
                         .setAccumulatesHydrogen(true));
+
+        GelidCryotheum = new Material.Builder(getID(), scId("gelid_cryotheum"))
+                .liquid(new FluidBuilder().translation("gregtech.fluid.generic").temperature(2).customStill().customFlow())
+                .dust()
+                .iconSet(CRYOTHEUM)
+                .components(Ice, 2, Electrotine, 1, Water, 1)
+                .flags(DISABLE_DECOMPOSITION)
+                .build();
+
+        BlazingPyrotheum = new Material.Builder(getID(), scId("blazing_pyrotheum"))
+                .liquid(new FluidBuilder().translation("gregtech.fluid.generic").temperature(4000).customStill().customFlow())
+                .dust()
+                .iconSet(PYROTHEUM)
+                .components(Blaze, 2, Redstone, 1, Sulfur, 1)
+                .build();
+
+        TectonicPetrotheum = new Material.Builder(getID(), scId("tectonic_petrotheum"))
+                .liquid(new FluidBuilder().translation("gregtech.fluid.generic").temperature(350).customStill().customFlow())
+                .dust()
+                .iconSet(PETROTHEUM)
+                .components(Clay, 2, Obsidian, 1, Stone, 1)
+                .build();
+
+        ZephyreanAerotheum = new Material.Builder(getID(), scId("zephyrean_aerotheum"))
+                .liquid(new FluidBuilder().translation("gregtech.fluid.generic").temperature(600).customStill().customFlow())
+                .dust()
+                .iconSet(AEROTHEUM)
+                .components(SiliconDioxide, 2, Saltpeter, 1, Air, 1)
+                .build();
     }
 }

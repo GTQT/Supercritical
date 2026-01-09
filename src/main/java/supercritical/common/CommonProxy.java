@@ -70,6 +70,7 @@ public class CommonProxy {
         registry.register(SCMetaBlocks.NUCLEAR_CASING);
         registry.register(SCMetaBlocks.GAS_CENTRIFUGE_CASING);
         registry.register(SCMetaBlocks.PANELLING);
+        registry.register(SCMetaBlocks.NUCLEAR_REACTOR_CASING);
     }
 
     @SubscribeEvent
@@ -83,6 +84,7 @@ public class CommonProxy {
         registry.register(createItemBlock(SCMetaBlocks.NUCLEAR_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(SCMetaBlocks.GAS_CENTRIFUGE_CASING, VariantItemBlock::new));
         registry.register(createItemBlock(SCMetaBlocks.PANELLING, VariantItemBlock::new));
+        registry.register(createItemBlock(SCMetaBlocks.NUCLEAR_REACTOR_CASING, VariantItemBlock::new));
     }
 
     private static <T extends Block> ItemBlock createItemBlock(T block, Function<T, ItemBlock> producer) {

@@ -33,8 +33,6 @@ public class NuclearReactorSimulator {
     private final List<GridPosition> heatVentPositions = new ArrayList<>();     // 散热片位置缓存
     private final List<GridPosition> coolantCellPositions = new ArrayList<>();  // 冷却单元位置缓存
     private final List<GridPosition> reflectorPositions = new ArrayList<>();    // 反射板位置缓存
-    private final int overheatingThreshold = 8500;  // 过热阈值 (HU)
-    private final int meltdownThreshold = 9500;     // 熔毁阈值 (HU)
     @Getter
     private int currentHeat = 0;                    // 当前热量 (HU)
     @Getter
@@ -290,12 +288,30 @@ public class NuclearReactorSimulator {
         isActive = (currentOutput > 0) || (currentHeat > 1000);
     }
 
+    public int getOverheatingThreshold(){
+        return (int) (maxHeatCapacity*0.8);
+    }
+
+    public int getMeltdownThreshold(){
+        return (int) (maxHeatCapacity*0.95);
+    }
+
+    public boolean isOverHeat(){
+        return currentHeat>getOverheatingThreshold();
+    }
+
+    public boolean isMeltdown(){
+        return currentHeat>getMeltdownThreshold();
+    }
+
     /**
      * 第七阶段：检查安全状态
      */
     private void checkSafetyStatus() {
         if (hasMeltdown) return; // 已熔毁则跳过检查
 
+        int overheatingThreshold = getOverheatingThreshold();
+        int meltdownThreshold = getMeltdownThreshold();
         // 检查过热
         if (currentHeat > overheatingThreshold) {
             // 过热警告：增加熔毁概率

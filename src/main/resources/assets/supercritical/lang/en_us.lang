@@ -21,10 +21,14 @@ supercritical.machine.nuclear.locking.fluid=Locks when the reactor is turned on;
 supercritical.machine.moderator_port.name=Moderator Port
 supercritical.machine.moderator_port.tooltip=Requires §fModerator Blocks§7 below itself (like graphite) to function and form.
 
+supercritical.machine.nuclear_reactor.name=Nuclear Reactor
+supercritical.machine.nuclear_extend_hatch.name=Reactor Expansion Hatch
+
 gregtech.multiblock.fission_reactor.description=Fission Reactors use fuel rods placed together to create a sustained chain of fission reactions. These reactions generate heat (power) that may be soaked up by coolants, which can then be used inside turbines. For example, using distilled water as a coolant, each channel soaks up about 2 EU/t of heat per degree Kelvin and block of internal reactor depth.  The reactor can take on a variety of shapes. Its cross sections can be seen in JEI, and the reactor may extend 7 blocks up and down from the controller. Reactors can import and export fuel rods/coolants through special pairs of hatches on the top and bottom layers, respectively. Control rod hatches may also be placed on the top layer, and they give the user more control over the reactor. Inserting them more decreases the neutron multiplication rate "effective K" (shown as k_eff), a factor by which the power is continually multiplied by until it reaches the approximate max power. If k_eff is over 1, the reactor's power will eventually increase; if it's below 1, it will eventually decrease; and if it's around 1, it will stay stable. In fact, the reactor automatically shifts this over time, attempting to reach a stable equilibrium. This may be overridden manually, which you may want to do if the k_eff is over 1.05 to avoid it spiralling out of control and melting down. K_eff is also affected by neutron poisons inside the reactor, which will increase in concentration over time as the reactor runs (and still remain in a fairly high concentration for a while after). The rate at which k_eff "acts" is dependent on the mean generation time, which is how long it takes for the next generation of neutrons to be produced. This depends on the fuel rod (and can be seen in their tooltips), and it is mostly affected by delayed neutrons produced from decaying fission products. The power may then be modeled using an exponential function with a time constant of the mean generation time divided by (k_eff - 1). Control rods, fuel hatches, and coolant hatches all require special tubing beneath them to form correctly; check their tooltips to see which blocks to use. Once a reactor's hatches are filled, the reactor can be locked to begin operation, meaning that the types of items/fluids in the hatches can not be changed while the reactor operates. The placement of the fuel rods and coolant channels within the reactor is quite important. Neutrons produced by decaying atoms in the fuel rods can cause fissions in other fuel rods; therefore, reactors work far more effectively with more than one fuel rod channel. The chance that a neutron interacts with a fuel rod is increased if it is slowed down by a moderator, such as distilled water inside a coolant channel. As such, it can be helpful to put coolant channels between fuel rods to increase k_eff (and control rods do much the opposite). Fuel rods also decay at a rate proportional to the power; a 600 MJ fuel rod will deplete after 600 seconds of 1 MW, or alternatively 1 second of 600 MW. Note: if this multiblock receives maintenance problems, the coolant systems will occasionally seize up and stop working. However, coolant channels only operate when the hot coolant fluid is actually hotter than the reactor itself, and they can also only altogether export as much heat as the max power.
 gregtech.multiblock.gas_centrifuge.description=The Gas Centrifuge can help in the purification process of isotopes, especially those of uranium. By repeatedly putting uranium hexafluoride into a gas centrifuge, one can obtain highly enriched uranium hexafluoride, which has a purity high enough to make nuclear fuels. Each block of length makes it perform one more recipe in parallel.
 gregtech.multiblock.heat_exchanger.description=The Heat Exchanger can be used to take heat out from one fluid by either radiating it out into its surrounding environment or by transferring it into another fluid. This can be used with hot coolant from fission reactors to help generate steam for steam turbines.
 gregtech.multiblock.spent_fuel_pool.description=The Spent Fuel Pool takes hot depleted fuel rods fresh from a fission reactor and cools them down to be processed later. It only works when the structure is fulled with water, you can do this by fill an input water with water, or place water blocks manually. Each block of length makes it perform 32 more recipes in parallel.
+gregtech.multiblock.nuclear_reactor.description=The nuclear reactor is an advanced multi-block structure that replicates and enhances IC's classic nuclear power system. It constitutes an efficient and high-risk energy output matrix by precisely arranging various fuel rods (such as uranium rods, MOX rods), heat sinks, heat exchangers, neutron reflectors and other core components. The core of the system is dynamic balance: fuel rods will release a large amount of heat while generating huge amounts of electricity, and must rely on the surrounding heat dissipation elements (such as heat sinks, cooling units, heat exchangers) to absorb and dissipate in time, otherwise the accumulated heat will cause the reactor to overheat, causing widespread environmental damage (such as fire, evaporation of water bodies, block melting) and even catastrophic explosions. Reactor partitions increase their overall heat capacity limit and suppress explosion power, while special components such as condensation modules provide enhanced instantaneous heat dissipation. Allowing players to build a variety of nuclear power solutions from safe and robust to extreme performance with extremely high risk, it is a key facility in GregTech mods that combines the charm of complex engineering with great energy returns.
 metaitem.nuclear.tooltip.radioactive=§cEmits dangerous radiation
 metaitem.nuclear.tooltip.duration=Total heat energy: %d MJ
 metaitem.nuclear.tooltip.temperature=Melting point: %d K
@@ -93,6 +97,11 @@ supercritical.material.boron_carbide=Boron Carbide
 supercritical.material.heavy_water=Heavy Water
 supercritical.material.high_pressure_heavy_water=High Pressure Heavy Water
 
+supercritical.material.blazing_pyrotheum=烈焰之炽焱
+supercritical.material.gelid_cryotheum=极寒之凛冰
+supercritical.material.tectonic_petrotheum=板块之层岩
+supercritical.material.zephyrean_aerotheum=飞扬之清风
+
 supercritical.material.spent_uranium_fuel_solution=Spent Uranium Fuel Solution
 supercritical.material.radon_rich_gas_mixture=Radon Rich Gas Mixture
 
@@ -149,6 +158,58 @@ fission.moderator.name=Neutron Moderation
 metaitem.basket.anode.name=Anode Basket
 metaitem.cladding.fuel.name=Fuel Cladding
 
+metaitem.fuel_rod.1x.name=空燃料棒
+metaitem.fuel_rod.2x.name=空双联燃料棒
+metaitem.fuel_rod.4x.name=空四联燃料棒
+
+metaitem.fuel_rod.uranium.1x.depleted.name=Depleted Uranium Fuel Rod
+metaitem.fuel_rod.uranium.2x.depleted.name=Depleted Double Uranium Fuel Rod
+metaitem.fuel_rod.uranium.4x.depleted.name=Depleted Quad Uranium Fuel Rod
+metaitem.fuel_rod.thorium.1x.depleted.name=Depleted Thorium Fuel Rod
+metaitem.fuel_rod.thorium.2x.depleted.name=Depleted Double Thorium Fuel Rod
+metaitem.fuel_rod.thorium.4x.depleted.name=Depleted Quad Thorium Fuel Rod
+metaitem.fuel_rod.plutonium.1x.depleted.name=Depleted Plutonium Fuel Rod
+metaitem.fuel_rod.plutonium.2x.depleted.name=Depleted Double Plutonium Fuel Rod
+metaitem.fuel_rod.plutonium.4x.depleted.name=Depleted Quad Plutonium Fuel Rod
+metaitem.fuel_rod.naquadah.1x.depleted.name=Depleted Naquadah Fuel Rod
+metaitem.fuel_rod.naquadah.2x.depleted.name=Depleted Double Naquadah Fuel Rod
+metaitem.fuel_rod.naquadah.4x.depleted.name=Depleted Quad Naquadah Fuel Rod
+
+metaitem.fuel_rod.uranium.1x.name=Uranium Fuel Rod
+metaitem.fuel_rod.uranium.2x.name=Double Uranium Fuel Rod
+metaitem.fuel_rod.uranium.4x.name=Quad Uranium Fuel Rod
+metaitem.fuel_rod.thorium.1x.name=Thorium Fuel Rod
+metaitem.fuel_rod.thorium.2x.name=Double Thorium Fuel Rod
+metaitem.fuel_rod.thorium.4x.name=Quad Thorium Fuel Rod
+metaitem.fuel_rod.plutonium.1x.name=Plutonium Fuel Rod
+metaitem.fuel_rod.plutonium.2x.name=Double Plutonium Fuel Rod
+metaitem.fuel_rod.plutonium.4x.name=Quad Plutonium Fuel Rod
+metaitem.fuel_rod.naquadah.1x.name=Naquadah Fuel Rod
+metaitem.fuel_rod.naquadah.2x.name=Double Naquadah Fuel Rod
+metaitem.fuel_rod.naquadah.4x.name=Quad Naquadah Fuel Rod
+
+metaitem.heat_vent.basic.name=Basic Heat Vent
+metaitem.heat_vent.advanced.name=Advanced Heat Vent
+metaitem.heat_vent.elite.name=Elite Heat Vent
+metaitem.heat_vent.ultimate.name=Ultimate Heat Vent
+
+metaitem.component_heat_vent.basic.name=Basic Component Heat Vent
+metaitem.component_heat_vent.advanced.name=Advanced Component Heat Vent
+metaitem.component_heat_vent.elite.name=Elite Component Heat Vent
+metaitem.component_heat_vent.ultimate.name=Ultimate Component Heat Vent
+
+metaitem.coolant_cell.10k.name=10K空冷却单元
+metaitem.coolant_cell.30k.name=30K空冷却单元
+metaitem.coolant_cell.60k.name=60K空冷却单元
+
+metaitem.coolant_cell.coolant.10k.name=10K冷却液冷却单元
+metaitem.coolant_cell.coolant.30k.name=30K冷却液冷却单元
+metaitem.coolant_cell.coolant.60k.name=60K冷却液冷却单元
+
+metaitem.coolant_cell.sodium_potassium.10k.name=10K钠钾合金冷却单元
+metaitem.coolant_cell.sodium_potassium.30k.name=30K钠钾合金冷却单元
+metaitem.coolant_cell.sodium_potassium.60k.name=60K钠钾合金冷却单元
+
 tile.panelling.white.name=White Panelling
 tile.panelling.orange.name=Orange Panelling
 tile.panelling.magenta.name=Magenta Panelling
@@ -170,6 +231,7 @@ tile.panelling.black.name=Black Panelling
 tile.nuclear_casing.spent_fuel_casing.name=Spent Fuel Casing
 tile.nuclear_casing.gas_centrifuge_heater.name=Gas Centrifuge Heater
 tile.gas_centrifuge_casing.gas_centrifuge_column.name=Gas Centrifuge Column
+tile.nuclear_reactor_casing.nuclear_reactor_casing.name=Nuclear Fission Reactor Hull
 
 supercritical.machine.fission_reactor.name=Fission Reactor
 supercritical.machine.fission_reactor.tooltip.1=Check preview for allowed shapes.

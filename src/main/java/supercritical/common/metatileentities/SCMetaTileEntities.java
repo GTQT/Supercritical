@@ -79,6 +79,7 @@ public class SCMetaTileEntities {
         //衰变加速器 30-45
         registerSimpleMetaTileEntity(DECAY_CHAMBER, 30, "decay_chamber", SCRecipeMaps.DECAY_CHAMBER_RECIPES, Textures.CHEMICAL_BATH_OVERLAY, true, SCUtility::scId, GTUtility.hvCappedTankSizeFunction);
 
+        //核反应堆 100
         NUCLEAR_REACTOR = registerMetaTileEntity(100, new MetaTileEntityNuclearReactor(scId("nuclear_reactor")));
         NUCLEAR_EXTEND_HATCH = registerMetaTileEntity(101, new MetaTileEntityNuclearExtend(scId("nuclear_extend_hatch")));
     }

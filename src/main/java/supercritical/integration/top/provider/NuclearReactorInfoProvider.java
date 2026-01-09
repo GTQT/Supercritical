@@ -108,38 +108,49 @@ public class NuclearReactorInfoProvider implements IProbeInfoProvider {
         IProbeInfo heatLine = pane.horizontal(pane.defaultLayoutStyle().spacing(2));
         heatLine.text(TextFormatting.GRAY + "热量: ");
 
-        // 修正：正确设置进度条样式
-        // 首先创建样式对象
+        // 修正：调整进度条高度和文字高度
         IProgressStyle progressStyle = pane.defaultProgressStyle()
                 .backgroundColor(0xFF555555)
                 .filledColor(barColor)
                 .borderColor(0xFF888888)
-                .width(80)
-                .height(8);
+                .width(90)  // 稍微增加宽度
+                .height(12); // 增加高度以容纳文字
+
 
         // 设置数字格式
         if (player.isSneaking() || currentHeat < 10000) {
-            progressStyle.numberFormat(NumberFormat.COMMAS);
+            progressStyle.numberFormat(NumberFormat.NONE); // 不在进度条内显示数字
         } else {
-            progressStyle.numberFormat(NumberFormat.COMPACT);
+            progressStyle.numberFormat(NumberFormat.NONE); // 不在进度条内显示数字
         }
 
-        // 设置后缀文本
+        // 设置后缀文本（显示在进度条右侧）
         String suffix;
         if (player.isSneaking() || maxHeat < 10000) {
-            suffix = " / " + formatNumber(maxHeat, NumberFormat.COMMAS) + " HU";
+            suffix = String.format("%d / %d HU", currentHeat, maxHeat);
         } else {
-            suffix = " / " + formatNumber(maxHeat, NumberFormat.COMPACT) + " HU";
+            suffix = String.format("%s / %s HU",
+                    formatCompactNumber(currentHeat),
+                    formatCompactNumber(maxHeat));
         }
-        progressStyle.suffix(suffix);
+        progressStyle.suffix(TextFormatting.GRAY + suffix);
 
-        // 添加进度条（将样式作为第三个参数）
+        // 添加进度条
         heatLine.progress(currentHeat, maxHeat, progressStyle);
 
         // 过热警告
         if (heatPercent >= 85) {
             pane.text(TextFormatting.RED + "⚠ 警告: 接近熔毁阈值!");
         }
+    }
+
+    private String formatCompactNumber(long number) {
+        if (number >= 1000000) {
+            return String.format("%.1fM", number / 1000000.0);
+        } else if (number >= 1000) {
+            return String.format("%.1fK", number / 1000.0);
+        }
+        return String.valueOf(number);
     }
 
     private void addEnergyInfo(IProbeInfo pane, MetaTileEntityNuclearReactor controller, EntityPlayer player) {
@@ -167,17 +178,6 @@ public class NuclearReactorInfoProvider implements IProbeInfoProvider {
             return String.format("%.1fK", output / 1000.0);
         }
         return String.valueOf(output);
-    }
-
-    private String formatNumber(long number, NumberFormat format) {
-        if (format == NumberFormat.COMMAS) {
-            return String.format("%,d", number);
-        } else if (format == NumberFormat.COMPACT && number >= 1000000) {
-            return String.format("%.1fM", number / 1000000.0);
-        } else if (format == NumberFormat.COMPACT && number >= 1000) {
-            return String.format("%.1fK", number / 1000.0);
-        }
-        return String.valueOf(number);
     }
 
     private void addComponentStats(IProbeInfo pane, MetaTileEntityNuclearReactor controller) {
