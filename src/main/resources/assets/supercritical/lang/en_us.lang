@@ -115,8 +115,9 @@ supercritical.material.thor=Molten Salt Reactor Fuel
 recipemap.heat_exchanger.name=Heat Exchanger
 recipemap.gas_centrifuge.name=Gas Centrifuge
 recipemap.spent_fuel_pool.name=Spent Fuel Pool
-recipemap.rtg_recipes.name=Isotope Temperature Difference Power Generation
-recipemap.decay_chamber_recipes.name=衰变室
+recipemap.rtg_recipes.name=RTG
+recipemap.decay_chamber_recipes.name=Decay Chamber
+
 supercritical.machine.decay_chamber.lv.name=Basic Decay Chamber
 supercritical.machine.decay_chamber.lv.tooltip=Radiant Glow
 supercritical.machine.decay_chamber.mv.name=Advanced Decay Chamber
@@ -144,11 +145,11 @@ supercritical.machine.decay_chamber.uxv.tooltip=Zero Process Decay
 supercritical.machine.decay_chamber.opv.name=Legendary Decay Chamber
 supercritical.machine.decay_chamber.opv.tooltip=Zero Process Decay
 
-supercritical.machine.rtg.hv.name=Isotope Thermoelectric Generator (§6HV§r)
-supercritical.machine.rtg.ev.name=Isotope Thermoelectric Generator (§5EV§r)
-supercritical.machine.rtg.iv.name=Isotope Thermoelectric Generator (§1IV§r)
-supercritical.machine.rtg.luv.name=Isotope Thermoelectric Generator (§dLuV§r)
-supercritical.machine.rtg.zpm.name=Isotope Thermoelectric Generator (§cZPM§r)
+supercritical.machine.rtg.hv.name=RTG-MKI
+supercritical.machine.rtg.ev.name=RTG-MKII
+supercritical.machine.rtg.iv.name=RTG-MKIII
+supercritical.machine.rtg.luv.name=RTG-MKIV
+supercritical.machine.rtg.zpm.name=RTG-MKV
 
 
 fission.coolant.name=Coolant Heating
@@ -158,9 +159,9 @@ fission.moderator.name=Neutron Moderation
 metaitem.basket.anode.name=Anode Basket
 metaitem.cladding.fuel.name=Fuel Cladding
 
-metaitem.fuel_rod.1x.name=空燃料棒
-metaitem.fuel_rod.2x.name=空双联燃料棒
-metaitem.fuel_rod.4x.name=空四联燃料棒
+metaitem.fuel_rod.1x.name=Empty Fuel Rod
+metaitem.fuel_rod.2x.name=Empty Double Fuel Rod
+metaitem.fuel_rod.4x.name=Empty Quad Fuel Rod
 
 metaitem.fuel_rod.uranium.1x.depleted.name=Depleted Uranium Fuel Rod
 metaitem.fuel_rod.uranium.2x.depleted.name=Depleted Double Uranium Fuel Rod
@@ -198,17 +199,29 @@ metaitem.component_heat_vent.advanced.name=Advanced Component Heat Vent
 metaitem.component_heat_vent.elite.name=Elite Component Heat Vent
 metaitem.component_heat_vent.ultimate.name=Ultimate Component Heat Vent
 
-metaitem.coolant_cell.10k.name=10K空冷却单元
-metaitem.coolant_cell.30k.name=30K空冷却单元
-metaitem.coolant_cell.60k.name=60K空冷却单元
+metaitem.coolant_cell.10k.name=10K Empty Coolant Cell
+metaitem.coolant_cell.30k.name=30K Empty Coolant Cell
+metaitem.coolant_cell.60k.name=60K Empty Coolant Cell
 
-metaitem.coolant_cell.coolant.10k.name=10K冷却液冷却单元
-metaitem.coolant_cell.coolant.30k.name=30K冷却液冷却单元
-metaitem.coolant_cell.coolant.60k.name=60K冷却液冷却单元
+metaitem.coolant_cell.coolant.10k.name=10K Coolant Coolant Cell
+metaitem.coolant_cell.coolant.30k.name=30K Coolant Coolant Cell
+metaitem.coolant_cell.coolant.60k.name=60K Coolant Coolant Cell
 
-metaitem.coolant_cell.sodium_potassium.10k.name=10K钠钾合金冷却单元
-metaitem.coolant_cell.sodium_potassium.30k.name=30K钠钾合金冷却单元
-metaitem.coolant_cell.sodium_potassium.60k.name=60K钠钾合金冷却单元
+metaitem.coolant_cell.sodium_potassium.10k.name=10K Sodium Potassium Coolant Cell
+metaitem.coolant_cell.sodium_potassium.30k.name=30K Sodium Potassium Coolant Cell
+metaitem.coolant_cell.sodium_potassium.60k.name=60K Sodium Potassium Coolant Cell
+
+metaitem.neutron_reflector.basic.name=Neutron Reflector
+metaitem.neutron_reflector.thick.name=Thick Neutron Reflector
+metaitem.neutron_reflector.iridium.name=Iridium Neutron Reflector
+
+metaitem.heat_exchanger.basic.name=Basic Heat Exchanger
+metaitem.heat_exchanger.advanced.name=Advanced Heat Exchanger
+metaitem.heat_exchanger.reactor.name=Reactor Heat Exchanger
+metaitem.heat_exchanger.component.name=Component Heat Exchanger
+
+metaitem.reactor_plating.basic.name=Basic Reactor Plating
+metaitem.reactor_plating.advanced.name=Advanced Reactor Plating
 
 tile.panelling.white.name=White Panelling
 tile.panelling.orange.name=Orange Panelling

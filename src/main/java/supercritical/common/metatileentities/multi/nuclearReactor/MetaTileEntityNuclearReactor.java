@@ -328,7 +328,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
      * 计算爆炸威力
      */
     private float calculateExplosionPower() {
-        float basePower = 4.0f;
+        float basePower = 20.0f;
 
         // 根据热量和燃料棒数量增加威力
         int heat = reactorSimulator.getCurrentHeat();

@@ -76,8 +76,10 @@ public class SCMetaItems {
     public static MetaItem<?>.MetaValueItem NEUTRON_REFLECTOR_IRIDIUM;
 
     public static MetaItem<?>.MetaValueItem HEAT_EXCHANGER_BASIC;
+    public static MetaItem<?>.MetaValueItem HEAT_EXCHANGER_ADVANCED;
+
     public static MetaItem<?>.MetaValueItem HEAT_EXCHANGER_REACTOR;
-    public static MetaItem<?>.MetaValueItem COMPONENT_HEAT_EXCHANGER_BASIC;
+    public static MetaItem<?>.MetaValueItem COMPONENT_HEAT_EXCHANGER;
 
     public static MetaItem<?>.MetaValueItem REACTOR_PLATING_BASIC;
     public static MetaItem<?>.MetaValueItem REACTOR_PLATING_ADVANCED;
@@ -251,86 +253,47 @@ public class SCMetaItems {
                 .addComponents(new CoolantCellBehavior(10000, Materials.SodiumPotassium, 60000, 180
                 ));
 
-        /*
 
-        // 5. 中子反射板
-        NEUTRON_REFLECTOR_BASIC = metaItem.addItem(1040, "neutron_reflector.basic")
+        //中子反射板
+        NEUTRON_REFLECTOR_BASIC = metaItem.addItem(230, "neutron_reflector.basic")
                 .addComponents(new NeutronReflectorBehavior(
-                        50000,      // 最大耐久
-                        Materials.Graphite,
-                        0.5f        // 50%反射效率
+                        50000, Materials.Graphite, 0.5f
                 ));
 
-        NEUTRON_REFLECTOR_THICK = metaItem.addItem(1041, "neutron_reflector.thick")
-                .addComponents(new NeutronReflectorBehavior(
-                        100000,     // 最大耐久
-                        Materials.Beryllium,
-                        0.75f       // 75%反射效率
+        NEUTRON_REFLECTOR_THICK = metaItem.addItem(231, "neutron_reflector.thick")
+                .addComponents(new NeutronReflectorBehavior(100000, Materials.Beryllium, 0.75f
                 ));
 
-        NEUTRON_REFLECTOR_IRIDIUM = metaItem.addItem(1042, "neutron_reflector.iridium")
-                .addComponents(new NeutronReflectorBehavior(
-                        200000,     // 最大耐久
-                        Materials.Iridium,
-                        0.95f       // 95%反射效率
+        NEUTRON_REFLECTOR_IRIDIUM = metaItem.addItem(232, "neutron_reflector.iridium")
+                .addComponents(new NeutronReflectorBehavior(200000, Materials.Iridium, 0.95f
                 ));
 
-        // 6. 热交换器
-        HEAT_EXCHANGER_BASIC = metaItem.addItem(1050, "heat_exchanger.basic")
-                .addComponents(new HeatExchangerBehavior(
-                        100000,     // 最大耐久
-                        Materials.Copper,
-                        10          // 热传递速率 HU/t
+
+        //热交换器
+        HEAT_EXCHANGER_BASIC = metaItem.addItem(235, "heat_exchanger.basic")
+                .addComponents(new HeatExchangerBehavior(100000, Materials.Copper, 10
                 ));
 
-        HEAT_EXCHANGER_REACTOR = metaItem.addItem(1051, "heat_exchanger.reactor")
-                .addComponents(new ReactorHeatExchangerBehavior(
-                        150000,     // 最大耐久
-                        Materials.Aluminium,
-                        10000,      // 热存储容量 HU
-                        20          // 热传递速率 HU/t
+        HEAT_EXCHANGER_ADVANCED = metaItem.addItem(236, "heat_exchanger.advanced")
+                .addComponents(new HeatExchangerBehavior(120000, Materials.Gold, 20
                 ));
 
-        COMPONENT_HEAT_EXCHANGER_BASIC = metaItem.addItem(1052, "component_heat_exchanger.basic")
-                .addComponents(new ComponentHeatExchangerBehavior(
-                        120000,     // 最大耐久
-                        Materials.Bronze,
-                        15          // 热传递速率 HU/t
+
+        HEAT_EXCHANGER_REACTOR = metaItem.addItem(237, "heat_exchanger.reactor")
+                .addComponents(new ReactorHeatExchangerBehavior(150000, Materials.Aluminium, 10000, 20
                 ));
 
-        // 7. 反应堆隔板
-        REACTOR_PLATING_BASIC = metaItem.addItem(1060, "reactor_plating.basic")
-                .addComponents(new ReactorPlatingBehavior(
-                        50000,      // 最大耐久
-                        Materials.Iron,
-                        1000,       // 热容量提升 HU
-                        0.1f        // 10%爆炸抗性
+        COMPONENT_HEAT_EXCHANGER = metaItem.addItem(238, "heat_exchanger.component")
+                .addComponents(new ComponentHeatExchangerBehavior(120000, Materials.Bronze, 15
                 ));
 
-        REACTOR_PLATING_ADVANCED = metaItem.addItem(1061, "reactor_plating.advanced")
-                .addComponents(new ReactorPlatingBehavior(
-                        100000,     // 最大耐久
-                        Materials.Steel,
-                        2500,       // 热容量提升 HU
-                        0.25f       // 25%爆炸抗性
+        //反应堆隔板
+        REACTOR_PLATING_BASIC = metaItem.addItem(240, "reactor_plating.basic")
+                .addComponents(new ReactorPlatingBehavior(50000, Materials.Bronze, 1000, 0.1f
                 ));
 
-        REACTOR_PLATING_HEAT_RESISTANT = metaItem.addItem(1062, "reactor_plating.heat_resistant")
-                .addComponents(new ReactorPlatingBehavior(
-                        150000,     // 最大耐久
-                        Materials.Titanium,
-                        5000,       // 热容量提升 HU
-                        0.15f       // 15%爆炸抗性
+        REACTOR_PLATING_ADVANCED = metaItem.addItem(241, "reactor_plating.advanced")
+                .addComponents(new ReactorPlatingBehavior(100000, Materials.Lead, 2500, 0.25f
                 ));
-
-        REACTOR_PLATING_BLAST_RESISTANT = metaItem.addItem(1063, "reactor_plating.blast_resistant")
-                .addComponents(new ReactorPlatingBehavior(
-                        120000,     // 最大耐久
-                        Materials.TungstenSteel,
-                        2000,       // 热容量提升 HU
-                        0.5f        // 50%爆炸抗性
-                ));
-
-         */
     }
 }

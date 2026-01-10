@@ -146,11 +146,11 @@ supercritical.machine.decay_chamber.uxv.tooltip=零过程衰变
 supercritical.machine.decay_chamber.opv.name=传奇衰变室
 supercritical.machine.decay_chamber.opv.tooltip=零过程衰变
 
-supercritical.machine.rtg.hv.name=同位素温差发电机（§6HV§r）
-supercritical.machine.rtg.ev.name=同位素温差发电机（§5EV§r）
-supercritical.machine.rtg.iv.name=同位素温差发电机（§1IV§r）
-supercritical.machine.rtg.luv.name=同位素温差发电机（§dLuV§r）
-supercritical.machine.rtg.zpm.name=同位素温差发电机（§cZPM§r）
+supercritical.machine.rtg.hv.name=同位素温差发电机-MKI
+supercritical.machine.rtg.ev.name=同位素温差发电机-MKII
+supercritical.machine.rtg.iv.name=同位素温差发电机-MKIII
+supercritical.machine.rtg.luv.name=同位素温差发电机-MKIV
+supercritical.machine.rtg.zpm.name=同位素温差发电机-MKV
 
 fission.coolant.name=冷却剂加热
 fission.fuel.name=裂变燃料
@@ -210,6 +210,18 @@ metaitem.coolant_cell.coolant.60k.name=60K冷却液冷却单元
 metaitem.coolant_cell.sodium_potassium.10k.name=10K钠钾合金冷却单元
 metaitem.coolant_cell.sodium_potassium.30k.name=30K钠钾合金冷却单元
 metaitem.coolant_cell.sodium_potassium.60k.name=60K钠钾合金冷却单元
+
+metaitem.neutron_reflector.basic.name=中子反射板
+metaitem.neutron_reflector.thick.name=加厚中子反射板
+metaitem.neutron_reflector.iridium.name=铱中子反射板
+
+metaitem.heat_exchanger.basic.name=基础热交换器
+metaitem.heat_exchanger.advanced.name=进阶热交换器
+metaitem.heat_exchanger.reactor.name=反应堆热交换器
+metaitem.heat_exchanger.component.name=部件交换器
+
+metaitem.reactor_plating.basic.name=基础反应堆隔板
+metaitem.reactor_plating.advanced.name=强化反应堆隔板
 
 tile.panelling.white.name=白色镶板
 tile.panelling.orange.name=橙色镶板
