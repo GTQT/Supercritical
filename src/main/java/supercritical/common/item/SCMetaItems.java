@@ -1,9 +1,14 @@
 package supercritical.common.item;
 
+import gregtech.api.GTValues;
+import gregtech.api.creativetab.BaseCreativeTab;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.material.Materials;
+import gregtech.common.items.MetaItems;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import supercritical.api.unification.material.SCMaterials;
 import supercritical.common.item.behaviors.*;
 
@@ -91,7 +96,11 @@ public class SCMetaItems {
     public static void initMetaItems() {
         metaItem = new StandardMetaItem();
         metaItem.setRegistryName("supercritical_meta_item");
+        metaItem.setCreativeTab(SUPERCRITICAL_TAB);
     }
+
+    public static final BaseCreativeTab SUPERCRITICAL_TAB = new BaseCreativeTab("supercritical_tab",
+            () -> SCMetaItems.FUEL_ROD_URANIUM_1X.getStackForm(), false);
 
     public static void initSubitems() {
         SCMetaItems.ANODE_BASKET = metaItem.addItem(0, "basket.anode");

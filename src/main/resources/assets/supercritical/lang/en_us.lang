@@ -312,3 +312,6 @@ supercritical.multiblock.spent_fuel_pool.obstructed.desc=The pool must be filled
 gregtech.fluid.molten=Molten %s
 # Name Overrides (doesn't work)
 supercritical.material.enriched_uranium_hexafluoride=Low Enriched Uranium Hexafluoride
+
+# Creative tabs
+itemGroup.supercritical_tab=Supercritical | Nuclear

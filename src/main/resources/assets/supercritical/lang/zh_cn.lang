@@ -311,3 +311,6 @@ supercritical.multiblock.spent_fuel_pool.obstructed.desc=乏燃料池必须要�
 gregtech.fluid.molten=熔融%s
 # 名称重写（不起作用）
 supercritical.material.enriched_uranium_hexafluoride=低浓缩铀六氟化物
+
+# Creative tabs
+itemGroup.supercritical_tab=超临界 | 核电
