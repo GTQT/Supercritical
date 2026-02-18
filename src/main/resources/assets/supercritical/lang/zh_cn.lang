@@ -54,35 +54,61 @@ item.material.oreprefix.dustFissionByproduct=%s裂变副产物粉
 item.material.oreprefix.fuelPebble=%s 浓缩燃料丸
 item.material.oreprefix.fuelPebbleDepleted=%s 枯竭浓缩燃料丸
 
-supercritical.material.neptunium_235=镎-235
-supercritical.material.neptunium_236=镎-236
-supercritical.material.neptunium_237=镎-237
-supercritical.material.neptunium_239=镎-239
-
-supercritical.material.plutonium=钚
-supercritical.material.plutonium_238=钚-238
-supercritical.material.plutonium_240=钚-240
-
-supercritical.material.plutonium_242=钚-242
-supercritical.material.plutonium_244=钚-244
-
+# 基础元素
 supercritical.material.uranium=铀
-supercritical.material.uranium_239=铀-239
-
+supercritical.material.plutonium=钚
+# 镭同位素
+supercritical.material.radium_225=镭-225
+supercritical.material.radium_226=镭-226
+# 镤同位素
+supercritical.material.protactinium_231=镤-231
+supercritical.material.protactinium_233=镤-233
+# 铀同位素
+supercritical.material.uranium_232=铀-232
 supercritical.material.uranium_233=铀-233
 supercritical.material.uranium_234=铀-234
 supercritical.material.uranium_236=铀-236
+supercritical.material.uranium_237=铀-237
+supercritical.material.uranium_239=铀-239
+# 镎同位素
+supercritical.material.neptunium_235=镎-235
+supercritical.material.neptunium_236=镎-236
+supercritical.material.neptunium_237=镎-237
+supercritical.material.neptunium_238=镎-238
+supercritical.material.neptunium_239=镎-239
+# 钚同位素
+supercritical.material.plutonium_236=钚-236
+supercritical.material.plutonium_237=钚-237
+supercritical.material.plutonium_238=钚-238
+supercritical.material.plutonium_240=钚-240
+supercritical.material.plutonium_242=钚-242
+supercritical.material.plutonium_243=钚-243
+supercritical.material.plutonium_244=钚-244
+# 钍同位素
+supercritical.material.thorium_228=钍-228
 supercritical.material.thorium_229=钍-229
 supercritical.material.thorium_230=钍-230
+supercritical.material.thorium_232=钍-232
+supercritical.material.thorium_233=钍-233
+# 镅同位素
+supercritical.material.americium_240=镅-240
 supercritical.material.americium_241=镅-241
 supercritical.material.americium_242=镅-242
 supercritical.material.americium_243=镅-243
+# 锔同位素
+supercritical.material.curium_242=锔-242
 supercritical.material.curium_243=锔-243
+supercritical.material.curium_244=锔-244
 supercritical.material.curium_245=锔-245
 supercritical.material.curium_246=锔-246
 supercritical.material.curium_247=锔-247
-
-supercritical.material.high_pressure_steam=高压蒸汽
+supercritical.material.curium_248=锔-248
+supercritical.material.curium_250=锔-250
+# 锫同位素
+supercritical.material.berkelium_249=锫-249
+# 锎同位素
+supercritical.material.californium_249=锎-249
+supercritical.material.californium_252=锎-252
 
 supercritical.material.high_enriched_uranium_hexafluoride=高浓缩铀六氟化物
 supercritical.material.high_enriched_uranium_dioxide=高浓缩二氧化铀
@@ -146,11 +172,9 @@ supercritical.machine.decay_chamber.uxv.tooltip=零过程衰变
 supercritical.machine.decay_chamber.opv.name=传奇衰变室
 supercritical.machine.decay_chamber.opv.tooltip=零过程衰变
 
-supercritical.machine.rtg.hv.name=同位素温差发电机-MKI
-supercritical.machine.rtg.ev.name=同位素温差发电机-MKII
-supercritical.machine.rtg.iv.name=同位素温差发电机-MKIII
-supercritical.machine.rtg.luv.name=同位素温差发电机-MKIV
-supercritical.machine.rtg.zpm.name=同位素温差发电机-MKV
+supercritical.machine.rtg.lv.name=同位素温差发电机-MKI
+supercritical.machine.rtg.mv.name=同位素温差发电机-MKII
+supercritical.machine.rtg.hv.name=同位素温差发电机-MKIII
 
 fission.coolant.name=冷却剂加热
 fission.fuel.name=裂变燃料

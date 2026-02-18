@@ -14,7 +14,6 @@ import supercritical.api.unification.material.properties.ModeratorProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 
 import static gregtech.api.unification.material.Materials.*;
-import static supercritical.api.unification.material.SCMaterials.HighPressureSteam;
 
 public class MaterialModifications {
 

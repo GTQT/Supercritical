@@ -1,9 +1,15 @@
 package supercritical.loaders.recipe;
 
 import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.Materials;
+import gregtech.common.items.MetaItems;
+import lombok.experimental.ExtensionMethod;
+import supercritical.api.items.armor.ArmorLogicExtension;
+import supercritical.api.unification.material.MaterialExtension;
+import supercritical.api.unification.ore.OrePrefixExtension;
 
-import static gregtech.api.GTValues.VA;
-import static gregtech.api.recipes.RecipeMaps.AUTOCLAVE_RECIPES;
+import static gregtech.api.GTValues.*;
+import static gregtech.api.recipes.RecipeMaps.BLAST_RECIPES;
 import static gregtech.api.recipes.RecipeMaps.CENTRIFUGE_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.dust;
@@ -12,31 +18,131 @@ import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.unification.ore.SCOrePrefix.fuelPebble;
 import static supercritical.api.unification.ore.SCOrePrefix.fuelPebbleDepleted;
 
+@ExtensionMethod({
+        OrePrefixExtension.Handler.class,
+        MaterialExtension.Handler.class,
+        ArmorLogicExtension.Handler.class
+})
 public class SCRTGFuel {
     public static void load() {
-        RTG(Thorium, 1, Uranium233, Uranium234, Thorium230, Thorium229, Strontium, Caesium);
-        RTG(Uranium233, 2, Uranium234, Thorium230, Thorium229, Protactinium, Strontium, Caesium);
-        RTG(Uranium234, 2, Uranium235, Thorium230, Thorium229, Protactinium, Strontium, Caesium);
-        RTG(Uranium235, 2, Uranium236, Thorium230, Thorium229, Protactinium, Strontium, Caesium);
-        RTG(Uranium236, 3, Uranium238, Thorium230, Thorium229, Protactinium, Strontium, Caesium);
-        RTG(Uranium238, 3, Uranium239, Thorium230, Thorium229, Protactinium, Strontium, Caesium);
-        RTG(Uranium239, 3, Plutonium239, Thorium230, Thorium229, Protactinium, Strontium, Caesium);
-        RTG(Plutonium238, 3, Plutonium239, Uranium235, Uranium234, Americium241, Molybdenum, Caesium);
-        RTG(Plutonium239, 3, Plutonium240, Uranium235, Uranium234, Americium241, Molybdenum, Caesium);
-        RTG(Plutonium240, 3, Plutonium241, Uranium235, Uranium234, Americium241, Molybdenum, Caesium);
-        RTG(Plutonium241, 4, Plutonium242, Uranium235, Uranium234, Americium241, Molybdenum, Caesium);
-        RTG(Plutonium242, 4, Plutonium244, Uranium235, Uranium234, Americium241, Molybdenum, Curium243);
-        RTG(Plutonium244, 4, Neptunium236, Uranium235, Uranium234, Americium241, Molybdenum, Curium243);
-        RTG(Neptunium236, 5, Neptunium237, Plutonium242, Plutonium241, Americium241, Molybdenum, Curium243);
-        RTG(Neptunium235, 5, Neptunium236, Plutonium242, Plutonium241, Americium241, Molybdenum, Curium243);
-        RTG(Neptunium237, 5, Neptunium, Plutonium242, Plutonium241, Americium241, Molybdenum, Curium243);
-        RTG(Neptunium, 5, Neptunium237, Plutonium242, Plutonium241, Americium241, Molybdenum, Curium243);
-        RTG(Neptunium239, 5, Plutonium240, Plutonium241, Americium241, Curium243, Molybdenum, Curium243);
-        RTG(Americium, 5, Americium241, Curium243, Curium, Curium245, Molybdenum, Curium243);
-        RTG(Americium241, 5, Americium242, Curium, Curium245, Curium246, Molybdenum, Curium243);
-        RTG(Americium242, 5, Americium243, Curium245, Curium246, Curium247, Molybdenum, Curium243);
-        RTG(Americium243, 6, Curium, Curium245, Curium246, Curium247, Molybdenum, Curium243);
+        RTG(Thorium232, 1,
+                Uranium233, Uranium234, Thorium230, Thorium229,
+                Strontium, Caesium);
+        RTG(Thorium233, 1,
+                Uranium233, Protactinium233, Thorium232, Uranium234,
+                Strontium, Caesium);
+        RTG(Thorium229, 2,
+                Uranium233, Thorium230, Materials.Actinium, Radium225,
+                Strontium, Caesium);
+        RTG(Thorium230, 1,
+                Radium226, Thorium229, Uranium234, Protactinium231,
+                Strontium, Caesium);
 
+        RTG(Uranium232, 3,
+                Thorium228, Uranium233, Plutonium238, Neptunium237,
+                Strontium, Caesium);
+        RTG(Uranium233, 2,
+                Uranium234, Materials.Uranium235, Neptunium237, Materials.Plutonium239,
+                Strontium, Caesium);
+        RTG(Uranium234, 2,
+                Materials.Uranium235, Uranium236, Neptunium237, Plutonium238,
+                Strontium, Caesium);
+        RTG(Uranium236, 1,
+                Neptunium237, Materials.Plutonium239, Materials.Uranium235, Plutonium240,
+                Strontium, Caesium);
+        RTG(Uranium237, 2,
+                Neptunium237, Plutonium238, Materials.Uranium238, Materials.Plutonium239,
+                Strontium, Caesium);
+        RTG(Uranium239, 1,
+                Neptunium239, Materials.Plutonium239, Materials.Uranium238, Plutonium240,
+                Strontium, Caesium);
+
+        RTG(Neptunium235, 3,
+                Materials.Uranium235, Materials.Plutonium239, Neptunium236, Plutonium238,
+                Strontium, Caesium);
+        RTG(Neptunium236, 2,
+                Plutonium236, Neptunium237, Uranium236, Materials.Plutonium239,
+                Strontium, Caesium);
+        RTG(Neptunium237, 1,
+                Plutonium237, Uranium233, Plutonium238, Americium241,
+                Strontium, Caesium);
+        RTG(Neptunium238, 2,
+                Plutonium238, Neptunium237, Americium241, Materials.Plutonium239,
+                Strontium, Caesium);
+        RTG(Neptunium239, 3,
+                Materials.Plutonium239, Americium243, Neptunium237, Plutonium240,
+                Strontium, Caesium);
+
+        RTG(Plutonium236, 3,
+                Uranium232, Plutonium238, Neptunium237, Americium241,
+                Strontium, Caesium);
+        RTG(Plutonium237, 2,
+                Neptunium237, Plutonium238, Americium241, Curium242,
+                Strontium, Caesium);
+        RTG(Plutonium238, 5,
+                Uranium234, Materials.Plutonium239, Americium241, Curium242,
+                Strontium, Caesium);
+        RTG(Plutonium240, 2,
+                Uranium236, Materials.Plutonium241, Americium241, Curium244,
+                Strontium, Caesium);
+        RTG(Plutonium242, 1,
+                Materials.Uranium238, Americium243, Curium244, Plutonium244,
+                Strontium, Caesium);
+        RTG(Plutonium243, 1,
+                Americium243, Plutonium244, Curium244, Curium245,
+                Strontium, Caesium);
+        RTG(Plutonium244, 1,
+                Americium243, Curium244, Curium246, Plutonium242,
+                Strontium, Caesium);
+
+        RTG(Americium240, 2,
+                Plutonium236, Americium241, Curium242, Neptunium237,
+                Strontium, Caesium);
+        RTG(Americium241, 3,
+                Neptunium237, Plutonium238, Americium242, Curium242,
+                Strontium, Caesium);
+        RTG(Americium242, 1,
+                Plutonium238, Americium243, Curium243, Curium242,
+                Strontium, Caesium);
+        RTG(Americium243, 2,
+                Materials.Plutonium239, Curium243, Curium244, Americium242,
+                Strontium, Caesium);
+
+        RTG(Curium242, 4,
+                Plutonium238, Americium241, Curium243, Curium244,
+                Strontium, Caesium);
+        RTG(Curium243, 3,
+                Americium243, Materials.Plutonium239, Curium244, Curium245,
+                Strontium, Caesium);
+        RTG(Curium244, 5,
+                Plutonium240, Americium241, Curium245, Curium246,
+                Strontium, Caesium);
+        RTG(Curium245, 2,
+                Americium241, Curium246, Materials.Plutonium241, Curium247,
+                Strontium, Caesium);
+        RTG(Curium246, 2,
+                Plutonium242, Curium247, Americium243, Curium248,
+                Strontium, Caesium);
+        RTG(Curium247, 1,
+                Americium243, Curium248, Plutonium243, Curium250,
+                Strontium, Caesium);
+        RTG(Curium248, 1,
+                Plutonium244, Curium250, Californium249, Curium247,
+                Strontium, Caesium);
+        RTG(Curium250, 2,
+                Californium252, Curium248, Plutonium244, Berkelium249,
+                Strontium, Caesium);
+
+        RTG(Berkelium249, 3,
+                Californium249, Curium248, Americium243, Plutonium244,
+                Strontium, Caesium);
+
+        RTG(Californium249, 3,
+                Curium248, Berkelium249, Californium252, Plutonium244,
+                Strontium, Caesium);
+        RTG(Californium252, 5,
+                Curium250, Plutonium244, Californium249, Berkelium249,
+                Strontium, Caesium);
     }
 
     private static void RTG(Material material, int fuel, Material material1, Material material2, Material material3, Material material4, Material material5, Material material6) {
@@ -56,37 +162,23 @@ public class SCRTGFuel {
     }
 
     private static void RTG(Material material, int fuel) {
-        AUTOCLAVE_RECIPES.recipeBuilder()
-                .output(fuelPebble, material)
+        Material[] materials = {Nitrogen, Helium, Argon, Neon, Krypton};
+        BLAST_RECIPES.recipeBuilder()
                 .input(dust, material, 16)
-                .fluidInputs(Nitrogen.getFluid(1000))
-                .duration(400 + fuel * 20)
-                .EUt(VA[fuel])
+                .input(dust, Graphite)
+                .notConsumable(MetaItems.SHAPE_MOLD_BALL)
+                .fluidInputs(materials[fuel - 1].getFluid(1000))
+                .output(fuelPebble, material)
+                .duration(400 + fuel * 200)
+                .blastFurnaceTemp(1800 * 400 * fuel)
+                .EUt(VA[HV])
                 .buildAndRegister();
 
         RTG_RECIPES.recipeBuilder()
                 .input(fuelPebble, material)
                 .output(fuelPebbleDepleted, material)
-                .fluidInputs(Argon.getFluid(1000))
-                .duration(2400 + fuel * 240)
-                .EUt(2048)
+                .duration(HOUR * fuel)
+                .EUt(V[LV])
                 .buildAndRegister();
-
-        RTG_RECIPES.recipeBuilder()
-                .input(fuelPebble, material)
-                .output(fuelPebbleDepleted, material)
-                .fluidInputs(Helium.getFluid(1000))
-                .duration(1600 + fuel * 180)
-                .EUt(2048)
-                .buildAndRegister();
-
-        RTG_RECIPES.recipeBuilder()
-                .input(fuelPebble, material)
-                .output(fuelPebbleDepleted, material)
-                .fluidInputs(Nitrogen.getFluid(1000))
-                .duration(1200 + fuel * 120)
-                .EUt(2048)
-                .buildAndRegister();
-
     }
 }

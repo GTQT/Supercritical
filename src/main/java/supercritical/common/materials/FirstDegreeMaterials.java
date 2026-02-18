@@ -45,24 +45,12 @@ public class FirstDegreeMaterials {
                 .build()
                 .setFormula("UO2", true);
 
-        HighPressureSteam = new Material.Builder(getID(), scId("high_pressure_steam"))
-                .gas(new FluidBuilder()
-                        .temperature(500)
-                        .customStill())
-                .color(0xC4C4C4)
-                .flags(DISABLE_DECOMPOSITION)
-                .components(Hydrogen, 2, Oxygen, 1)
-                .build();
-
         FissilePlutoniumDioxide = new Material.Builder(getID(), scId("fissile_plutonium_dioxide"))
                 .dust(3)
                 .color(0xF03232).iconSet(DULL)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Plutonium, 1, Oxygen, 2)
                 .build();
-
-        //TODO
-        startId++;
 
         LowEnrichedUraniumDioxide = new Material.Builder(getID(), scId("low_enriched_uranium_dioxide"))
                 .dust()

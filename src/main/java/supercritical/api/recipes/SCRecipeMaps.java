@@ -2,6 +2,7 @@ package supercritical.api.recipes;
 
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget;
+import gregtech.api.mui.GTGuiTextures;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMapBuilder;
 import gregtech.api.recipes.builders.FuelRecipeBuilder;
@@ -29,7 +30,9 @@ public class SCRecipeMaps {
                 .itemOutputs(0)
                 .fluidInputs(2)
                 .fluidOutputs(2)
-                .progressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, ProgressWidget.MoveType.HORIZONTAL)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_ARROW_MULTIPLE)
+                )
                 .sound(GTSoundEvents.COOLING)
                 .build();
 
@@ -38,7 +41,9 @@ public class SCRecipeMaps {
                 .itemOutputs(1)
                 .fluidInputs(1)
                 .fluidOutputs(1)
-                .progressBar(GuiTextures.PROGRESS_BAR_BATH, ProgressWidget.MoveType.HORIZONTAL)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_BATH)
+                )
                 .build();
 
         GAS_CENTRIFUGE_RECIPES = new RecipeMapBuilder<>("gas_centrifuge", new SimpleRecipeBuilder())
@@ -46,7 +51,9 @@ public class SCRecipeMaps {
                 .itemOutputs(0)
                 .fluidInputs(1)
                 .fluidOutputs(2)
-                .progressBar(GuiTextures.PROGRESS_BAR_MIXER, ProgressWidget.MoveType.CIRCULAR)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_MIXER)
+                )
                 .sound(GTSoundEvents.CENTRIFUGE)
                 .build();
 
@@ -55,16 +62,18 @@ public class SCRecipeMaps {
                 .itemOutputs(1)
                 .fluidInputs(1)
                 .fluidOutputs(1)
-                .progressBar(GuiTextures.PROGRESS_BAR_HAMMER, ProgressWidget.MoveType.VERTICAL_DOWNWARDS)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_HAMMER)
+                )
                 .sound(GTSoundEvents.SCIENCE)
                 .build();
 
         RTG_RECIPES = new RecipeMapBuilder<>("rtg_recipes", new FuelRecipeBuilder())
                 .itemInputs(1)
                 .itemOutputs(1)
-                .fluidInputs(1)
-                .fluidOutputs(0)
-                .progressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, ProgressWidget.MoveType.HORIZONTAL)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_ARROW_MULTIPLE)
+                )
                 .sound(GTSoundEvents.ARC)
                 .build();
     }

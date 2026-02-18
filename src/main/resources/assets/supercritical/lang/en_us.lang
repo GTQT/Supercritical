@@ -53,35 +53,61 @@ item.material.oreprefix.dustFissionByproduct=%s Fission Byproduct Dust
 item.material.oreprefix.fuelPebble=%s Concentrated Fuel Pellets
 item.material.oreprefix.fuelPebbleDepleted=%s Depleted Concentrated Fuel Pellets
 
-supercritical.material.neptunium_235=Neptunium 235
-supercritical.material.neptunium_236=Neptunium 236
-supercritical.material.neptunium_237=Neptunium 237
-supercritical.material.neptunium_239=Neptunium 239
-
-supercritical.material.plutonium=Plutonium
-supercritical.material.plutonium_238=Plutonium 238
-supercritical.material.plutonium_240=Plutonium 240
-
-supercritical.material.plutonium_242=Plutonium 242
-supercritical.material.plutonium_244=Plutonium 244
-
+# 基础元素
 supercritical.material.uranium=Uranium
-supercritical.material.uranium_239=Uranium 239
-
+supercritical.material.plutonium=Plutonium
+# 镭同位素
+supercritical.material.radium_225=Radium-225
+supercritical.material.radium_226=Radium-226
+# 镤同位素
+supercritical.material.protactinium_231=Protactinium-231
+supercritical.material.protactinium_233=Protactinium-233
+# 铀同位素
+supercritical.material.uranium_232=Uranium-232
 supercritical.material.uranium_233=Uranium-233
 supercritical.material.uranium_234=Uranium-234
 supercritical.material.uranium_236=Uranium-236
-supercritical.material.thorium_229=Thorium_229-229
-supercritical.material.thorium_230=Thorium_229-230
+supercritical.material.uranium_237=Uranium-237
+supercritical.material.uranium_239=Uranium-239
+# 镎同位素
+supercritical.material.neptunium_235=Neptunium-235
+supercritical.material.neptunium_236=Neptunium-236
+supercritical.material.neptunium_237=Neptunium-237
+supercritical.material.neptunium_238=Neptunium-238
+supercritical.material.neptunium_239=Neptunium-239
+# 钚同位素
+supercritical.material.plutonium_236=Plutonium-236
+supercritical.material.plutonium_237=Plutonium-237
+supercritical.material.plutonium_238=Plutonium-238
+supercritical.material.plutonium_240=Plutonium-240
+supercritical.material.plutonium_242=Plutonium-242
+supercritical.material.plutonium_243=Plutonium-243
+supercritical.material.plutonium_244=Plutonium-244
+# 钍同位素
+supercritical.material.thorium_228=Thorium-228
+supercritical.material.thorium_229=Thorium-229
+supercritical.material.thorium_230=Thorium-230
+supercritical.material.thorium_232=Thorium-232
+supercritical.material.thorium_233=Thorium-233
+# 镅同位素
+supercritical.material.americium_240=Americium-240
 supercritical.material.americium_241=Americium-241
 supercritical.material.americium_242=Americium-242
 supercritical.material.americium_243=Americium-243
+# 锔同位素
+supercritical.material.curium_242=Curium-242
 supercritical.material.curium_243=Curium-243
+supercritical.material.curium_244=Curium-244
 supercritical.material.curium_245=Curium-245
 supercritical.material.curium_246=Curium-246
 supercritical.material.curium_247=Curium-247
-
-supercritical.material.high_pressure_steam=High Pressure Steam
+supercritical.material.curium_248=Curium-248
+supercritical.material.curium_250=Curium-250
+# 锫同位素
+supercritical.material.berkelium_249=Berkelium-249
+# 锎同位素
+supercritical.material.californium_249=Californium-249
+supercritical.material.californium_252=Californium-252
 
 supercritical.material.high_enriched_uranium_hexafluoride=Highly Enriched Uranium Hexafluoride
 supercritical.material.high_enriched_uranium_dioxide=Highly Enriched Uranium Dioxide
@@ -145,12 +171,9 @@ supercritical.machine.decay_chamber.uxv.tooltip=Zero Process Decay
 supercritical.machine.decay_chamber.opv.name=Legendary Decay Chamber
 supercritical.machine.decay_chamber.opv.tooltip=Zero Process Decay
 
-supercritical.machine.rtg.hv.name=RTG-MKI
-supercritical.machine.rtg.ev.name=RTG-MKII
-supercritical.machine.rtg.iv.name=RTG-MKIII
-supercritical.machine.rtg.luv.name=RTG-MKIV
-supercritical.machine.rtg.zpm.name=RTG-MKV
-
+supercritical.machine.rtg.lv.name=Radioisotope Thermoelectric Generator-MKI
+supercritical.machine.rtg.mv.name=Radioisotope Thermoelectric Generator-MKII
+supercritical.machine.rtg.hv.name=Radioisotope Thermoelectric Generator-MKIII
 
 fission.coolant.name=Coolant Heating
 fission.fuel.name=Fission Reactor

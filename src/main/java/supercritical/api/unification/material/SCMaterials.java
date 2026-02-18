@@ -13,38 +13,64 @@ import supercritical.common.materials.UnknownCompositionMaterials;
  * 此文件遵循 GPL-3.0 许可证，详情请见项目根目录的 LICENSE 文件。
  */
 public class SCMaterials {
+    public static Material Radium225;
+    public static Material Radium226;
 
-    /* public static Material Neptunium = Materials.Neptunium; */
+    public static Material Protactinium231;
+    public static Material Protactinium233;
+
+    public static Material Thorium228;
     public static Material Thorium229;
     public static Material Thorium230;
+    public static Material Thorium232;
+    public static Material Thorium233;
 
+    /* public static Material Neptunium = Materials.Neptunium; */
     public static Material Neptunium235;
     public static Material Neptunium236;
     public static Material Neptunium237;
+    public static Material Neptunium238;
     public static Material Neptunium239;
 
+    public static Material Plutonium236;
+    public static Material Plutonium237;
     public static Material Plutonium238;
     /* public static Material Plutonium239 = Materials.Plutonium239; */
     public static Material Plutonium240;
     /* public static Material Plutonium241 = Materials.Plutonium241; */
     public static Material Plutonium242;
+    public static Material Plutonium243;
     public static Material Plutonium244;
 
+    public static Material Uranium232;
+    public static Material Uranium233;
+    public static Material Uranium234;
     /* public static Material Uranium235 = Materials.Uranium235; */
+    public static Material Uranium236;
+    public static Material Uranium237;
     /* public static Material Uranium238 = Materials.Uranium238; */
     public static Material Uranium239;
 
-    //Additions Nuclear stuff, introduced by MeowmelMuku
-    public static Material Uranium233;
-    public static Material Uranium234;
-    public static Material Uranium236;
+    public static Material Americium240;
     public static Material Americium241;
     public static Material Americium242;
     public static Material Americium243;
+
+    public static Material Curium242;
     public static Material Curium243;
+    public static Material Curium244;
     public static Material Curium245;
     public static Material Curium246;
     public static Material Curium247;
+    public static Material Curium248;
+    public static Material Curium250;
+
+    public static Material Berkelium249;
+
+    public static Material Californium249;
+    public static Material Californium252;
+
+
 
     public static Material HighEnrichedUraniumHexafluoride;
     /* public static Material LowEnrichedUraniumHexafluoride = Materials.EnrichedUraniumHexafluoride; */
@@ -53,7 +79,6 @@ public class SCMaterials {
 
     public static Material HighEnrichedUraniumDioxide;
     public static Material DepletedUraniumDioxide;
-    public static Material HighPressureSteam;
     public static Material FissilePlutoniumDioxide;
     public static Material Inconel;
     public static Material BoronTrioxide;

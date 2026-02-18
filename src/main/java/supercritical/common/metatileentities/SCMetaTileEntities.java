@@ -32,7 +32,7 @@ import static supercritical.api.util.SCUtility.scId;
  */
 public class SCMetaTileEntities {
 
-    public static final SimpleGeneratorMetaTileEntity[] RTG = new SimpleGeneratorMetaTileEntity[5];
+    public static final SimpleGeneratorMetaTileEntity[] RTG = new SimpleGeneratorMetaTileEntity[3];
     public static SimpleMachineMetaTileEntity[] DECAY_CHAMBER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
 
     // Nuclear MTEs
@@ -66,12 +66,10 @@ public class SCMetaTileEntities {
         CONTROL_ROD_MODERATED = registerMetaTileEntity(15, new MetaTileEntityControlRodPort(scId("control_rod_moderated"), true));
         MODERATOR_PORT = registerMetaTileEntity(16, new MetaTileEntityModeratorPort(scId("moderator_port")));
         //单方块发电机
-        //RTG发电机
-        RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction,1));
-        RTG[1] = registerMetaTileEntity(21, new SimpleGeneratorMetaTileEntity(scId("rtg.ev"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 4, genericGeneratorTankSizeFunction, 1));
-        RTG[2] = registerMetaTileEntity(22, new SimpleGeneratorMetaTileEntity(scId("rtg.iv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 5, genericGeneratorTankSizeFunction, 1));
-        RTG[3] = registerMetaTileEntity(23, new SimpleGeneratorMetaTileEntity(scId("rtg.luv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 6, genericGeneratorTankSizeFunction, 1));
-        RTG[4] = registerMetaTileEntity(24, new SimpleGeneratorMetaTileEntity(scId("rtg.zpm"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 7, genericGeneratorTankSizeFunction, 1));
+        //RTG发电机 Radioisotope Thermoelectric Generator
+        RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.lv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 1, genericGeneratorTankSizeFunction,1) {@Override public double getPollutionAmount() {return 0;}});
+        RTG[1] = registerMetaTileEntity(21, new SimpleGeneratorMetaTileEntity(scId("rtg.mv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 2, genericGeneratorTankSizeFunction, 1) {@Override public double getPollutionAmount() {return 0;}});
+        RTG[2] = registerMetaTileEntity(22, new SimpleGeneratorMetaTileEntity(scId("rtg.hv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 3, genericGeneratorTankSizeFunction, 1) {@Override public double getPollutionAmount() {return 0;}});
         //可以随便再来几个
 
 
