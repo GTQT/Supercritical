@@ -20,19 +20,5 @@ public class SCMaterialPropertyAddition {
         Protactinium.setProperty(PropertyKey.DUST, new DustProperty());
         Radium.setProperty(PropertyKey.DUST, new DustProperty());
         Neptunium.setProperty(PropertyKey.DUST, new DustProperty());
-
-
-        OrePrefix.dustSmall.setIgnored(GelidCryotheum);
-        OrePrefix.dustTiny.setIgnored(GelidCryotheum);
-
-        OrePrefix.dustSmall.setIgnored(BlazingPyrotheum);
-        OrePrefix.dustTiny.setIgnored(BlazingPyrotheum);
-
-        OrePrefix.dustSmall.setIgnored(TectonicPetrotheum);
-        OrePrefix.dustTiny.setIgnored(TectonicPetrotheum);
-
-        OrePrefix.dustSmall.setIgnored(ZephyreanAerotheum);
-        OrePrefix.dustTiny.setIgnored(ZephyreanAerotheum);
-
     }
 }

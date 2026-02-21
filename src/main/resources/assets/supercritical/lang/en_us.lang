@@ -123,11 +123,6 @@ supercritical.material.boron_carbide=Boron Carbide
 supercritical.material.heavy_water=Heavy Water
 supercritical.material.high_pressure_heavy_water=High Pressure Heavy Water
 
-supercritical.material.blazing_pyrotheum=烈焰之炽焱
-supercritical.material.gelid_cryotheum=极寒之凛冰
-supercritical.material.tectonic_petrotheum=板块之层岩
-supercritical.material.zephyrean_aerotheum=飞扬之清风
-
 supercritical.material.spent_uranium_fuel_solution=Spent Uranium Fuel Solution
 supercritical.material.radon_rich_gas_mixture=Radon Rich Gas Mixture
 

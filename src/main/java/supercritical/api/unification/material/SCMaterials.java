@@ -86,11 +86,6 @@ public class SCMaterials {
     public static Material HeavyWater;
     public static Material HighPressureHeavyWater;
 
-    public static Material GelidCryotheum;
-    public static Material BlazingPyrotheum;
-    public static Material TectonicPetrotheum;
-    public static Material ZephyreanAerotheum;
-
     public static Material Corium;
     public static Material SpentUraniumFuelSolution;
     public static Material RadonRichGasMixture;

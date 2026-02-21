@@ -4,7 +4,7 @@
     "description": "(1.12) Adding fission reactor and atomic energy to GregTech CE Unofficial",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "logoFile": "assets/supercritical/textures/supercritical_logo.png",
+    "logoFile": "logo.png",
     "url": "https://github.com/GTQT/Supercritical",
     "authorList": [
         "SymmetricDevs,MeowmelMuku"
