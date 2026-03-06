@@ -22,6 +22,7 @@ public class SCRecipeMaps {
     public static final RecipeMap<SimpleRecipeBuilder> SPENT_FUEL_POOL_RECIPES;
     public static final RecipeMap<SimpleRecipeBuilder> GAS_CENTRIFUGE_RECIPES;
     public static final RecipeMap<SimpleRecipeBuilder> DECAY_CHAMBER_RECIPES;
+    public static final RecipeMap<SimpleRecipeBuilder> NATURAL_DRAFT_COOLING_TOWER;
     public static final RecipeMap<FuelRecipeBuilder> RTG_RECIPES;
 
     static {
@@ -75,6 +76,15 @@ public class SCRecipeMaps {
                         .progressBar(GTGuiTextures.PROGRESS_BAR_ARROW_MULTIPLE)
                 )
                 .sound(GTSoundEvents.ARC)
+                .build();
+
+        NATURAL_DRAFT_COOLING_TOWER = new RecipeMapBuilder<>("natural_draft_cooling_tower", new SimpleRecipeBuilder())
+                .fluidInputs(1)
+                .fluidOutputs(1)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_GAS_COLLECTOR)
+                )
+                .sound(GTSoundEvents.COOLING)
                 .build();
     }
 

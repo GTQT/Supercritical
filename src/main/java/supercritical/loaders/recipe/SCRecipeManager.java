@@ -2,7 +2,8 @@ package supercritical.loaders.recipe;
 
 import supercritical.common.SCConfigHolder;
 import supercritical.loaders.recipe.handlers.FluidRecipeHandler;
-import supercritical.loaders.recipe.handlers.NuclearRecipeHandler;
+import supercritical.loaders.recipe.handlers.FissionReactorRecipeHandler;
+import supercritical.loaders.recipe.handlers.NuclearReactorRecipeHandler;
 
 /**
  * Copyright (C) SymmetricDevs 2025
@@ -20,10 +21,12 @@ public class SCRecipeManager {
         SCMetaTileEnityLoader.init();
         SCMetaTileEntityMachineRecipeLoader.init();
         SCNuclearRecipes.init();
-        NuclearRecipeHandler.register();
+        FissionReactorRecipeHandler.register();
         //追加注册燃料配方
         SCDecayChamberRecipes.load();
         SCRTGFuel.load();
+
+        NuclearReactorRecipeHandler.init();
     }
 
     public static void loadLatest() {

@@ -51,20 +51,17 @@ public class FuelRodBehavior extends NuclearComponentBehavior {
         return (FuelRodBehavior) durabilityManager;
     }
 
-    // 获取耐久消耗（每tick固定消耗1耐久）
-    public int getDurabilityCost() {
-        return 1;
-    }
-
     @Override
-    public void applyDamage(ItemStack itemStack, int damageApplied) {
+    public boolean applyDamage(ItemStack itemStack, int damageApplied) {
         int Durability = getPartMaxDurability(itemStack);
         int resultDamage = getPartDamage(itemStack) + damageApplied;
         if (resultDamage >= Durability) {
             itemStack.setItemDamage(depletedItem.getItemDamage());
             itemStack.setTagCompound(new NBTTagCompound());
+            return false;
         } else {
             setPartDamage(itemStack, resultDamage);
+            return true;
         }
     }
 

@@ -42,6 +42,17 @@ public class CoolantCellBehavior extends NuclearComponentBehavior {
         return (CoolantCellBehavior) durabilityManager;
     }
 
+    public boolean applyDamage(ItemStack itemStack, int damageApplied) {
+        int Durability = getPartMaxDurability(itemStack);
+        int resultDamage = getPartDamage(itemStack) + damageApplied;
+        if (resultDamage >= Durability) {
+            return false;
+        } else {
+            setPartDamage(itemStack, resultDamage);
+            return true;
+        }
+    }
+
     // 获取当前冷却量（直接返回冷却速率）
     public int getCoolingAmount() {
         return coolingRate;

@@ -36,13 +36,15 @@ public class NuclearComponentBehavior extends AbstractMaterialPartBehavior
         return 1 - (double) getPartDamage(itemStack) / getPartMaxDurability(itemStack);
     }
 
-    public void applyDamage(ItemStack itemStack, int damageApplied) {
+    public boolean applyDamage(ItemStack itemStack, int damageApplied) {
         int Durability = getPartMaxDurability(itemStack);
         int resultDamage = getPartDamage(itemStack) + damageApplied;
         if (resultDamage >= Durability) {
             itemStack.shrink(1);
+            return false;
         } else {
             setPartDamage(itemStack, resultDamage);
+            return true;
         }
     }
 

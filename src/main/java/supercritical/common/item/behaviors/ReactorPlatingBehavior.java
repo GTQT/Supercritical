@@ -13,17 +13,16 @@ import java.util.List;
 public class ReactorPlatingBehavior extends NuclearComponentBehavior {
 
     @Getter
-    private final Material material;           // 材料
+    private final Material material;
     @Getter
-    private final int heatCapacityBoost;       // 热容量提升（HU）
+    private final int heatCapacityBoost;
     @Getter
-    private final float explosionResistance;   // 爆炸抗性（0.0-1.0）
+    private final float explosionResistance;
 
-    public ReactorPlatingBehavior(int maxDurability,
-                                  Material material,
+    public ReactorPlatingBehavior(Material material,
                                   int heatCapacityBoost,
                                   float explosionResistance) {
-        super(maxDurability);
+        super(1);
         this.material = material;
         this.heatCapacityBoost = Math.max(0, heatCapacityBoost);
         this.explosionResistance = Math.max(0.0f, Math.min(1.0f, explosionResistance));
@@ -40,11 +39,6 @@ public class ReactorPlatingBehavior extends NuclearComponentBehavior {
         if (!(durabilityManager instanceof ReactorPlatingBehavior)) return null;
 
         return (ReactorPlatingBehavior) durabilityManager;
-    }
-
-    // 获取耐久消耗（每tick固定消耗1耐久）
-    public int getDurabilityCost() {
-        return 1;
     }
 
     @Override
@@ -64,7 +58,7 @@ public class ReactorPlatingBehavior extends NuclearComponentBehavior {
         }
 
         // 每tick耐久消耗
-        lines.add(I18n.format("耐久消耗: " + getDurabilityCost() + "/tick"));
+        lines.add(I18n.format("耐久消耗: 永不消耗"));
 
         // 功能说明
         lines.add(I18n.format("反应堆隔板: 提高反应堆结构强度"));

@@ -10,6 +10,7 @@ import supercritical.api.util.SCUtility;
 import supercritical.client.renderer.textures.SCTextures;
 import supercritical.common.metatileentities.multi.MetaTileEntityFissionReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntityHeatExchanger;
+import supercritical.common.metatileentities.multi.nuclearReactor.MetaTileEntityNaturalDraftCoolingTower;
 import supercritical.common.metatileentities.multi.nuclearReactor.MetaTileEntityNuclearExtend;
 import supercritical.common.metatileentities.multi.nuclearReactor.MetaTileEntityNuclearReactor;
 import supercritical.common.metatileentities.multi.MetaTileEntitySpentFuelPool;
@@ -46,6 +47,9 @@ public class SCMetaTileEntities {
     public static MetaTileEntityControlRodPort CONTROL_ROD_MODERATED;
     public static MetaTileEntitySpentFuelPool SPENT_FUEL_POOL;
     public static MetaTileEntityGasCentrifuge GAS_CENTRIFUGE;
+    public static MetaTileEntityNaturalDraftCoolingTower NATURAL_DRAFT_COOLING_TOWER;
+
+
     public static MetaTileEntityModeratorPort MODERATOR_PORT;
 
     public static MetaTileEntityNuclearReactor NUCLEAR_REACTOR;
@@ -57,6 +61,8 @@ public class SCMetaTileEntities {
         FISSION_REACTOR = registerMetaTileEntity(2, new MetaTileEntityFissionReactor(scId("fission_reactor")));
         SPENT_FUEL_POOL = registerMetaTileEntity(3, new MetaTileEntitySpentFuelPool(scId("spent_fuel_pool")));
         GAS_CENTRIFUGE = registerMetaTileEntity(4, new MetaTileEntityGasCentrifuge(scId("gas_centrifuge")));
+        NATURAL_DRAFT_COOLING_TOWER = registerMetaTileEntity(5, new MetaTileEntityNaturalDraftCoolingTower(scId("natural_draft_cooling_tower")));
+
         //IO
         FUEL_ROD_INPUT = registerMetaTileEntity(10, new MetaTileEntityFuelRodImportBus(scId("fuel_rod_input")));
         FUEL_ROD_OUTPUT = registerMetaTileEntity(11, new MetaTileEntityFuelRodExportBus(scId("fuel_rod_output")));
@@ -65,6 +71,7 @@ public class SCMetaTileEntities {
         CONTROL_ROD = registerMetaTileEntity(14, new MetaTileEntityControlRodPort(scId("control_rod"), false));
         CONTROL_ROD_MODERATED = registerMetaTileEntity(15, new MetaTileEntityControlRodPort(scId("control_rod_moderated"), true));
         MODERATOR_PORT = registerMetaTileEntity(16, new MetaTileEntityModeratorPort(scId("moderator_port")));
+
         //单方块发电机
         //RTG发电机 Radioisotope Thermoelectric Generator
         RTG[0] = registerMetaTileEntity(20, new SimpleGeneratorMetaTileEntity(scId("rtg.lv"), SCRecipeMaps.RTG_RECIPES, SCTextures.RTG_OVERLAY, 1, genericGeneratorTankSizeFunction,1) {@Override public double getPollutionAmount() {return 0;}});

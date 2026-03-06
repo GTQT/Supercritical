@@ -1,15 +1,10 @@
 package supercritical.common.item;
 
-import gregtech.api.GTValues;
 import gregtech.api.creativetab.BaseCreativeTab;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
 import gregtech.api.items.metaitem.StandardMetaItem;
 import gregtech.api.unification.material.Materials;
-import gregtech.common.items.MetaItems;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import supercritical.api.unification.material.SCMaterials;
 import supercritical.common.item.behaviors.*;
 
 public class SCMetaItems {
@@ -88,8 +83,6 @@ public class SCMetaItems {
 
     public static MetaItem<?>.MetaValueItem REACTOR_PLATING_BASIC;
     public static MetaItem<?>.MetaValueItem REACTOR_PLATING_ADVANCED;
-    public static MetaItem<?>.MetaValueItem REACTOR_PLATING_HEAT_RESISTANT;
-    public static MetaItem<?>.MetaValueItem REACTOR_PLATING_BLAST_RESISTANT;
 
     private static StandardMetaItem metaItem;
 
@@ -131,7 +124,6 @@ public class SCMetaItems {
         SCMetaItems.FUEL_ROD_NAQUADAH_1X_DEPLETED = metaItem.addItem(119, "fuel_rod.naquadah.1x.depleted");
         SCMetaItems.FUEL_ROD_NAQUADAH_2X_DEPLETED = metaItem.addItem(120, "fuel_rod.naquadah.2x.depleted");
         SCMetaItems.FUEL_ROD_NAQUADAH_4X_DEPLETED = metaItem.addItem(121, "fuel_rod.naquadah.4x.depleted");
-
 
         //燃料棒(纯物品)
 
@@ -298,11 +290,11 @@ public class SCMetaItems {
 
         //反应堆隔板
         REACTOR_PLATING_BASIC = metaItem.addItem(240, "reactor_plating.basic")
-                .addComponents(new ReactorPlatingBehavior(50000, Materials.Bronze, 1000, 0.1f
+                .addComponents(new ReactorPlatingBehavior(Materials.Bronze, 1000, 0.1f
                 ));
 
         REACTOR_PLATING_ADVANCED = metaItem.addItem(241, "reactor_plating.advanced")
-                .addComponents(new ReactorPlatingBehavior(100000, Materials.Lead, 2500, 0.25f
+                .addComponents(new ReactorPlatingBehavior(Materials.Lead, 2500, 0.25f
                 ));
     }
 }

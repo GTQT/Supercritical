@@ -14,10 +14,10 @@ import static gregtech.api.unification.ore.OrePrefix.dust;
 import static supercritical.api.recipes.SCRecipeMaps.SPENT_FUEL_POOL_RECIPES;
 import static supercritical.api.unification.ore.SCOrePrefix.*;
 
-public class NuclearRecipeHandler {
+public class FissionReactorRecipeHandler {
 
     public static void register() {
-        SCOrePrefix.fuelRod.addProcessingHandler(SCPropertyKey.FISSION_FUEL, NuclearRecipeHandler::processFuelRod);
+        SCOrePrefix.fuelRod.addProcessingHandler(SCPropertyKey.FISSION_FUEL, FissionReactorRecipeHandler::processFuelRod);
     }
 
     private static void processFuelRod(OrePrefix orePrefix, Material material, FissionFuelProperty oreProperty) {

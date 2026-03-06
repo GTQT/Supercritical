@@ -31,6 +31,7 @@ import gregtech.api.pattern.BlockPattern;
 import gregtech.api.pattern.FactoryBlockPattern;
 import gregtech.api.pattern.PatternMatchContext;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTTransferUtils;
 import gregtech.api.util.tooltips.InformationHandler;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.common.items.behaviors.AbstractMaterialPartBehavior;
@@ -69,10 +70,9 @@ import static supercritical.common.metatileentities.multi.nuclearReactor.Nuclear
 
 public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl implements ProgressBarMultiblock {
 
-    private static final int UPDATE_TICK_RATE = 20; // 20 ticks = 1秒更新一次
-    private static final int BASE_HEAT_CAPACITY = 10000; // 基础热容量
+    private static final int UPDATE_TICK_RATE = 20;
+    private static final int BASE_HEAT_CAPACITY = 10000;
 
-    // ==================== 核反应堆参数 ====================
     @Getter
     private final int reactorWidth = 9;
     @Getter
@@ -80,19 +80,16 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     @Getter
     private int extendCount = 0;
 
-    // ==================== 核心组件 ====================
     @Getter
     private NuclearReactorSimulator reactorSimulator;
     @Getter
     private GTItemStackHandler componentHandler;
 
-    // ==================== 状态变量 ====================
     private int tickCounter = 0;
     private int updateTimer = 0;
     private boolean isReactorActive = false;
     private boolean hasMeltdown = false;
 
-    // ==================== 缓存数据 ====================
     @Getter
     private int currentHeat = 0;
     @Getter
@@ -115,12 +112,11 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         return new GTItemStackHandler(this, width * height) {
             @Override
             public int getSlotLimit(int slot) {
-                return 1; // 每个槽位只能放1个物品
+                return 1;
             }
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                // 只允许核电组件
                 return NuclearComponentBehavior.getInstanceFor(stack) != null;
             }
 
@@ -128,7 +124,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
             public void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
                 if (!getWorld().isRemote && isStructureFormed()) {
-                    // 当物品变化时，标记需要同步到模拟器
                     markDirty();
                 }
             }
@@ -148,71 +143,69 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-
-        // 获取扩展仓数量
         List<INuclearExtend> extendHatches = getExtendHatch();
-        if(getExtendHatch()!=null) extendCount = extendHatches.size();
+        if (getExtendHatch() != null) extendCount = extendHatches.size();
     }
 
-    public boolean haveAbilities(NuclearAbility ability){
-        if(extendCount > 0){
-            for(INuclearExtend extend:getExtendHatch()){
-                if(extend.getUpdateAbilities().contains(ability))return true;
+    public boolean haveAbilities(NuclearAbility ability) {
+        if (extendCount > 0) {
+            for (INuclearExtend extend : getExtendHatch()) {
+                if (extend.getUpdateAbilities().contains(ability)) return true;
             }
         }
         return false;
     }
 
-    private ItemStack[] saveInventory() {
-        ItemStack[] items = new ItemStack[componentHandler.getSlots()];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = componentHandler.getStackInSlot(i).copy();
-        }
-        return items;
-    }
-
-    private void restoreInventory(ItemStack[] savedItems) {
-        if (savedItems == null) return;
-
-        for (int i = 0; i < Math.min(savedItems.length, componentHandler.getSlots()); i++) {
-            if (savedItems[i] != null && !savedItems[i].isEmpty()) {
-                componentHandler.setStackInSlot(i, savedItems[i].copy());
-            }
-        }
-    }
-
     @Override
     protected void updateFormedValid() {
         if (getWorld().isRemote) return;
+
+        if (reactorSimulator.isTransOut() && getOutputInventory().getSlots() > 0) {
+            List<ItemStack> recoveryItems = reactorSimulator.getListToTransfer();
+            for (ItemStack stack : recoveryItems) {
+                ItemStack exist = GTTransferUtils.insertItem(getOutputInventory(), stack, true);
+                if (exist.getCount() == 0) {
+                    GTTransferUtils.insertItem(getOutputInventory(), stack, false);
+                    reactorSimulator.getListToTransfer().remove(stack);
+                }
+            }
+            if (reactorSimulator.getListToTransfer().isEmpty()) {
+                reactorSimulator.setTransOut(false);
+            }
+        }
+        if (getInputInventory().getSlots() > 0) {
+            for (int i = 0; i < getInputInventory().getSlots(); i++) {
+                ItemStack stack = getInputInventory().getStackInSlot(i);
+                if (stack != ItemStack.EMPTY) {
+                    reactorSimulator.getListToAdd().add(stack);
+                    getInputInventory().setStackInSlot(i, ItemStack.EMPTY);
+                    reactorSimulator.setTransIn(true);
+                }
+            }
+        }
+
         if (!isWorkingEnabled()) return;
 
         tickCounter++;
         updateTimer++;
 
-        // 每秒更新一次（20 ticks）
         if (updateTimer >= UPDATE_TICK_RATE) {
             updateTimer = 0;
 
-            // 1. 同步库存到模拟器
             syncInventoryToSimulator();
 
-            // 2. 运行反应堆模拟
             boolean success = reactorSimulator.simulateTick();
 
             if (!success) {
-                // 发生熔毁
                 hasMeltdown = true;
                 handleMeltdown();
                 return;
             }
 
-            // 3. 更新本地缓存
             updateLocalCache();
 
-            // 4. 同步模拟器数据回库存
             syncSimulatorToInventory();
 
-            // 5. 标记需要同步到客户端
             markDirty();
             writeCustomData(SYNC_REACTOR_STATE, buf -> {
                 buf.writeInt(currentHeat);
@@ -222,21 +215,14 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 buf.writeBoolean(hasMeltdown);
             });
         }
-        // 6. 输出能量
         outputEnergy();
 
-        if(haveAbilities(STOP_WORK) && reactorSimulator.isOverHeat())
-        {
+        if (haveAbilities(STOP_WORK) && reactorSimulator.isOverHeat()) {
             setWorkingEnabled(false);
         }
 
     }
 
-    // ==================== 核心方法 ====================
-
-    /**
-     * 同步库存到模拟器
-     */
     private void syncInventoryToSimulator() {
         for (int slot = 0; slot < componentHandler.getSlots(); slot++) {
             int x = slot % reactorWidth;
@@ -245,29 +231,22 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
             ItemStack stack = componentHandler.getStackInSlot(slot);
 
             if (stack.isEmpty()) {
-                // 如果模拟器中有物品但库存为空，则移除
                 reactorSimulator.removeComponent(x, y);
             } else {
-                // 如果库存有物品，放置到模拟器
                 reactorSimulator.placeComponent(x, y, stack);
             }
         }
     }
 
-    /**
-     * 同步模拟器数据回库存
-     */
     private void syncSimulatorToInventory() {
         for (int x = 0; x < reactorWidth; x++) {
             for (int y = 0; y < reactorHeight; y++) {
                 int slot = y * reactorWidth + x;
                 ItemStack simulatorStack = reactorSimulator.getComponent(x, y);
 
-                // 更新库存中的物品状态（只更新耐久变化）
                 if (!simulatorStack.isEmpty()) {
                     ItemStack currentStack = componentHandler.getStackInSlot(slot);
                     if (!currentStack.isEmpty() && currentStack.isItemEqual(simulatorStack)) {
-                        // 复制NBT数据（主要是耐久）
                         if (simulatorStack.hasTagCompound()) {
                             currentStack.setTagCompound(simulatorStack.getTagCompound().copy());
                         }
@@ -277,9 +256,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         }
     }
 
-    /**
-     * 更新本地缓存数据
-     */
     private void updateLocalCache() {
         currentHeat = reactorSimulator.getCurrentHeat();
         maxHeatCapacity = reactorSimulator.getMaxHeatCapacity();
@@ -288,49 +264,33 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         efficiency = reactorSimulator.getEfficiency();
     }
 
-    /**
-     * 输出能量
-     */
     private void outputEnergy() {
         if (currentOutput > 0 && !hasMeltdown) {
-            // 转换为每tick能量
             long energyPerTick = currentOutput;
 
-            // 添加到能量容器
             if (outEnergyContainer != null) {
                 outEnergyContainer.addEnergy(energyPerTick);
             }
         }
     }
 
-    /**
-     * 处理熔毁
-     */
     private void handleMeltdown() {
-        // 1. 停止所有输出
         isReactorActive = false;
         currentOutput = 0;
 
-        // 2. 清空所有组件（熔毁后组件全部消失）
         for (int slot = 0; slot < componentHandler.getSlots(); slot++) {
             componentHandler.setStackInSlot(slot, ItemStack.EMPTY);
         }
 
-        // 3. 创建爆炸
         float explosionPower = calculateExplosionPower();
         doExplosion(explosionPower);
 
-        // 4. 同步到模拟器
         syncInventoryToSimulator();
     }
 
-    /**
-     * 计算爆炸威力
-     */
     private float calculateExplosionPower() {
         float basePower = 20.0f;
 
-        // 根据热量和燃料棒数量增加威力
         int heat = reactorSimulator.getCurrentHeat();
         int fuelRods = reactorSimulator.getTotalFuelRods();
 
@@ -340,22 +300,17 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         return basePower * (1.0f + heatFactor + fuelFactor);
     }
 
-    // ==================== NBT数据持久化 ====================
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
-        // 保存库存
         data.setTag("ComponentInventory", componentHandler.serializeNBT());
 
-        // 保存模拟器状态
         NBTTagCompound simulatorNBT = new NBTTagCompound();
         if (reactorSimulator != null) {
             reactorSimulator.writeToNBT(simulatorNBT);
             data.setTag("ReactorSimulator", simulatorNBT);
         }
 
-        // 保存其他状态
         data.setBoolean("HasMeltdown", hasMeltdown);
         data.setInteger("TickCounter", tickCounter);
         data.setInteger("UpdateTimer", updateTimer);
@@ -372,10 +327,8 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
 
-        // 重新初始化反应堆
         initializeReactor(reactorWidth, reactorHeight);
 
-        // 读取库存
         if (data.hasKey("ComponentInventory")) {
             try {
                 componentHandler.deserializeNBT(data.getCompoundTag("ComponentInventory"));
@@ -384,7 +337,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
             }
         }
 
-        // 读取基本状态
         hasMeltdown = data.getBoolean("HasMeltdown");
         tickCounter = data.getInteger("TickCounter");
         updateTimer = data.getInteger("UpdateTimer");
@@ -394,7 +346,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         efficiency = data.getFloat("Efficiency");
         isReactorActive = data.getBoolean("IsReactorActive");
 
-        // 读取模拟器状态
         if (data.hasKey("ReactorSimulator", TAG_COMPOUND)) {
             try {
                 NBTTagCompound simulatorNBT = data.getCompoundTag("ReactorSimulator");
@@ -404,18 +355,14 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 reactorSimulator.setHeat(currentHeat);
             }
         } else {
-            // 没有保存的模拟器数据，使用当前热量
             reactorSimulator.setHeat(currentHeat);
         }
 
-        // 同步状态
         if (getWorld() != null && !getWorld().isRemote && isStructureFormed()) {
             syncInventoryToSimulator();
             updateLocalCache();
         }
     }
-
-    // ==================== 网络同步 ====================
 
     @Override
     public void writeInitialSyncData(PacketBuffer buf) {
@@ -429,7 +376,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         buf.writeBoolean(isReactorActive);
         buf.writeBoolean(hasMeltdown);
 
-        // 写入库存数据
         buf.writeVarInt(componentHandler.getSlots());
         for (int slot = 0; slot < componentHandler.getSlots(); slot++) {
             buf.writeItemStack(componentHandler.getStackInSlot(slot));
@@ -446,7 +392,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         isReactorActive = buf.readBoolean();
         hasMeltdown = buf.readBoolean();
 
-        // 读取库存数据
         int slotCount = buf.readVarInt();
         for (int slot = 0; slot < Math.min(slotCount, componentHandler.getSlots()); slot++) {
             try {
@@ -474,7 +419,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     @Override
     protected MultiblockUIFactory createUIFactory() {
         return super.createUIFactory()
-                // 添加侧边按钮用于打开组件管理面板
                 .createFlexButton((guiData, syncManager) -> {
                     var componentPanel = syncManager.panel("component_panel", this::makeComponentPanel, true);
                     return new ButtonWidget<>()
@@ -492,19 +436,13 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 });
     }
 
-    /**
-     * 创建组件管理面板
-     */
     private ModularPanel makeComponentPanel(PanelSyncManager syncManager, IPanelHandler syncHandler) {
-        // 注册槽位组，使用宽度作为每行的槽位数
         syncManager.registerSlotGroup("reactor_inventory", reactorWidth);
 
-        // 计算面板大小
         int panelHeight = 4 + 20 + (reactorHeight * 18) + 4;
         int panelWidth = 4 + (reactorWidth * 18) + 4;
 
         return GTGuis.createPopupPanel("nuclear_components", panelWidth, panelHeight)
-                // 标题栏
                 .child(Flow.row()
                         .pos(4, 4)
                         .height(16)
@@ -516,7 +454,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                         .child(IKey.str("核电组件 (" + reactorWidth + "×" + reactorHeight + ")")
                                 .asWidget()
                                 .heightRel(1.0f)))
-                // 组件网格
                 .child(Flow.column()
                         .top(24)
                         .left(4)
@@ -525,9 +462,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                         .child(createComponentGrid(reactorWidth, reactorHeight, syncManager)));
     }
 
-    /**
-     * 创建组件网格
-     */
     private Grid createComponentGrid(int width, int height, PanelSyncManager syncManager) {
         int slotCount = width * height;
 
@@ -537,7 +471,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 .alignX(0.5f)
                 .mapTo(width, slotCount, index -> {
 
-                    // 创建物品槽
                     return new ItemSlot()
                             .slot(SyncHandlers.itemSlot(componentHandler, index)
                                     .slotGroup("reactor_inventory")
@@ -558,12 +491,11 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
     @Override
     public int getProgressBarCount() {
-        return 2; // 两个进度条：热量和效率
+        return 2;
     }
 
     @Override
     public void registerBars(List<UnaryOperator<TemplateBarBuilder>> bars, PanelSyncManager syncManager) {
-        // 同步数据
         IntSyncValue heatValue = new IntSyncValue(() -> currentHeat);
         IntSyncValue maxHeatValue = new IntSyncValue(() -> maxHeatCapacity);
         FloatSyncValue efficiencyValue = new FloatSyncValue(() -> efficiency);
@@ -580,18 +512,16 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         syncManager.syncValue("coolant_cells", coolantCellsValue);
         syncManager.syncValue("reflectors", reflectorsValue);
 
-        // 第一个进度条：热量百分比
         bars.add(barBuilder -> barBuilder
                 .progress(() -> maxHeatValue.getIntValue() > 0 ?
                         Math.min(1.0, (double) heatValue.getIntValue() / maxHeatValue.getIntValue()) : 0.0)
-                .texture(GTGuiTextures.PROGRESS_BAR_FUSION_HEAT) // 使用融合反应堆的热量纹理
+                .texture(GTGuiTextures.PROGRESS_BAR_FUSION_HEAT)
                 .tooltipBuilder(tooltip -> {
                     if (isStructureFormed()) {
                         int heat = heatValue.getIntValue();
                         int maxHeat = maxHeatValue.getIntValue();
                         int heatPercent = maxHeat > 0 ? (heat * 100) / maxHeat : 0;
 
-                        // 根据热量等级设置颜色
                         TextFormatting color;
                         String status;
                         if (heatPercent >= 90) {
@@ -619,10 +549,9 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                     }
                 }));
 
-        // 第二个进度条：效率
         bars.add(barBuilder -> barBuilder
-                .progress(() -> Math.min(1.0, efficiencyValue.getFloatValue() / 2.0)) // 效率范围0-2，转换为0-1
-                .texture(GTGuiTextures.PROGRESS_BAR_FUSION_ENERGY) // 使用箭头纹理表示效率
+                .progress(() -> Math.min(1.0, efficiencyValue.getFloatValue() / 2.0))
+                .texture(GTGuiTextures.PROGRESS_BAR_FUSION_ENERGY)
                 .tooltipBuilder(tooltip -> {
                     if (isStructureFormed()) {
                         float eff = efficiencyValue.getFloatValue();
@@ -631,7 +560,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                         tooltip.addLine(IKey.str("效率: " + effPercent + "%"));
                         tooltip.addLine(IKey.str("基础输出: " + currentOutput + " EU/t"));
 
-                        // 效率影响因素
                         if (reflectorsValue.getIntValue() > 0) {
                             tooltip.addLine(IKey.str("反射板加成: +" + (reflectorsValue.getIntValue() * 20) + "%"));
                         }
@@ -644,8 +572,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 }));
     }
 
-    // ==================== 配置显示文本 ====================
-
     @Override
     protected void configureDisplayText(MultiblockUIBuilder builder) {
         builder
@@ -654,7 +580,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 .addCustom((richText, syncer) -> {
                     if (!isStructureFormed()) return;
 
-                    // 同步数据
                     int heat = syncer.syncInt(currentHeat);
                     int maxHeat = syncer.syncInt(maxHeatCapacity);
                     long output = syncer.syncLong(currentOutput);
@@ -676,11 +601,8 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                         richText.add(IKey.str(TextFormatting.GRAY + "○ 待机"));
                     }
 
-                    // 大小
                     richText.add(IKey.str(TextFormatting.GRAY + "大小: " + reactorWidth + "×" + reactorHeight));
-                    //richText.add(IKey.str(TextFormatting.GRAY + "扩展仓: " + extendCount + "/" + (MAX_SIZE - BASE_SIZE)));
 
-                    // 添加组件统计
                     richText.add(IKey.str(TextFormatting.GRAY + "燃料棒: " +
                             TextFormatting.WHITE + fuelRods +
                             TextFormatting.GRAY + "  散热片: " +
@@ -691,7 +613,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                             TextFormatting.GRAY + "  反射板: " +
                             TextFormatting.WHITE + reflectors));
 
-                    // 添加隔板统计
                     if (plating > 0) {
                         int heatBoost = maxHeat - BASE_HEAT_CAPACITY;
                         richText.add(IKey.str(TextFormatting.GRAY + "隔板: " +
@@ -705,7 +626,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                             TextFormatting.WHITE + heat + "/" + maxHeat + " HU" +
                             TextFormatting.GRAY + " (" + heatPercent + "%)"));
 
-                    // 添加输出信息
                     richText.add(IKey.str(TextFormatting.GRAY + "输出: " +
                             TextFormatting.WHITE + output + " EU/t"));
                 })
@@ -717,10 +637,8 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         super.configureErrorText(builder);
         builder.addCustom((list, syncer) -> {
             if (isStructureFormed()) {
-                // 同步熔毁状态
                 boolean meltdown = syncer.syncBoolean(hasMeltdown);
 
-                // 熔毁状态显示为错误
                 if (meltdown) {
                     list.add(IKey.str("§4✗ 反应堆已熔毁！"));
                 }
@@ -730,12 +648,10 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
     @Override
     protected void configureWarningText(MultiblockUIBuilder builder) {
-        // 先添加父类的警告
         super.configureWarningText(builder);
 
         builder.addCustom((list, syncer) -> {
             if (isStructureFormed()) {
-                // 同步数据
                 int heat = syncer.syncInt(currentHeat);
                 int maxHeat = syncer.syncInt(maxHeatCapacity);
                 long output = syncer.syncLong(currentOutput);
@@ -743,43 +659,38 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 int heatVents = syncer.syncInt(reactorSimulator.getTotalHeatVents());
                 int coolantCells = syncer.syncInt(reactorSimulator.getTotalCoolantCells());
 
-                // 检查热量警告
                 int heatPercent = maxHeat > 0 ? (heat * 100) / maxHeat : 0;
 
                 if (heatPercent >= 90) {
-                    list.add(IKey.str("§c⚠ 热量危险：" + heatPercent + "% - 即将熔毁！"));
+                    list.add(IKey.str("§c热量危险：" + heatPercent + "% - 即将熔毁！"));
                 } else if (heatPercent >= 80) {
-                    list.add(IKey.str("§6⚠ 热量警告：" + heatPercent + "% - 请立即冷却！"));
+                    list.add(IKey.str("§6热量警告：" + heatPercent + "% - 请立即冷却！"));
                 } else if (heatPercent >= 70) {
-                    list.add(IKey.str("§e⚠ 热量偏高：" + heatPercent + "%"));
+                    list.add(IKey.str("§e热量偏高：" + heatPercent + "%"));
                 }
 
-                // 检查组件耗尽
                 int depletedComponents = syncer.syncInt(countDepletedComponents());
                 if (depletedComponents > 0) {
-                    list.add(IKey.str("§e⚠ " + depletedComponents + "个组件已耗尽"));
+                    list.add(IKey.str("§e" + depletedComponents + "个组件已耗尽"));
                 }
 
-                // 检查散热不足
                 boolean noCooling = syncer.syncBoolean(
                         heat > 1000 && heatVents == 0 && coolantCells == 0);
 
                 if (noCooling) {
-                    list.add(IKey.str("§e⚠ 未检测到冷却系统"));
+                    list.add(IKey.str("§e未检测到冷却系统"));
                 }
 
-                // 检查燃料不足但反应堆试图运行
                 boolean noFuel = syncer.syncBoolean(
                         fuelRods == 0 && output > 0);
 
                 if (noFuel) {
-                    list.add(IKey.str("§e⚠ 未检测到燃料棒"));
+                    list.add(IKey.str("§e未检测到燃料棒"));
                 }
             }
         });
     }
 
-    // 辅助方法：计算耗尽组件数量
     private int countDepletedComponents() {
         int count = 0;
         for (int slot = 0; slot < componentHandler.getSlots(); slot++) {
@@ -807,6 +718,8 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 .where('S', selfPredicate())
                 .where('Y', states(getCasingState())
                         .or(abilities(MultiblockAbility.OUTPUT_ENERGY).setMinGlobalLimited(1).setMaxGlobalLimited(3))
+                        .or(abilities(MultiblockAbility.IMPORT_ITEMS).setMinGlobalLimited(0).setMaxGlobalLimited(2))
+                        .or(abilities(MultiblockAbility.EXPORT_ITEMS).setMinGlobalLimited(0).setMaxGlobalLimited(2))
                         .or(abilities(SCMultiblockAbility.REACTOR_EXTEND_HATCH).setMinGlobalLimited(0).setMaxGlobalLimited(1))
                 )
                 .where(' ', any())
@@ -857,7 +770,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         List<ITextComponent> list = new ArrayList<>();
 
         if (isStructureFormed()) {
-            // 添加反应堆状态信息
             list.add(new TextComponentString("大小: " + reactorWidth + "×" + reactorHeight));
             list.add(new TextComponentString("热量: " + currentHeat + " / " + maxHeatCapacity + " HU"));
             list.add(new TextComponentString("能量输出: " + currentOutput + " EU/t"));
@@ -871,7 +783,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                 list.add(new TextComponentString(TextFormatting.GRAY + "待机"));
             }
 
-            // 组件统计
             list.add(new TextComponentString("燃料棒: " + reactorSimulator.getTotalFuelRods()));
             list.add(new TextComponentString("散热片: " + reactorSimulator.getTotalHeatVents()));
             list.add(new TextComponentString("冷却单元: " + reactorSimulator.getTotalCoolantCells()));
@@ -881,7 +792,6 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         return list;
     }
 
-    // 进度条相关（用于显示热量百分比）
     @Override
     public int getProgress() {
         if (maxHeatCapacity > 0) {
@@ -892,21 +802,13 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
     @Override
     public int getMaxProgress() {
-        return 100; // 百分比
+        return 100;
     }
 
-    // ==================== 工具方法 ====================
-
-    /**
-     * 检查是否熔毁
-     */
     public boolean hasMeltdown() {
         return hasMeltdown;
     }
 
-    /**
-     * 检查反应堆是否激活
-     */
     public boolean isReactorActive() {
         return isReactorActive && !hasMeltdown;
     }
@@ -936,11 +838,10 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
         tooltip.add("冷却单元-高效主动冷却组件，能大量吸收热量但会随使用逐渐消耗，需要定期更换以维持反应堆安全");
         tooltip.add("中子反射板-每个相邻反射板为燃料棒提供20%效率加成，但同样增加20%热量产生，是效率与风险的平衡选择");
         tooltip.add("反应堆隔板-强化反应堆结构，每块隔板增加热容量和爆炸抗性，是防止熔毁的关键安全组件");
-        tooltip.add(TextFormatting.GREEN + I18n.format("-设计策略："));
-        tooltip.add("最佳配置通常采用'蜂窝式'布局：燃料棒为中心，周围环绕反射板，外层布置散热片和冷却单元，最外层使用隔板加固");
-        tooltip.add("高效率设计需要精确计算热量产生与散热比例，理想运行状态应保持热量在40-70%区间，既能高效输出又能留有安全余量");
-        tooltip.add("使用多个小型反应堆集群比单一大型反应堆更安全，可以独立维护和控制，避免单点故障导致全系统崩溃");
-        tooltip.add("熔毁防护设计原则：确保最大热量产生速率不超过最大散热能力的80%，为突发情况预留缓冲空间");
+        tooltip.add(TextFormatting.GREEN + I18n.format("-IO功能："));
+        tooltip.add("为核反应堆安装输入/输出总线后");
+        tooltip.add("可自动将输入总线内的部件填充至反应堆空缺处");
+        tooltip.add("可自动将反应堆内用尽部件输出至输出总线");
         tooltip.add(TextFormatting.GREEN + I18n.format("-重要警告："));
         tooltip.add("反应堆熔毁将释放毁灭性爆炸，其威力与内部热量和燃料数量成正比，可能摧毁整个基地! 务必安装应急冷却系统并在设计中预留安全冗余。");
     }

@@ -138,6 +138,7 @@ recipemap.gas_centrifuge.name=Gas Centrifuge
 recipemap.spent_fuel_pool.name=Spent Fuel Pool
 recipemap.rtg_recipes.name=RTG
 recipemap.decay_chamber_recipes.name=Decay Chamber
+recipemap.natural_draft_cooling_tower.name=冷却塔
 
 supercritical.machine.decay_chamber.lv.name=Basic Decay Chamber
 supercritical.machine.decay_chamber.lv.tooltip=Radiant Glow
@@ -272,6 +273,7 @@ supercritical.machine.fission_reactor.tooltip.3=§cPlease read the JEI info page
 supercritical.machine.heat_exchanger.name=Heat Exchanger
 supercritical.machine.spent_fuel_pool.name=Spent Fuel Pool
 supercritical.machine.gas_centrifuge.name=Gas Centrifuge
+supercritical.machine.natural_draft_cooling_tower.name=冷却塔
 
 supercritical.machine.fission_reactor.tooltip=Blowy-uppy yumyum generator
 supercritical.machine.heat_exchanger.tooltip=Molecular hot potato player
