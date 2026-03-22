@@ -60,10 +60,11 @@ public class MetaTileEntityNaturalDraftCoolingTower extends CachedPatternRecipeM
 
     private static final Vec3i PATTERN_OFFSET = new Vec3i(-8, 14, 4);
 
+    private boolean waterFilled;
+    private List<BlockPos> waterPositions;
+
     public MetaTileEntityNaturalDraftCoolingTower(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, SCRecipeMaps.NATURAL_DRAFT_COOLING_TOWER);
-        this.recipeMapWorkable = new NoEnergyMultiblockRecipeLogic(this);
-        this.recipeMapWorkable.setParallelLimit(128);
     }
 
     @Override
@@ -73,6 +74,37 @@ public class MetaTileEntityNaturalDraftCoolingTower extends CachedPatternRecipeM
 
     protected static IBlockState getCasingState() {
         return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STEEL_SOLID);
+    }
+
+    @Override
+    protected void formStructure(PatternMatchContext context) {
+        super.formStructure(context);
+
+        this.waterPositions = context.getOrDefault(FLUID_BLOCKS_KEY, new ArrayList<>());
+        this.waterFilled = waterPositions.isEmpty();
+    }
+
+    @Override
+    public void invalidateStructure() {
+        super.invalidateStructure();
+        this.waterPositions = null; // Clear water fill data when the structure is invalidated
+        this.waterFilled = false;
+    }
+
+    @Override
+    protected void updateFormedValid() {
+        super.updateFormedValid();
+        if (!waterFilled && getOffsetTimer() % 5 == 0) {
+            fillFluid(this, this.waterPositions, FluidRegistry.WATER);
+            if (this.waterPositions.isEmpty()) {
+                this.waterFilled = true;
+            }
+        }
+    }
+
+    @Override
+    public boolean isStructureObstructed() {
+        return super.isStructureObstructed() || !waterFilled;
     }
 
     @NotNull
@@ -160,6 +192,26 @@ public class MetaTileEntityNaturalDraftCoolingTower extends CachedPatternRecipeM
     }
 
     @Override
+    protected void addErrorText(List<ITextComponent> textList) {
+        super.addErrorText(textList);
+        if (isStructureFormed() && !waterFilled) {
+            textList.add(TextComponentUtil.translationWithColor(TextFormatting.RED,
+                    "susy.multiblock.natural_draft_cooling_tower.obstructed"));
+            textList.add(TextComponentUtil.translationWithColor(TextFormatting.GRAY,
+                    "susy.multiblock.natural_draft_cooling_tower.obstructed.desc"));
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip,
+                               boolean advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        tooltip.add(I18n.format("supercritical.machine.fluid_auto_fill.tooltip"));
+        TooltipBuilder.create().addParallel(128).build(this, tooltip);
+    }
+
+    @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart iMultiblockPart) {
         return Textures.SOLID_STEEL_CASING;
     }
@@ -183,7 +235,7 @@ public class MetaTileEntityNaturalDraftCoolingTower extends CachedPatternRecipeM
     @Override
     public void update() {
         super.update();
-        if (recipeMapWorkable.isWorking() && getWorld().isRemote)
+        if (this.isActive() && getWorld().isRemote)
             createParticles();
     }
 
@@ -203,10 +255,13 @@ public class MetaTileEntityNaturalDraftCoolingTower extends CachedPatternRecipeM
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World world, @NotNull List<String> tooltip,
-                               boolean advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-        TooltipBuilder.create().addParallel(128).build(this, tooltip);
+    @Override
+    public boolean isMultiblockPartWeatherResistant(@NotNull IMultiblockPart part) {
+        return true;
+    }
+
+    @Override
+    public boolean getIsWeatherOrTerrainResistant() {
+        return true;
     }
 }
