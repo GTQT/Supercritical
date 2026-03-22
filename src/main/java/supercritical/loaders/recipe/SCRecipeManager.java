@@ -25,7 +25,7 @@ public class SCRecipeManager {
         //追加注册燃料配方
         SCDecayChamberRecipes.load();
         SCRTGFuel.load();
-
+        FluidRecipeHandler.processCooling();
         NuclearReactorRecipeHandler.init();
     }
 

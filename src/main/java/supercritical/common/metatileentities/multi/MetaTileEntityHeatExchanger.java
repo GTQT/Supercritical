@@ -1,10 +1,11 @@
 package supercritical.common.metatileentities.multi;
 
+import gregtech.api.capability.impl.NoEnergyMultiblockRecipeLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
-import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
+import gregtech.api.metatileentity.multiblock.NoEnergyMultiblockController;
 import gregtech.api.pattern.BlockPattern;
 import gregtech.api.pattern.FactoryBlockPattern;
 import gregtech.api.unification.material.Materials;
@@ -15,15 +16,14 @@ import gregtech.common.blocks.BlockMetalCasing.MetalCasingType;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-import supercritical.api.capability.impl.NoEnergyRecipeLogic;
 import supercritical.api.recipes.SCRecipeMaps;
 import supercritical.client.renderer.textures.SCTextures;
 
-public class MetaTileEntityHeatExchanger extends RecipeMapMultiblockController {
+public class MetaTileEntityHeatExchanger extends NoEnergyMultiblockController {
 
     public MetaTileEntityHeatExchanger(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, SCRecipeMaps.HEAT_EXCHANGER_RECIPES);
-        this.recipeMapWorkable = new NoEnergyRecipeLogic(this);
+        this.recipeMapWorkable = new NoEnergyMultiblockRecipeLogic(this);
     }
 
     @Override

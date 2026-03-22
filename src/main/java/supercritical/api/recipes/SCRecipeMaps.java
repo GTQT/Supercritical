@@ -1,14 +1,12 @@
 package supercritical.api.recipes;
 
-import gregtech.api.gui.GuiTextures;
-import gregtech.api.gui.widgets.ProgressWidget;
 import gregtech.api.mui.GTGuiTextures;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMapBuilder;
 import gregtech.api.recipes.builders.FuelRecipeBuilder;
+import gregtech.api.recipes.builders.PrimitiveRecipeBuilder;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
 import gregtech.core.sound.GTSoundEvents;
-import supercritical.api.recipes.builders.NoEnergyRecipeBuilder;
 
 /**
  * Copyright (C) SymmetricDevs 2025
@@ -18,21 +16,31 @@ import supercritical.api.recipes.builders.NoEnergyRecipeBuilder;
  */
 public class SCRecipeMaps {
 
-    public static final RecipeMap<NoEnergyRecipeBuilder> HEAT_EXCHANGER_RECIPES;
+    public static final RecipeMap<PrimitiveRecipeBuilder> HEAT_EXCHANGER_RECIPES;
+    public static final RecipeMap<PrimitiveRecipeBuilder> NATURAL_DRAFT_COOLING_TOWER;
+
     public static final RecipeMap<SimpleRecipeBuilder> SPENT_FUEL_POOL_RECIPES;
     public static final RecipeMap<SimpleRecipeBuilder> GAS_CENTRIFUGE_RECIPES;
     public static final RecipeMap<SimpleRecipeBuilder> DECAY_CHAMBER_RECIPES;
-    public static final RecipeMap<SimpleRecipeBuilder> NATURAL_DRAFT_COOLING_TOWER;
     public static final RecipeMap<FuelRecipeBuilder> RTG_RECIPES;
 
     static {
-        HEAT_EXCHANGER_RECIPES = new RecipeMapBuilder<>("heat_exchanger", new NoEnergyRecipeBuilder())
+        HEAT_EXCHANGER_RECIPES = new RecipeMapBuilder<>("heat_exchanger", new PrimitiveRecipeBuilder())
                 .itemInputs(1)
                 .itemOutputs(0)
                 .fluidInputs(2)
                 .fluidOutputs(2)
                 .uiBuilder(builder -> builder
                         .progressBar(GTGuiTextures.PROGRESS_BAR_ARROW_MULTIPLE)
+                )
+                .sound(GTSoundEvents.COOLING)
+                .build();
+
+        NATURAL_DRAFT_COOLING_TOWER = new RecipeMapBuilder<>("natural_draft_cooling_tower", new PrimitiveRecipeBuilder())
+                .fluidInputs(1)
+                .fluidOutputs(1)
+                .uiBuilder(builder -> builder
+                        .progressBar(GTGuiTextures.PROGRESS_BAR_GAS_COLLECTOR)
                 )
                 .sound(GTSoundEvents.COOLING)
                 .build();
@@ -78,14 +86,7 @@ public class SCRecipeMaps {
                 .sound(GTSoundEvents.ARC)
                 .build();
 
-        NATURAL_DRAFT_COOLING_TOWER = new RecipeMapBuilder<>("natural_draft_cooling_tower", new SimpleRecipeBuilder())
-                .fluidInputs(1)
-                .fluidOutputs(1)
-                .uiBuilder(builder -> builder
-                        .progressBar(GTGuiTextures.PROGRESS_BAR_GAS_COLLECTOR)
-                )
-                .sound(GTSoundEvents.COOLING)
-                .build();
+
     }
 
     private SCRecipeMaps() {

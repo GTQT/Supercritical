@@ -459,34 +459,31 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
                         .left(4)
                         .width(reactorWidth * 18)
                         .height(reactorHeight * 18)
-                        .child(createComponentGrid(reactorWidth, reactorHeight, syncManager)));
+                        .child(createComponentGrid(reactorWidth, reactorHeight)));
     }
 
-    private Grid createComponentGrid(int width, int height, PanelSyncManager syncManager) {
+    private Grid createComponentGrid(int width, int height) {
         int slotCount = width * height;
 
         return new Grid()
                 .minElementMargin(0, 0)
                 .minColWidth(18).minRowHeight(18)
                 .alignX(0.5f)
-                .mapTo(width, slotCount, index -> {
+                .mapTo(width, slotCount, index -> new ItemSlot()
+                        .slot(SyncHandlers.itemSlot(componentHandler, index)
+                                .slotGroup("reactor_inventory")
+                                .changeListener((newItem, onlyAmountChanged, client, init) -> {
+                                    if (onlyAmountChanged &&
+                                            componentHandler instanceof GTItemStackHandler) {
+                                        componentHandler.onContentsChanged(index);
+                                    }
 
-                    return new ItemSlot()
-                            .slot(SyncHandlers.itemSlot(componentHandler, index)
-                                    .slotGroup("reactor_inventory")
-                                    .changeListener((newItem, onlyAmountChanged, client, init) -> {
-                                        if (onlyAmountChanged &&
-                                                componentHandler instanceof GTItemStackHandler) {
-                                            componentHandler.onContentsChanged(index);
-                                        }
-
-                                        if (!client && isStructureFormed()) {
-                                            syncInventoryToSimulator();
-                                            markDirty();
-                                        }
-                                    })
-                                    .accessibility(true, true));
-                });
+                                    if (!client && isStructureFormed()) {
+                                        syncInventoryToSimulator();
+                                        markDirty();
+                                    }
+                                })
+                                .accessibility(true, true)));
     }
 
     @Override

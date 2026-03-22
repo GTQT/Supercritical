@@ -3,6 +3,7 @@ package supercritical.api.metatileentity.multiblock;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.metatileentity.multiblock.NoEnergyMultiblockController;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -21,7 +22,7 @@ import gregtech.api.recipes.RecipeMap;
  * @author h3tR / RMI
  * @since <a href="https://github.com/SymmetricDevs/Susy-Core/blob/main/src/main/java/supersymmetry/api/metatileentity/multiblock/CachedPatternRecipeMapMultiblock.java">...</a>
  */
-public abstract class CachedPatternRecipeMapMultiblock extends RecipeMapMultiblockController {
+public abstract class CachedPatternRecipeMapMultiblock extends NoEnergyMultiblockController {
 
     protected Vec3i[] cachedPattern = new Vec3i[0];
 

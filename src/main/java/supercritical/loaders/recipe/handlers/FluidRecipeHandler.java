@@ -8,6 +8,8 @@ import supercritical.api.unification.material.properties.CoolantProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 import supercritical.common.SCConfigHolder;
 
+import static gregtech.api.unification.material.Materials.*;
+
 public class FluidRecipeHandler {
 
     public static void runRecipeGeneration() {
@@ -17,6 +19,39 @@ public class FluidRecipeHandler {
         }
     }
 
+    public static void processCooling() {
+        // steam exhaust generator fuels 200:1
+        SCRecipeMaps.NATURAL_DRAFT_COOLING_TOWER.recipeBuilder()
+                .fluidInputs(SteamExhaust.getFluid(800))
+                .fluidOutputs(DistilledWater.getFluid(4))
+                .duration(1)
+                .buildAndRegister();
+
+        // steam generator fuels 160:1
+        SCRecipeMaps.NATURAL_DRAFT_COOLING_TOWER.recipeBuilder()
+                .fluidInputs(Steam.getFluid(640))
+                .fluidOutputs(DistilledWater.getFluid(4))
+                .duration(2)
+                .buildAndRegister();
+
+        // high pressure steam fuels 80:1
+        SCRecipeMaps.NATURAL_DRAFT_COOLING_TOWER.recipeBuilder()
+                .fluidInputs(HighPressureSteam.getFluid(320))
+                .fluidOutputs(DistilledWater.getFluid(4))
+                .duration(5)
+                .buildAndRegister();
+
+        // supercritical steam fuels 40:1
+        SCRecipeMaps.NATURAL_DRAFT_COOLING_TOWER.recipeBuilder()
+                .fluidInputs(SupercriticalSteam.getFluid(160))
+                .fluidOutputs(DistilledWater.getFluid(4))
+                .duration(10)
+                .buildAndRegister();
+    }
+
+    /**
+     * 低级配方，Core需要重写
+     */
     public static void processCoolant(Material mat, CoolantProperty coolant) {
         int waterAmt = 6;
         double multiplier = SCConfigHolder.nuclear.heatExchangerEfficiencyMultiplier;
