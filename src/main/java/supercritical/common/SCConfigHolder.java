@@ -89,13 +89,6 @@ public class SCConfigHolder {
         public boolean disableAllMaterials = false;
 
         @Comment({
-                "Make auto-filled fluid block showup in the JEI / in-world preview.",
-                "Default: false"
-        })
-        @RequiresMcRestart
-        public boolean showFluidsForAutoFillingMultiblocks = false;
-
-        @Comment({
                 "Allow extended facing for Fission Reactor.",
                 "Default: false"
         })
