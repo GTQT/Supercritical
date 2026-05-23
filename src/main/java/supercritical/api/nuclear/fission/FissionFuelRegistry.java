@@ -1,5 +1,6 @@
 package supercritical.api.nuclear.fission;
 
+import gregtech.api.unification.material.properties.IFissionFuelStats;
 import gregtech.api.util.ItemStackHashStrategy;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;

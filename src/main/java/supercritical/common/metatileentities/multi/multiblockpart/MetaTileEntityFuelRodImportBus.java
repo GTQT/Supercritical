@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.AbilityInstances;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.api.unification.material.properties.IFissionFuelStats;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockNotifiablePart;
 import net.minecraft.client.resources.I18n;
@@ -35,7 +36,6 @@ import supercritical.api.items.itemhandlers.LockableItemStackHandler;
 import supercritical.api.metatileentity.multiblock.IFissionReactorHatch;
 import supercritical.api.metatileentity.multiblock.SCMultiblockAbility;
 import supercritical.api.nuclear.fission.FissionFuelRegistry;
-import supercritical.api.nuclear.fission.IFissionFuelStats;
 import supercritical.api.nuclear.fission.components.FuelRod;
 import supercritical.common.blocks.BlockFissionCasing;
 import supercritical.common.blocks.SCMetaBlocks;
@@ -186,7 +186,12 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-        getLockedImport().setLock(data.getBoolean("locked"));
+        if (data.hasKey("locked")) {
+            getLockedImport().setLock(data.getBoolean("locked"));
+        } else if (data.hasKey("locked_import")){
+            getLockedImport().deserializeNBT(data.getCompoundTag("locked_import"));
+        }
+
         if (data.hasKey("partialFuel")) {
             this.partialFuel = FissionFuelRegistry.getFissionFuel(data.getString("partialFuel"));
         }
@@ -195,7 +200,8 @@ public class MetaTileEntityFuelRodImportBus extends MetaTileEntityMultiblockNoti
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
-        data.setBoolean("locked", getLockedImport().isLocked());
+        data.setTag("locked_import", getLockedImport().serializeNBT());
+
         if (partialFuel != null) data.setString("partialFuel", this.partialFuel.getId());
         data.setDouble("depletionPoint", depletionPoint);
         return super.writeToNBT(data);

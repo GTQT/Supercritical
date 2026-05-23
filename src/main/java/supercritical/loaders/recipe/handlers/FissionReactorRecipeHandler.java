@@ -1,15 +1,16 @@
 package supercritical.loaders.recipe.handlers;
 
 import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.properties.FissionFuelProperty;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.MetaItems;
-import supercritical.api.unification.material.properties.FissionFuelProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 import supercritical.api.unification.ore.SCOrePrefix;
 import supercritical.common.item.SCMetaItems;
 
 import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.*;
+import static gregtech.api.unification.material.properties.PropertyKey.FISSION_FUEL;
 import static gregtech.api.unification.ore.OrePrefix.dust;
 import static supercritical.api.recipes.SCRecipeMaps.SPENT_FUEL_POOL_RECIPES;
 import static supercritical.api.unification.ore.SCOrePrefix.*;
@@ -17,7 +18,7 @@ import static supercritical.api.unification.ore.SCOrePrefix.*;
 public class FissionReactorRecipeHandler {
 
     public static void register() {
-        SCOrePrefix.fuelRod.addProcessingHandler(SCPropertyKey.FISSION_FUEL, FissionReactorRecipeHandler::processFuelRod);
+        SCOrePrefix.fuelRod.addProcessingHandler(FISSION_FUEL, FissionReactorRecipeHandler::processFuelRod);
     }
 
     private static void processFuelRod(OrePrefix orePrefix, Material material, FissionFuelProperty oreProperty) {

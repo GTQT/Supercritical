@@ -3,11 +3,14 @@ package supercritical.common.metatileentities.multi;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
-import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
-import gregtech.api.pattern.BlockPattern;
-import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.pattern.BlockPatternTemplate;
 import gregtech.api.pattern.PatternMatchContext;
+import gregtech.api.pattern.SoftTemplate;
+import gregtech.api.pattern.TemplatePool;
+import gregtech.api.pattern.casing.CasingDefinition;
+import gregtech.api.pattern.casing.DeclarativePatternBuilder;
+import gregtech.api.pattern.casing.GTStructureChannels;
 import gregtech.api.util.TextComponentUtil;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
@@ -35,13 +38,35 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static gregtech.api.pattern.FluidTraceability.*;
 import static gregtech.api.util.RelativeDirection.*;
-import static supercritical.api.pattern.SCPredicates.*;
 
 public class MetaTileEntitySpentFuelPool extends RecipeMapMultiblockController {
 
     public static final int PARALLEL_PER_LENGTH = 32;
-
+    @NotNull
+    private static final SoftTemplate TEMPLATE = TemplatePool.getInstance().register("supercritical:spent_fuel_pool", () ->
+            DeclarativePatternBuilder.start(FRONT, UP, RIGHT)
+                    // spotless:off
+                    .aisle("CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "TTTTTTTTTT")
+                    .aisle("CCCCCCCCCC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "S........T")
+                    .aisleRepeatable(1, 10, "CCCCCCCCCC", "CWRRRRRRWC", "CWRRRRRRWC", "CWRRRRRRWC", "CWRRRRRRWC", "CWRRRRRRWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "T........T")
+                    .withAisleChannel(GTStructureChannels.STRUCTURE_LENGTH.getName())
+                    .aisle("CCCCCCCCCC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "T........T")
+                    .aisle("CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "TTTTTTTTTT")
+                    //spotless:on
+                    .where('S', selfPredicate(MetaTileEntitySpentFuelPool.class))
+                    .where('.', any())
+                    .where('C', blocks(SCMetaBlocks.PANELLING))
+                    .where('W', fluid(FluidRegistry.WATER))
+                    .where('R', states(getRodState()))
+                    .casing('T', CasingDefinition.simple(getMetalCasingState()))
+                    .optionalItemInput(4)
+                    .optionalItemOutput(4)
+                    .optionalFluidInput(4)
+                    .optionalFluidOutput(4)
+                    .buildTemplate()
+    );
     private boolean waterFilled;
     private List<BlockPos> waterPositions;
 
@@ -71,7 +96,7 @@ public class MetaTileEntitySpentFuelPool extends RecipeMapMultiblockController {
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
         // noinspection DataFlowIssue
-        this.recipeMapWorkable.setParallelLimit(structurePattern.formedRepetitionCount[2] * PARALLEL_PER_LENGTH);
+        this.recipeMapWorkable.setParallelLimit(multiblockState.formedRepetitionCount[2] * PARALLEL_PER_LENGTH);
 
         this.waterPositions = context.getOrDefault(FLUID_BLOCKS_KEY, new ArrayList<>());
         this.waterPositions.sort(Comparator.comparingInt(BlockPos::getY));
@@ -101,36 +126,14 @@ public class MetaTileEntitySpentFuelPool extends RecipeMapMultiblockController {
         return super.isStructureObstructed() || !waterFilled;
     }
 
-    public boolean isWaterFilled() {
-        return waterFilled;
-    }
-
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart sourcePart) {
         return Textures.CLEAN_STAINLESS_STEEL_CASING;
     }
 
-    @NotNull
     @Override
-    protected BlockPattern createStructurePattern() {
-        return FactoryBlockPattern.start(FRONT, UP, RIGHT)
-                // spotless:off
-                .aisle("CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "TTTTTTTTTT")
-                .aisle("CCCCCCCCCC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "S........T")
-                .aisle("CCCCCCCCCC", "CWRRRRRRWC", "CWRRRRRRWC", "CWRRRRRRWC", "CWRRRRRRWC", "CWRRRRRRWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "T........T")
-                .setRepeatable(1, 10)
-                .aisle("CCCCCCCCCC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "CWWWWWWWWC", "T........T")
-                .aisle("CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "CCCCCCCCCC", "TTTTTTTTTT")
-                //spotless:on
-                .where('S', selfPredicate())
-                .where('.', any())
-                .where('C', blocks(SCMetaBlocks.PANELLING))
-                .where('W', fluid(FluidRegistry.WATER))
-                .where('R', states(getRodState()))
-                .where('T',
-                        states(getMetalCasingState()).or(autoAbilities())
-                                .or(abilities(MultiblockAbility.IMPORT_FLUIDS)))
-                .build();
+    protected @NotNull BlockPatternTemplate createStructureTemplate() {
+        return TEMPLATE.get();
     }
 
     @NotNull

@@ -3,10 +3,6 @@ package supercritical.loaders.recipe;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
 import gregtech.common.items.MetaItems;
-import lombok.experimental.ExtensionMethod;
-import supercritical.api.items.armor.ArmorLogicExtension;
-import supercritical.api.unification.material.MaterialExtension;
-import supercritical.api.unification.ore.OrePrefixExtension;
 
 import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.BLAST_RECIPES;
@@ -18,11 +14,6 @@ import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.unification.ore.SCOrePrefix.fuelPebble;
 import static supercritical.api.unification.ore.SCOrePrefix.fuelPebbleDepleted;
 
-@ExtensionMethod({
-        OrePrefixExtension.Handler.class,
-        MaterialExtension.Handler.class,
-        ArmorLogicExtension.Handler.class
-})
 public class SCRTGFuel {
     public static void load() {
         RTG(Thorium232, 1,

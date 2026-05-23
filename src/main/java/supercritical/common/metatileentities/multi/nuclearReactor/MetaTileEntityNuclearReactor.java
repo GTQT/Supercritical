@@ -20,16 +20,18 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MetaTileEntityBaseWithControl;
-import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.ProgressBarMultiblock;
 import gregtech.api.metatileentity.multiblock.ui.MultiblockUIBuilder;
 import gregtech.api.metatileentity.multiblock.ui.MultiblockUIFactory;
 import gregtech.api.metatileentity.multiblock.ui.TemplateBarBuilder;
 import gregtech.api.mui.GTGuiTextures;
 import gregtech.api.mui.GTGuis;
-import gregtech.api.pattern.BlockPattern;
-import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.pattern.BlockPatternTemplate;
 import gregtech.api.pattern.PatternMatchContext;
+import gregtech.api.pattern.SoftTemplate;
+import gregtech.api.pattern.TemplatePool;
+import gregtech.api.pattern.casing.CasingDefinition;
+import gregtech.api.pattern.casing.DeclarativePatternBuilder;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTTransferUtils;
 import gregtech.api.util.tooltips.InformationHandler;
@@ -72,24 +74,35 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
 
     private static final int UPDATE_TICK_RATE = 20;
     private static final int BASE_HEAT_CAPACITY = 10000;
-
+    @NotNull
+    private static final SoftTemplate TEMPLATE = TemplatePool.getInstance().register("supercritical:nuclear_reactor", () ->
+            DeclarativePatternBuilder.start()
+                    .aisle("YYY", "YYY", "YYY")
+                    .aisle("YYY", "YYY", "YYY")
+                    .aisle("YYY", "YSY", "YYY")
+                    .where('S', selfPredicate(MetaTileEntityNuclearReactor.class))
+                    .casing('Y', CasingDefinition.simple(getCasingState()))
+                    .energyOutput(1, 3)
+                    .optionalItemOutput(2)
+                    .optionalFluidOutput(2)
+                    .hatch(SCMultiblockAbility.REACTOR_EXTEND_HATCH, 0, 1)
+                    .where(' ', any())
+                    .buildTemplate()
+    );
     @Getter
     private final int reactorWidth = 9;
     @Getter
     private final int reactorHeight = 6;
     @Getter
     private int extendCount = 0;
-
     @Getter
     private NuclearReactorSimulator reactorSimulator;
     @Getter
     private GTItemStackHandler componentHandler;
-
     private int tickCounter = 0;
     private int updateTimer = 0;
     private boolean isReactorActive = false;
     private boolean hasMeltdown = false;
-
     @Getter
     private int currentHeat = 0;
     @Getter
@@ -101,6 +114,10 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     public MetaTileEntityNuclearReactor(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
         initializeReactor(reactorWidth, reactorHeight);
+    }
+
+    private static IBlockState getCasingState() {
+        return SCMetaBlocks.NUCLEAR_REACTOR_CASING.getState(BlockNuclearReactorCasing.NuclearReactorType.NUCLEAR_REACTOR_CASING);
     }
 
     private void initializeReactor(int width, int height) {
@@ -420,7 +437,7 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     protected MultiblockUIFactory createUIFactory() {
         return super.createUIFactory()
                 .createFlexButton((guiData, syncManager) -> {
-                    var componentPanel = syncManager.panel("component_panel", this::makeComponentPanel, true);
+                    var componentPanel = syncManager.syncedPanel("component_panel", true, this::makeComponentPanel);
                     return new ButtonWidget<>()
                             .size(18)
                             .overlay(GTGuiTextures.FILTER_SETTINGS_OVERLAY.asIcon().size(16))
@@ -707,24 +724,8 @@ public class MetaTileEntityNuclearReactor extends MetaTileEntityBaseWithControl 
     }
 
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
-        return FactoryBlockPattern.start()
-                .aisle("YYY", "YYY", "YYY")
-                .aisle("YYY", "YYY", "YYY")
-                .aisle("YYY", "YSY", "YYY")
-                .where('S', selfPredicate())
-                .where('Y', states(getCasingState())
-                        .or(abilities(MultiblockAbility.OUTPUT_ENERGY).setMinGlobalLimited(1).setMaxGlobalLimited(3))
-                        .or(abilities(MultiblockAbility.IMPORT_ITEMS).setMinGlobalLimited(0).setMaxGlobalLimited(2))
-                        .or(abilities(MultiblockAbility.EXPORT_ITEMS).setMinGlobalLimited(0).setMaxGlobalLimited(2))
-                        .or(abilities(SCMultiblockAbility.REACTOR_EXTEND_HATCH).setMinGlobalLimited(0).setMaxGlobalLimited(1))
-                )
-                .where(' ', any())
-                .build();
-    }
-
-    private IBlockState getCasingState() {
-        return SCMetaBlocks.NUCLEAR_REACTOR_CASING.getState(BlockNuclearReactorCasing.NuclearReactorType.NUCLEAR_REACTOR_CASING);
+    protected @NotNull BlockPatternTemplate createStructureTemplate() {
+        return TEMPLATE.get();
     }
 
     @SideOnly(Side.CLIENT)

@@ -7,6 +7,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.event.MaterialRegistryEvent;
 import gregtech.api.unification.material.event.PostMaterialEvent;
+import gregtech.api.unification.material.properties.FissionFuelProperty;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.items.MetaItems;
 import gregtech.modules.ModuleManager;
@@ -30,7 +31,6 @@ import supercritical.api.nuclear.fission.CoolantRegistry;
 import supercritical.api.nuclear.fission.FissionFuelRegistry;
 import supercritical.api.nuclear.fission.ModeratorRegistry;
 import supercritical.api.unification.material.properties.CoolantProperty;
-import supercritical.api.unification.material.properties.FissionFuelProperty;
 import supercritical.api.unification.material.properties.ModeratorProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 import supercritical.api.unification.ore.SCOrePrefix;
@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static gregtech.api.unification.material.properties.PropertyKey.FISSION_FUEL;
 
 /**
  * Copyright (C) SymmetricDevs 2025
@@ -140,8 +142,8 @@ public class CommonProxy {
 
     public void onPostLoad() {
         for (Material material : GregTechAPI.materialManager.getRegisteredMaterials()) {
-            if (material.hasProperty(SCPropertyKey.FISSION_FUEL)) {
-                FissionFuelProperty prop = material.getProperty(SCPropertyKey.FISSION_FUEL);
+            if (material.hasProperty(FISSION_FUEL)) {
+                FissionFuelProperty prop = material.getProperty(FISSION_FUEL);
                 if (prop.getDepletedFuelSupplier() == null) {
                     prop.setDepletedFuelSupplier(
                             (thermalProportion) -> OreDictUnifier.get(SCOrePrefix.fuelRodHotDepleted, material));

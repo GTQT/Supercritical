@@ -1,9 +1,9 @@
 package supercritical.api.capability;
 
+import gregtech.api.unification.material.properties.IFissionFuelStats;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import supercritical.api.items.itemhandlers.LockableItemStackHandler;
-import supercritical.api.nuclear.fission.IFissionFuelStats;
 import supercritical.api.nuclear.fission.components.FuelRod;
 
 public interface IFuelRodHandler extends ILockableHandler<ItemStack> {

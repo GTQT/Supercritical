@@ -17,6 +17,7 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.*;
 import gregtech.api.pattern.*;
+import gregtech.api.unification.material.properties.IFissionFuelStats;
 import gregtech.api.util.*;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.common.ConfigHolder;
@@ -248,6 +249,24 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
     }
 
     /**
+     * Uses the center layer to determine the diameter of the structure
+     */
+    protected int findDiameter() {
+        int i = 1;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(this.getPos());
+        while (this.getWorld().getBlockState(pos) !=
+                SCMetaBlocks.FISSION_CASING.getState(BlockFissionCasing.FissionCasingType.REACTOR_VESSEL) && i <= 15) {
+            pos.move(this.getFrontFacing().getOpposite());
+            MetaTileEntity potentialTile = GTUtility.getMetaTileEntity(this.getWorld(), pos);
+            if (potentialTile instanceof IFissionReactorHatch || potentialTile instanceof IMaintenanceHatch) {
+                break;
+            }
+            i++;
+        }
+        return i;
+    }
+
+    /**
      * Checks for casings on top or bottom of the controller to determine the height of the reactor
      */
     protected int findHeight(boolean top) {
@@ -378,11 +397,23 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
         return !(potentialTile instanceof IFissionReactorHatch || potentialTile instanceof IMaintenanceHatch);
     }
 
+    protected void shouldLockLogic() {
+        if (fissionReactor == null) {
+            this.fissionReactor = new FissionReactor(this.diameter - 2, this.height - 2, controlRodInsertion);
+        }
+        this.lockAndPrepareReactor();
+        this.fissionReactor.deserializeNBT(transientData);
+    }
+
+
     @Override
     public void updateFormedValid() {
         // Take in coolant, take in fuel, update reactor, output steam
 
         if (!this.getWorld().isRemote && this.getOffsetTimer() % 20 == 0) {
+            if (this.lockingState == LockingState.SHOULD_LOCK) {
+                shouldLockLogic();
+            }
             if (this.lockingState == LockingState.LOCKED) {
                 // Coolant handling
                 if (this.getOffsetTimer() % 100 == 0) {
@@ -520,7 +551,7 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
 
         this.height = heightTop + heightBottom + 1;
 
-        this.diameter = this.getWorld() != null ? Math.max(Math.min(this.findDiameter(heightTop), 15), 5) : 5;
+        this.diameter = this.getWorld() != null ? Math.max(Math.min(this.findDiameter(), 15), 5) : 5;
 
         int radius = this.diameter % 2 == 0 ? (int) Math.floor(this.diameter / 2.f) :
                 Math.round((this.diameter - 1) / 2.f);
@@ -705,7 +736,7 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
         data.setInteger("heightTop", this.heightTop);
         data.setInteger("heightBottom", this.heightBottom);
         data.setDouble("controlRodInsertion", this.controlRodInsertion);
-        data.setBoolean("locked", this.lockingState == LockingState.LOCKED);
+        data.setBoolean("locked", this.lockingState == LockingState.LOCKED || this.lockingState == LockingState.SHOULD_LOCK);
         data.setDouble("kEff", this.kEff);
         if (fissionReactor != null) {
             data.setTag("transientData", this.fissionReactor.serializeNBT());
@@ -723,7 +754,7 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
         this.controlRodInsertion = data.getDouble("controlRodInsertion");
         this.height = this.heightTop + this.heightBottom + 1;
         this.kEff = data.getDouble("kEff");
-        if (data.getBoolean("locked")) {
+        if (data.getBoolean("locked") && this.lockingState != LockingState.LOCKED) {
             this.lockingState = LockingState.SHOULD_LOCK;
         }
         if (data.hasKey("transientData")) {
@@ -738,14 +769,7 @@ public class MetaTileEntityFissionReactor extends MultiblockWithDisplayBase
         buf.writeInt(this.heightTop);
         buf.writeInt(this.heightBottom);
         buf.writeDouble(this.controlRodInsertion);
-        if (this.lockingState == LockingState.SHOULD_LOCK) {
-            if (fissionReactor == null) {
-                this.fissionReactor = new FissionReactor(this.diameter - 2, this.height - 2, controlRodInsertion);
-            }
-            this.lockAndPrepareReactor();
-            this.fissionReactor.deserializeNBT(transientData);
-        }
-        buf.writeBoolean(this.lockingState == LockingState.LOCKED);
+        buf.writeBoolean(this.lockingState == LockingState.LOCKED || this.lockingState == LockingState.SHOULD_LOCK);
     }
 
     @Override

@@ -1,13 +1,14 @@
 package supercritical.common.materials;
 
 import gregtech.api.unification.material.Material;
-import supercritical.api.unification.material.properties.FissionFuelProperty;
+import gregtech.api.unification.material.properties.FissionFuelProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.material.info.MaterialFlags.DISABLE_DECOMPOSITION;
 import static gregtech.api.unification.material.info.MaterialIconSet.METALLIC;
 import static gregtech.api.unification.material.info.MaterialIconSet.SHINY;
+import static gregtech.api.unification.material.properties.PropertyKey.FISSION_FUEL;
 import static supercritical.api.unification.material.SCMaterials.*;
 import static supercritical.api.util.SCUtility.scId;
 
@@ -30,7 +31,7 @@ public class SecondDegreeMaterials {
                 .build()
                 .setFormula("UO2", true);
 
-        LEU235.setProperty(SCPropertyKey.FISSION_FUEL,
+        LEU235.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(LEU235.getRegistryName(), 1500, 75000, 3.5)
                         .fastNeutronCaptureCrossSection(0.4)
                         .slowNeutronCaptureCrossSection(1.8)
@@ -49,7 +50,7 @@ public class SecondDegreeMaterials {
                 .build()
                 .setFormula("UO2", true);
 
-        HEU235.setProperty(SCPropertyKey.FISSION_FUEL,
+        HEU235.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(HEU235.getRegistryName(), 1800, 60000, 2.5)
                         .fastNeutronCaptureCrossSection(0.3)
                         .slowNeutronCaptureCrossSection(2.2)
@@ -68,7 +69,7 @@ public class SecondDegreeMaterials {
                 .build()
                 .setFormula("(U,Pu)O2", true);
 
-        LowGradeMOX.setProperty(SCPropertyKey.FISSION_FUEL,
+        LowGradeMOX.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(LowGradeMOX.getRegistryName(), 1600, 50000, 1.5)
                         .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(2)
@@ -88,7 +89,7 @@ public class SecondDegreeMaterials {
                 .setFormula("(U,Pu)O2", true);
 
 
-        HighGradeMOX.setProperty(SCPropertyKey.FISSION_FUEL,
+        HighGradeMOX.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(HighGradeMOX.getRegistryName(), 2000, 80000, 1)
                         .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(2.4)
@@ -108,7 +109,7 @@ public class SecondDegreeMaterials {
                 .build()
                 .setFormula("PuO2", true);
 
-        FBR.setProperty(SCPropertyKey.FISSION_FUEL,
+        FBR.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(FBR.getRegistryName(), 2200, 90000, 0.8)
                         .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(1.8)
@@ -128,7 +129,7 @@ public class SecondDegreeMaterials {
                 .build()
                 .setFormula("ThO2", true);
 
-        THOR.setProperty(SCPropertyKey.FISSION_FUEL,
+        THOR.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(THOR.getRegistryName(), 1800, 100000, 2.0)
                         .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(3.2)

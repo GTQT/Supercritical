@@ -1,9 +1,9 @@
 package supercritical.api.nuclear.fission.components;
 
+import gregtech.api.unification.material.properties.IFissionFuelStats;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.item.ItemStack;
-import supercritical.api.nuclear.fission.IFissionFuelStats;
 
 public class FuelRod extends ReactorComponent {
 

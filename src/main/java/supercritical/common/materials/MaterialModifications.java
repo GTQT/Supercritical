@@ -4,16 +4,13 @@ import gregtech.api.fluids.FluidBuilder;
 import gregtech.api.fluids.store.FluidStorageKeys;
 import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
-import gregtech.api.unification.material.properties.BlastProperty;
-import gregtech.api.unification.material.properties.DustProperty;
-import gregtech.api.unification.material.properties.FluidProperty;
-import gregtech.api.unification.material.properties.PropertyKey;
+import gregtech.api.unification.material.properties.*;
 import supercritical.api.unification.material.properties.CoolantProperty;
-import supercritical.api.unification.material.properties.FissionFuelProperty;
 import supercritical.api.unification.material.properties.ModeratorProperty;
 import supercritical.api.unification.material.properties.SCPropertyKey;
 
 import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.material.properties.PropertyKey.FISSION_FUEL;
 
 public class MaterialModifications {
 
@@ -39,7 +36,7 @@ public class MaterialModifications {
 
         // Uraninite
         // Uraninite // TODO: How???
-        Uraninite.setProperty(SCPropertyKey.FISSION_FUEL,
+        Uraninite.setProperty(FISSION_FUEL,
                 FissionFuelProperty.builder(Uraninite.getRegistryName(), 1800, 60000, 2.4)
                         .fastNeutronCaptureCrossSection(0.5)
                         .slowNeutronCaptureCrossSection(1)

@@ -5,9 +5,12 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
-import gregtech.api.pattern.BlockPattern;
-import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.pattern.BlockPatternTemplate;
 import gregtech.api.pattern.PatternMatchContext;
+import gregtech.api.pattern.SoftTemplate;
+import gregtech.api.pattern.TemplatePool;
+import gregtech.api.pattern.casing.DeclarativePatternBuilder;
+import gregtech.api.pattern.casing.GTStructureChannels;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.common.blocks.BlockBoilerCasing;
@@ -31,6 +34,27 @@ import static gregtech.api.util.RelativeDirection.*;
 
 public class MetaTileEntityGasCentrifuge extends RecipeMapMultiblockController {
 
+    @NotNull
+    private static final SoftTemplate TEMPLATE = TemplatePool.getInstance().register("supercritical:gas_centrifuge", () ->
+            DeclarativePatternBuilder.start(FRONT, UP, RIGHT)
+                    .aisle("SI", "HH", "CC", "CC", "CC", "CC", "CC")
+                    .aisleRepeatable(1, 14, "EE", "HH", "CC", "CC", "CC", "CC", "CC")
+                    .withAisleChannel(GTStructureChannels.STRUCTURE_LENGTH.getName())
+                    .aisle("OO", "HH", "CC", "CC", "CC", "CC", "CC")
+                    .where('S', selfPredicate(MetaTileEntityGasCentrifuge.class))
+                    .where('P', states(getPipeState()))
+                    .where('H', states(getHeaterState()))
+                    .where('C', states(getCentrifugeState()))
+                    .where('I', states(getPipeState())
+                            .fluidInput())
+                    .where('E', states(getPipeState())
+                            .maintenance()
+                            .energyInput())
+                    .where('O', states(getPipeState())
+                            .fluidOutput())
+                    .buildTemplate()
+    );
+
     public MetaTileEntityGasCentrifuge(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, SCRecipeMaps.GAS_CENTRIFUGE_RECIPES);
         this.recipeMapWorkable = new MultiblockRecipeLogic(this);
@@ -50,21 +74,9 @@ public class MetaTileEntityGasCentrifuge extends RecipeMapMultiblockController {
                 .getState(BlockGasCentrifugeCasing.GasCentrifugeCasingType.GAS_CENTRIFUGE_COLUMN);
     }
 
-    @NotNull
     @Override
-    protected BlockPattern createStructurePattern() {
-        return FactoryBlockPattern.start(FRONT, UP, RIGHT)
-                .aisle("SI", "HH", "CC", "CC", "CC", "CC", "CC")
-                .aisle("EE", "HH", "CC", "CC", "CC", "CC", "CC").setRepeatable(1, 14)
-                .aisle("OO", "HH", "CC", "CC", "CC", "CC", "CC")
-                .where('S', selfPredicate())
-                .where('P', states(getPipeState()))
-                .where('H', states(getHeaterState()))
-                .where('C', states(getCentrifugeState()))
-                .where('I', states(getPipeState()).or(autoAbilities(false, false, false, false, true, false, false)))
-                .where('E', states(getPipeState()).or(autoAbilities(true, true, false, false, false, false, false)))
-                .where('O', states(getPipeState()).or(autoAbilities(false, false, false, false, false, true, false)))
-                .build();
+    protected @NotNull BlockPatternTemplate createStructureTemplate() {
+        return TEMPLATE.get();
     }
 
     @Override
@@ -81,7 +93,7 @@ public class MetaTileEntityGasCentrifuge extends RecipeMapMultiblockController {
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        this.recipeMapWorkable.setParallelLimit(structurePattern.formedRepetitionCount[1]);
+        this.recipeMapWorkable.setParallelLimit(multiblockState.formedRepetitionCount[1]);
     }
 
     @Override
