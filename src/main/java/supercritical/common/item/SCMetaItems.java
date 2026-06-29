@@ -71,6 +71,10 @@ public class SCMetaItems {
     public static MetaItem<?>.MetaValueItem COOLANT_CELL_SODIUM_POTASSIUM_30K;
     public static MetaItem<?>.MetaValueItem COOLANT_CELL_SODIUM_POTASSIUM_60K;
 
+    public static MetaItem<?>.MetaValueItem COOLANT_CELL_HELIUM_10K;
+    public static MetaItem<?>.MetaValueItem COOLANT_CELL_HELIUM_30K;
+    public static MetaItem<?>.MetaValueItem COOLANT_CELL_HELIUM_60K;
+
     public static MetaItem<?>.MetaValueItem NEUTRON_REFLECTOR_BASIC;
     public static MetaItem<?>.MetaValueItem NEUTRON_REFLECTOR_THICK;
     public static MetaItem<?>.MetaValueItem NEUTRON_REFLECTOR_IRIDIUM;
@@ -252,6 +256,19 @@ public class SCMetaItems {
 
         COOLANT_CELL_SODIUM_POTASSIUM_60K = metaItem.addItem(218, "coolant_cell.sodium_potassium.60k")
                 .addComponents(new CoolantCellBehavior(10000, Materials.SodiumPotassium, 60000, 180
+                ));
+
+        // Helium
+        COOLANT_CELL_HELIUM_10K = metaItem.addItem(219, "coolant_cell.helium.10k")
+                .addComponents(new CoolantCellBehavior(10000, Materials.Helium, 10000, 60
+                ));
+
+        COOLANT_CELL_HELIUM_30K = metaItem.addItem(220, "coolant_cell.helium.30k")
+                .addComponents(new CoolantCellBehavior(10000, Materials.Helium, 30000, 180
+                ));
+
+        COOLANT_CELL_HELIUM_60K = metaItem.addItem(221, "coolant_cell.helium.60k")
+                .addComponents(new CoolantCellBehavior(10000, Materials.Helium, 60000, 540
                 ));
 
 

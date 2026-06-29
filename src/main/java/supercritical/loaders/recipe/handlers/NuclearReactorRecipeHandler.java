@@ -55,5 +55,25 @@ public class NuclearReactorRecipeHandler {
                 .duration(600)
                 .buildAndRegister();
 
+        VACUUM_RECIPES.recipeBuilder()
+                .inputNBT(COOLANT_CELL_HELIUM_10K, NBTMatcher.ANY, NBTCondition.ANY)
+                .output(COOLANT_CELL_HELIUM_10K)
+                .EUt(VA[HV])
+                .duration(100)
+                .buildAndRegister();
+
+        VACUUM_RECIPES.recipeBuilder()
+                .inputNBT(COOLANT_CELL_HELIUM_30K, NBTMatcher.ANY, NBTCondition.ANY)
+                .output(COOLANT_CELL_HELIUM_30K)
+                .EUt(VA[HV])
+                .duration(300)
+                .buildAndRegister();
+
+        VACUUM_RECIPES.recipeBuilder()
+                .inputNBT(COOLANT_CELL_HELIUM_60K, NBTMatcher.ANY, NBTCondition.ANY)
+                .output(COOLANT_CELL_HELIUM_60K)
+                .EUt(VA[HV])
+                .duration(600)
+                .buildAndRegister();
     }
 }

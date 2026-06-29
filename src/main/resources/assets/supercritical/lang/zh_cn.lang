@@ -231,6 +231,10 @@ metaitem.coolant_cell.sodium_potassium.10k.name=10K钠钾合金冷却单元
 metaitem.coolant_cell.sodium_potassium.30k.name=30K钠钾合金冷却单元
 metaitem.coolant_cell.sodium_potassium.60k.name=60K钠钾合金冷却单元
 
+metaitem.coolant_cell.helium.10k.name=10K液氦冷却单元
+metaitem.coolant_cell.helium.30k.name=30K液氦冷却单元
+metaitem.coolant_cell.helium.60k.name=60K液氦冷却单元
+
 metaitem.neutron_reflector.basic.name=中子反射板
 metaitem.neutron_reflector.thick.name=加厚中子反射板
 metaitem.neutron_reflector.iridium.name=铱中子反射板

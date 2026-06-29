@@ -230,6 +230,10 @@ metaitem.coolant_cell.sodium_potassium.10k.name=10K Sodium Potassium Coolant Cel
 metaitem.coolant_cell.sodium_potassium.30k.name=30K Sodium Potassium Coolant Cell
 metaitem.coolant_cell.sodium_potassium.60k.name=60K Sodium Potassium Coolant Cell
 
+metaitem.coolant_cell.helium.10k.name=10K Helium Coolant Cell
+metaitem.coolant_cell.helium.30k.name=30K Helium Coolant Cell
+metaitem.coolant_cell.helium.60k.name=60K Helium Coolant Cell
+
 metaitem.neutron_reflector.basic.name=Neutron Reflector
 metaitem.neutron_reflector.thick.name=Thick Neutron Reflector
 metaitem.neutron_reflector.iridium.name=Iridium Neutron Reflector
